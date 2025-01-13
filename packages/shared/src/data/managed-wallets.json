@@ -1,0 +1,58 @@
+{
+  "testnet": {
+    "ethereum": [
+      {
+        "name": "Deposit Analyzer",
+        "address": "0xA008B469148a43C19e2b1e8915afb08bCD0664e7",
+        "requiredEth": "0.01"
+      },
+      {
+        "name": "Deposit Relayer",
+        "address": "0xD18A1707bFB5CdA66A03ee3DC6937366B924120c",
+        "requiredEth": "0.2"
+      },
+      {
+        "name": "Mock Message Relayer",
+        "address": "0xC56Ce05D78477f2478Fc162fC5E36C8D1e851557",
+        "requiredEth": "0.01"
+      }
+    ],
+    "scroll": [
+      {
+        "name": "Block Builder",
+        "address": "0x2aEA9e0C4dc007a83616eFa9c4424C1192304396",
+        "requiredEth": "0.2"
+      },
+      {
+        "name": "Withdrawal Deployer",
+        "address": "0x25817fFA38D884A93F22154EEE61E6D1533B73E2",
+        "requiredEth": "0.2"
+      },
+      {
+        "name": "Mock Message Relayer",
+        "address": "0xC56Ce05D78477f2478Fc162fC5E36C8D1e851557",
+        "requiredEth": "0.01"
+      }
+    ]
+  },
+  "mainnet": {
+    "ethereum": [
+      {
+        "name": "v1MinterV1Admin",
+        "address": "0x55664d1d0Bb7F2D6a7183429799bc49d1F3E6120",
+        "requiredEth": "0.01"
+      },
+      {
+        "name": "v1Analyzer",
+        "address": "0xFF7cC5E956f88a3B28242edb57EB8ec12955403D",
+        "requiredEth": "0.01"
+      },
+      {
+        "name": "v1Submit",
+        "address": "0x948A0A99ceeB3778F88aeAF4F2F20C7dd1323b68",
+        "requiredEth": "0.01"
+      }
+    ],
+    "scroll": []
+  }
+}

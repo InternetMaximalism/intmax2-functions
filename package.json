@@ -1,0 +1,21 @@
+{
+  "name": "intmax2-functions",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces foreach --all --topological run build",
+    "build:shared": "yarn workspace @intmax2-functions/shared run build",
+    "build:parallel": "yarn workspaces foreach --all -pt run build",
+    "lint": "biome lint .",
+    "format": "biome check --write --unsafe .",
+    "check": "biome check ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "yarn@4.6.0"
+}
