@@ -1,0 +1,154 @@
+import {
+  BLOCK_RANGE_MINIMUM,
+  type BatchedCalldata,
+  type DepositsAnalyzedAndRelayedEvent,
+  RollupAbi,
+  type SentMessageEvent,
+  config,
+  depositsAnalyzedAndRelayedEvent,
+  fetchEvents,
+} from "@intmax2-functions/shared";
+import {
+  type PublicClient,
+  decodeFunctionData,
+  encodeFunctionData,
+  prepareEncodeFunctionData,
+} from "viem";
+import { MAX_BATCH_SIZE } from "../constants";
+import type { ValidDeposits } from "../types";
+
+export const generateDepositsCalldata = async (
+  ethereumClient: PublicClient,
+  l1SentMessageEvent: SentMessageEvent,
+) => {
+  const { lastProcessedDepositId, depositHashes } = decodeL1SentMessage(l1SentMessageEvent);
+
+  const rejectedIds = await fetchLatestRejectedIds(
+    ethereumClient,
+    l1SentMessageEvent.blockNumber,
+    lastProcessedDepositId,
+  );
+
+  const validDeposits = extractValidDeposits(lastProcessedDepositId, depositHashes, rejectedIds);
+
+  return generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+};
+
+export const generateBatchedCalldata = (validDeposits: ValidDeposits, maxBatchSize: number) => {
+  const batchedCalldata: BatchedCalldata[] = [];
+
+  if (validDeposits.depositIds.length === 0) {
+    return batchedCalldata;
+  }
+
+  for (let i = 0; i < validDeposits.depositIds.length; i += maxBatchSize) {
+    const batchDepositIds = validDeposits.depositIds.slice(i, i + maxBatchSize);
+    const batchHashes = validDeposits.depositHashes.slice(i, i + maxBatchSize);
+
+    const functionData = prepareEncodeFunctionData({
+      abi: RollupAbi,
+      functionName: "processDeposits",
+    });
+
+    const encodedCalldata = encodeFunctionData({
+      ...functionData,
+      args: [batchDepositIds[batchDepositIds.length - 1], batchHashes],
+    });
+
+    batchedCalldata.push({
+      encodedCalldata,
+    });
+  }
+
+  return batchedCalldata;
+};
+
+const fetchLatestRejectedIds = async (
+  ethereumClient: PublicClient,
+  eventBlockNumber: bigint,
+  lastProcessedDepositId: bigint,
+) => {
+  const depositsAnalyzedAndRelayedEvents = await fetchEvents<DepositsAnalyzedAndRelayedEvent>(
+    ethereumClient,
+    {
+      startBlockNumber: eventBlockNumber,
+      endBlockNumber: eventBlockNumber,
+      blockRange: BLOCK_RANGE_MINIMUM,
+      contractAddress: config.LIQUIDITY_CONTRACT_ADDRESS as `0x${string}`,
+      eventInterface: depositsAnalyzedAndRelayedEvent,
+      args: {
+        upToDepositId: lastProcessedDepositId,
+      },
+    },
+  );
+  if (depositsAnalyzedAndRelayedEvents.length === 0) {
+    throw new Error("No DepositsAnalyzedAndRelayed event found");
+  }
+
+  if (depositsAnalyzedAndRelayedEvents.length > 1) {
+    throw new Error("Multiple DepositsAnalyzedAndRelayed events found");
+  }
+
+  return depositsAnalyzedAndRelayedEvents[0].args.rejectDepositIds;
+};
+
+export const extractValidDeposits = (
+  lastProcessedDepositId: bigint,
+  depositHashes: string[],
+  rejectedIds: bigint[],
+) => {
+  const prevLastProcessedDepositId =
+    lastProcessedDepositId - BigInt(depositHashes.length + rejectedIds.length);
+
+  const allDepositIds = generateDepositIds(prevLastProcessedDepositId, lastProcessedDepositId);
+  const rejectedIdSet = new Set(rejectedIds.map((id) => id.toString()));
+
+  const validDeposits = {
+    depositIds: [] as bigint[],
+    depositHashes: [] as string[],
+  };
+
+  let validHashIndex = 0;
+  for (const depositId of allDepositIds) {
+    if (!rejectedIdSet.has(depositId.toString())) {
+      validDeposits.depositIds.push(depositId);
+      if (validHashIndex < depositHashes.length) {
+        validDeposits.depositHashes.push(depositHashes[validHashIndex]);
+        validHashIndex++;
+      } else {
+        throw new Error("Invalid depositHashes length");
+      }
+    }
+  }
+
+  return validDeposits;
+};
+
+export const generateDepositIds = (startId: bigint, endId: bigint) => {
+  if (typeof startId !== "bigint" || typeof endId !== "bigint") {
+    throw new Error("Inputs must be BigInt");
+  }
+
+  if (startId > endId) {
+    throw new Error("startId must be less than or equal to endId");
+  }
+
+  const result = [];
+  for (let i = startId + 1n; i <= endId; i += 1n) {
+    result.push(i);
+  }
+
+  return result;
+};
+
+const decodeL1SentMessage = (l1SentMessageEvent: SentMessageEvent) => {
+  const { args } = decodeFunctionData({
+    abi: RollupAbi,
+    data: l1SentMessageEvent.args.message as `0x${string}`,
+  });
+
+  const lastProcessedDepositId = args![0] as bigint;
+  const depositHashes = args![1] as `0x${string}`[];
+
+  return { lastProcessedDepositId, depositHashes };
+};

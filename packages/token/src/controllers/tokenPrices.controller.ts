@@ -1,0 +1,15 @@
+import { tokenPaginationValidation, tokenPricesValidation } from "@intmax2-functions/shared";
+import type { Context } from "hono";
+import { extractQueriesParams, extractQueryParams } from "../lib/query";
+import * as tokenPricesService from "../services/tokenPrices.service";
+
+export const list = async (c: Context) => {
+  const queries = extractQueryParams(c.req.queries());
+  const { contractAddresses } = await tokenPricesValidation.parseAsync(queries);
+
+  const query = extractQueriesParams(c.req.query());
+  const paginationOptions = await tokenPaginationValidation.parseAsync(query);
+
+  const result = await tokenPricesService.list(contractAddresses, paginationOptions);
+  return c.json(result);
+};

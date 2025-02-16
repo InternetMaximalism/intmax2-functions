@@ -1,0 +1,44 @@
+import {
+  Event,
+  type EventData,
+  FIRESTORE_DOCUMENT_EVENTS,
+  createNetworkClient,
+  logger,
+} from "@intmax2-functions/shared";
+import { generateDepositsCalldata } from "./decode.service";
+import { fetchSentMessages } from "./event.service";
+import { submitRelayMessagesToL2MockMessenger } from "./submit.service";
+
+export const performJob = async (): Promise<void> => {
+  const ethereumClient = createNetworkClient("ethereum");
+  const scrollClient = createNetworkClient("scroll");
+  const event = new Event(FIRESTORE_DOCUMENT_EVENTS.MOCK_MESSENGER_RELAYER);
+
+  const [currentBlockNumber, lastProcessedEvent] = await Promise.all([
+    ethereumClient.getBlockNumber(),
+    event.getEvent<EventData>(),
+  ]);
+
+  const l1SentMessageEvents = await fetchSentMessages(
+    ethereumClient,
+    currentBlockNumber,
+    lastProcessedEvent,
+  );
+
+  logger.info(`Fetched ${l1SentMessageEvents.length} sent messages from L1 to L2`);
+
+  for (const l1SentMessageEvent of l1SentMessageEvents) {
+    const calldataBatch = await generateDepositsCalldata(ethereumClient, l1SentMessageEvent);
+
+    for (const calldata of calldataBatch) {
+      await submitRelayMessagesToL2MockMessenger(scrollClient, {
+        ...l1SentMessageEvent.args,
+        message: calldata.encodedCalldata,
+      });
+    }
+  }
+
+  await event.addOrUpdateEvent({
+    lastBlockNumber: Number(currentBlockNumber),
+  });
+};
