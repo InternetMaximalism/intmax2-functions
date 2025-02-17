@@ -158,6 +158,7 @@ export const submitMessageToScroll = async (
     contractCallParams.args[2],
     contractCallParams.args[3],
     contractCallParams.args[4],
+    contractCallParams.args[5],
     ethersTxOptions,
   ];
 

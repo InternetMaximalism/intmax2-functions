@@ -157,10 +157,10 @@ const calculateDepositStartNumber = async (
       return BigInt(minDepositBlockNumber);
     }
 
-    currentBlockNumber -= BLOCK_RANGE_MINIMUM;
+    startBlockNumber -= BLOCK_RANGE_MINIMUM;
     attempts++;
 
-    if (currentBlockNumber <= 0n) {
+    if (startBlockNumber <= 0n) {
       throw new Error("Start block number would become negative");
     }
   }
