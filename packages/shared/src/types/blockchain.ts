@@ -10,6 +10,7 @@ export interface BaseEvent {
   address: string;
   blockNumber: bigint;
   blockTimestamp: string;
+  blockHash: string;
   transactionHash: string;
 }
 
@@ -26,13 +27,12 @@ export interface DepositEventLog {
   depositedAt: bigint;
 }
 
-export interface DepositsAnalyzedAndRelayedEvent extends BaseEvent {
-  args: DepositsAnalyzedAndRelayedEventLog;
+export interface DepositsRelayedEvent extends BaseEvent {
+  args: DepositsRelayedEventLog;
 }
 
-export interface DepositsAnalyzedAndRelayedEventLog {
+export interface DepositsRelayedEventLog {
   upToDepositId: bigint;
-  rejectDepositIds: bigint[];
   gasLimit: bigint;
   message: string;
 }

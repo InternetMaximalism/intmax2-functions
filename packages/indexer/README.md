@@ -23,6 +23,7 @@ yarn build
 # health check
 curl http://localhost:3000/v1/health | jq
 
-# fetch Indexer URLs
+# fetch Indexer
 curl -X GET 'http://localhost:3000/v1/indexer/builders' | jq
+curl -X GET 'http://localhost:3000/v1/indexer/builders/meta' | jq
 ```

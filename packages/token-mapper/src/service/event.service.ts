@@ -1,14 +1,14 @@
 import {
   BLOCK_RANGE_MINIMUM,
-  type DepositAnalyzedAndRelayedEventData,
   type DepositEvent,
   type DepositEventLog,
-  type DepositsAnalyzedAndRelayedEvent,
+  type DepositsRelayedEvent,
+  type DepositsRelayedEventData,
   LIQUIDITY_CONTRACT_ADDRESS,
   LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   LiquidityAbi,
   depositedEvent,
-  depositsAnalyzedAndRelayedEvent,
+  depositsRelayedEvent,
   fetchEvents,
   logger,
   validateBlockRange,
@@ -20,7 +20,7 @@ import type { TokenInfo } from "../types";
 export const fetchUnprocessedDepositTokenEntries = async (
   ethereumClient: PublicClient,
   currentBlockNumber: bigint,
-  lastProcessedEvent: DepositAnalyzedAndRelayedEventData | null,
+  lastProcessedEvent: DepositsRelayedEventData | null,
 ) => {
   const { depositIds, startBlockNumber } = await getDepositIds(
     ethereumClient,
@@ -58,31 +58,28 @@ export const fetchUnprocessedDepositTokenEntries = async (
 const getDepositIds = async (
   ethereumClient: PublicClient,
   currentBlockNumber: bigint,
-  lastProcessedEvent: DepositAnalyzedAndRelayedEventData | null,
+  lastProcessedEvent: DepositsRelayedEventData | null,
 ) => {
   const { startBlockNumber, lastUpToDepositId } =
     await getStartBlockNumberAndLastUpToDepositId(lastProcessedEvent);
-  validateBlockRange("depositsAnalyzedAndRelayedEvent", startBlockNumber, currentBlockNumber);
+  validateBlockRange("depositsRelayedEvent", startBlockNumber, currentBlockNumber);
 
-  const depositsAnalyzedAndRelayedEvents = await fetchEvents<DepositsAnalyzedAndRelayedEvent>(
-    ethereumClient,
-    {
-      startBlockNumber,
-      endBlockNumber: currentBlockNumber,
-      blockRange: BLOCK_RANGE_MINIMUM,
-      contractAddress: LIQUIDITY_CONTRACT_ADDRESS,
-      eventInterface: depositsAnalyzedAndRelayedEvent,
-    },
-  );
+  const depositsRelayedEvents = await fetchEvents<DepositsRelayedEvent>(ethereumClient, {
+    startBlockNumber,
+    endBlockNumber: currentBlockNumber,
+    blockRange: BLOCK_RANGE_MINIMUM,
+    contractAddress: LIQUIDITY_CONTRACT_ADDRESS,
+    eventInterface: depositsRelayedEvent,
+  });
 
-  if (depositsAnalyzedAndRelayedEvents.length === 0) {
+  if (depositsRelayedEvents.length === 0) {
     return {
       depositIds: [],
       startBlockNumber,
     };
   }
 
-  const depositIds = generateDepositIds(depositsAnalyzedAndRelayedEvents, lastUpToDepositId);
+  const depositIds = generateDepositIds(depositsRelayedEvents, lastUpToDepositId);
 
   return {
     depositIds,
@@ -91,7 +88,7 @@ const getDepositIds = async (
 };
 
 const getStartBlockNumberAndLastUpToDepositId = async (
-  lastProcessedEvent: DepositAnalyzedAndRelayedEventData | null,
+  lastProcessedEvent: DepositsRelayedEventData | null,
 ) => {
   if (lastProcessedEvent) {
     const startBlockNumber = BigInt(lastProcessedEvent?.lastBlockNumber + 1);
@@ -109,7 +106,7 @@ const getStartBlockNumberAndLastUpToDepositId = async (
 };
 
 const generateDepositIds = (
-  events: DepositsAnalyzedAndRelayedEvent[],
+  events: DepositsRelayedEvent[],
   lastUpToDepositId: number,
 ): number[] => {
   const latestEvent = events[events.length - 1];

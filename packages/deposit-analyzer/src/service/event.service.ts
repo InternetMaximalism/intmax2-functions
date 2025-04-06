@@ -1,13 +1,13 @@
 import {
   BLOCK_RANGE_MINIMUM,
   type DepositEvent,
-  type DepositsAnalyzedAndRelayedEvent,
+  type DepositsRelayedEvent,
   type EventData,
   LIQUIDITY_CONTRACT_ADDRESS,
   LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   LiquidityAbi,
   depositedEvent,
-  depositsAnalyzedAndRelayedEvent,
+  depositsRelayedEvent,
   fetchEvents,
   getStartBlockNumber,
   logger,
@@ -59,7 +59,7 @@ export const getDepositedEvent = async (
   }
 };
 
-export const getDepositsAnalyzedAndRelayedEvent = async (
+export const getDepositsRelayedEvent = async (
   ethereumClient: PublicClient,
   currentBlockNumber: bigint,
   lastProcessedEvent: EventData | null,
@@ -69,32 +69,26 @@ export const getDepositsAnalyzedAndRelayedEvent = async (
       lastProcessedEvent,
       LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
     );
-    validateBlockRange("depositsAnalyzedAndRelayedEvent", startBlockNumber, currentBlockNumber);
+    validateBlockRange("depositsRelayedEvent", startBlockNumber, currentBlockNumber);
 
-    const depositsAnalyzedAndRelayedEvents = await fetchEvents<DepositsAnalyzedAndRelayedEvent>(
-      ethereumClient,
-      {
-        startBlockNumber,
-        endBlockNumber: currentBlockNumber,
-        blockRange: BLOCK_RANGE_MINIMUM,
-        contractAddress: LIQUIDITY_CONTRACT_ADDRESS,
-        eventInterface: depositsAnalyzedAndRelayedEvent,
-      },
-    );
+    const depositsRelayedEvents = await fetchEvents<DepositsRelayedEvent>(ethereumClient, {
+      startBlockNumber,
+      endBlockNumber: currentBlockNumber,
+      blockRange: BLOCK_RANGE_MINIMUM,
+      contractAddress: LIQUIDITY_CONTRACT_ADDRESS,
+      eventInterface: depositsRelayedEvent,
+    });
 
-    const depositsAnalyzedAndRelayedEventLogs = depositsAnalyzedAndRelayedEvents.map(
-      (event) => event.args,
-    );
-    const rejectDepositIds = depositsAnalyzedAndRelayedEventLogs.map((log) => log.rejectDepositIds);
-    const upToDepositIds = depositsAnalyzedAndRelayedEventLogs.map((log) => log.upToDepositId);
+    const depositsRelayedEventLogs = depositsRelayedEvents.map((event) => event.args);
+    const upToDepositIds = depositsRelayedEventLogs.map((log) => log.upToDepositId);
 
     return {
       lastUpToDepositId: getMaxDepositId(upToDepositIds),
-      rejectDepositIds: rejectDepositIds.flat(),
+      rejectDepositIds: [],
     };
   } catch (error) {
     logger.error(
-      `Error fetching depositsAnalyzedAndRelayedEvent events: ${error instanceof Error ? error.message : "Unknown error"}`,
+      `Error fetching depositsRelayedEvent events: ${error instanceof Error ? error.message : "Unknown error"}`,
     );
     throw error;
   }

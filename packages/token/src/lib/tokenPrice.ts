@@ -19,6 +19,7 @@ export class TokenPrice {
     this.startScheduler();
   }
 
+  // TODO: FIXME: if the token list is not found ...
   private async fetchAndCacheTokenList() {
     this.tokenPriceList = await fetchTokenList();
   }

@@ -5,23 +5,24 @@ import { ACCEPTABLE_BLOCK_DIFFERENCE, API_TIMEOUT } from "../constants";
 import type { BlockNumberResponse } from "../type";
 
 export const fetchLatestValidityProverBlockNumber = async () => {
+  // NOTE: Validity prover endpoint block from US
+  const validityProverUrl = `${config.API_VALIDITY_PROVER_BASE_URL}/validity-prover/block-number`;
   try {
-    const response = await axios.get<BlockNumberResponse>(
-      `${config.API_VALIDITY_PROVER_BASE_URL}/validity-prover/block-number`,
-      {
-        timeout: API_TIMEOUT,
-        headers: {
-          Accept: "application/json",
-        },
+    const response = await axios.get<BlockNumberResponse>(validityProverUrl, {
+      timeout: API_TIMEOUT,
+      headers: {
+        Accept: "application/json",
       },
-    );
+    });
     if (response.data?.blockNumber === undefined) {
       throw new Error("Block number is missing in the response");
     }
 
     return response.data.blockNumber;
   } catch (error) {
-    logger.error(`Failed to fetch block number: ${error instanceof Error ? error.message : error}`);
+    logger.error(
+      `Failed to fetch block number url: ${validityProverUrl} ${error instanceof Error ? error.message : error}`,
+    );
 
     if (error instanceof AxiosError) {
       throw new Error(`Failed to fetch block number: ${error.response?.status}`);

@@ -28,7 +28,7 @@ import { type Abi, type PublicClient, parseEther, toHex } from "viem";
 import { FIXED_DEPOSIT_VALUE } from "../constants";
 import type { DepositAnalysisSummary } from "../types";
 
-export const submitAnalyzeAndRelayDeposits = async (
+export const submitRelayDeposits = async (
   ethereumClient: PublicClient,
   depositSummary: DepositAnalysisSummary,
 ) => {
@@ -41,7 +41,7 @@ export const submitAnalyzeAndRelayDeposits = async (
     try {
       const multiplier = calculateGasMultiplier(attempt);
 
-      const { transactionHash } = await submitAnalyzeAndRelayDepositsWithRetry(
+      const { transactionHash } = await submitRelayDepositsWithRetry(
         ethereumClient,
         depositSummary,
         multiplier,
@@ -51,7 +51,7 @@ export const submitAnalyzeAndRelayDeposits = async (
       const receipt = await ethersWaitForTransactionConfirmation(
         ethereumClient,
         transactionHash,
-        "withdraw",
+        "relayDeposits",
         {
           confirms: ETHERS_CONFIRMATIONS,
           timeout: TRANSACTION_WAIT_TRANSACTION_TIMEOUT,
@@ -84,7 +84,7 @@ export const submitAnalyzeAndRelayDeposits = async (
   throw new Error("Unexpected end of transaction");
 };
 
-export const submitAnalyzeAndRelayDepositsWithRetry = async (
+export const submitRelayDepositsWithRetry = async (
   ethereumClient: PublicClient,
   depositSummary: DepositAnalysisSummary,
   multiplier: number,
@@ -95,9 +95,9 @@ export const submitAnalyzeAndRelayDepositsWithRetry = async (
   const contractCallParams: ContractCallParameters = {
     contractAddress: LIQUIDITY_CONTRACT_ADDRESS,
     abi: LiquidityAbi as Abi,
-    functionName: "analyzeAndRelayDeposits",
+    functionName: "relayDeposits",
     account: walletClientData.account,
-    args: [depositSummary.upToDepositId, depositSummary.rejectDepositIds, depositSummary.gasLimit],
+    args: [depositSummary.upToDepositId, depositSummary.gasLimit],
   };
 
   const [{ pendingNonce, currentNonce }, gasPriceData] = await Promise.all([
@@ -139,12 +139,7 @@ export const submitAnalyzeAndRelayDepositsWithRetry = async (
   );
   const contract = Liquidity__factory.connect(contractCallParams.contractAddress, signer);
   const ethersTxOptions = getEthersTxOptions(contractCallParams, contractCallOptions ?? {});
-  const callArgs = [
-    contractCallParams.args[0],
-    contractCallParams.args[1],
-    contractCallParams.args[2],
-    ethersTxOptions,
-  ];
+  const callArgs = [contractCallParams.args[0], contractCallParams.args[1], ethersTxOptions];
 
   if (pendingNonce > currentNonce) {
     return await replacedEthersTransaction({

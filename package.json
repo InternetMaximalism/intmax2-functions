@@ -12,9 +12,7 @@
     "lint": "biome lint .",
     "format": "biome check --write --unsafe .",
     "check": "biome check .",
-    "indexer-bootstrap": "npx tsx --env-file=./.env packages/indexer/scripts/bootstrap.ts",
     "token-mapper-bootstrap": "npx tsx --env-file=./.env packages/token-mapper/scripts/bootstrap.ts",
-    "block-builder-heartbeat": "npx tsx --env-file=./.env packages/indexer-monitor/scripts/index.ts",
     "token-image-bootstrap": "npx tsx --env-file=./.env packages/token-data-fetcher/scripts/bootstrap.ts"
   },
   "devDependencies": {

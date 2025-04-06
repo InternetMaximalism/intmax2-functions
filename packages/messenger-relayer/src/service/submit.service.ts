@@ -57,7 +57,7 @@ export const relayMessageWithProof = async (
       const receipt = await ethersWaitForTransactionConfirmation(
         ethereumClient,
         transactionHash,
-        "withdraw",
+        "relayMessageWithProof",
         {
           confirms: ETHERS_CONFIRMATIONS,
           timeout: TRANSACTION_WAIT_TRANSACTION_TIMEOUT,

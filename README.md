@@ -49,6 +49,7 @@ packages
 ├── block-sync-monitor
 ├── deposit-analyzer
 ├── indexer
+├── indexer-event-watcher
 ├── indexer-monitor
 ├── messenger-relayer
 ├── mock-l1-to-l2-relayer

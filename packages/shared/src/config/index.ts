@@ -1,4 +1,4 @@
-import { url, cleanEnv, num, str } from "envalid";
+import { url, cleanEnv, json, num, str } from "envalid";
 
 export const config = cleanEnv(process.env, {
   // app
@@ -37,7 +37,7 @@ export const config = cleanEnv(process.env, {
   // predicate
   PREDICATE_API_URL: url({ devDefault: "http://localhost:3002" }),
   PREDICATE_API_KEY: str({ devDefault: "dummy" }),
-  // contract(must be lowercase for contract address)
+  // contract(must be lowercase for contract addresses)
   BUILDER_REGISTRY_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
   BUILDER_REGISTRY_CONTRACT_DEPLOYED_BLOCK: num({ devDefault: 0 }),
   LIQUIDITY_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
@@ -60,6 +60,10 @@ export const config = cleanEnv(process.env, {
   DISCORD_BOT_ERROR_CHANNEL_ID: str({ default: "dummy" }),
   // scroll
   SCROLL_GAS_MULTIPLIER: num({ default: 2 }),
+  // indexer
+  BLOCK_BUILDER_ALLOWLIST: json({ default: ["0x"] }),
+  BLOCK_BUILDER_MIN_ETH_BALANCE: str({ default: "0.01" }),
+  ALLOWLIST_BLOCK_BUILDER_POSSIBILITIES: num({ default: 0.5 }),
   // validity prover
   API_VALIDITY_PROVER_BASE_URL: str({ default: "http://localhost:3003" }),
 });

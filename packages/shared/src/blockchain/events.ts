@@ -2,11 +2,11 @@ import { AbiEvent, parseAbiItem } from "abitype";
 import type { PublicClient } from "viem";
 
 export const depositedEvent = parseAbiItem(
-  "event Deposited(uint256 indexed depositId, address indexed sender, bytes32 indexed recipientSaltHash, uint32 tokenIndex, uint256 amount, uint256 requestedAt)",
+  "event Deposited(uint256 indexed depositId, address indexed sender, bytes32 indexed recipientSaltHash, uint32 tokenIndex, uint256 amount, bool isEligible, uint256 requestedAt)",
 );
 
-export const depositsAnalyzedAndRelayedEvent = parseAbiItem(
-  "event DepositsAnalyzedAndRelayed(uint256 indexed upToDepositId, uint256[] rejectDepositIds, uint256 gasLimit, bytes message)",
+export const depositsRelayedEvent = parseAbiItem(
+  "event DepositsRelayed(uint256 indexed upToDepositId, uint256 gasLimit, bytes message)",
 );
 
 export const withdrawalClaimableEvent = parseAbiItem(

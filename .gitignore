@@ -103,3 +103,4 @@ tsconfig.tsbuildinfo
 # env
 .env.development
 .env.stage
+.env.state-beta

@@ -46,30 +46,38 @@ export declare namespace WithdrawalLib {
 
 export declare namespace DepositLib {
   export type DepositStruct = {
+    depositor: AddressLike;
     recipientSaltHash: BytesLike;
-    tokenIndex: BigNumberish;
     amount: BigNumberish;
+    tokenIndex: BigNumberish;
+    isEligible: boolean;
   };
 
   export type DepositStructOutput = [
+    depositor: string,
     recipientSaltHash: string,
+    amount: bigint,
     tokenIndex: bigint,
-    amount: bigint
-  ] & { recipientSaltHash: string; tokenIndex: bigint; amount: bigint };
+    isEligible: boolean
+  ] & {
+    depositor: string;
+    recipientSaltHash: string;
+    amount: bigint;
+    tokenIndex: bigint;
+    isEligible: boolean;
+  };
 }
 
 export declare namespace DepositQueueLib {
   export type DepositDataStruct = {
     depositHash: BytesLike;
     sender: AddressLike;
-    isRejected: boolean;
   };
 
   export type DepositDataStructOutput = [
     depositHash: string,
-    sender: string,
-    isRejected: boolean
-  ] & { depositHash: string; sender: string; isRejected: boolean };
+    sender: string
+  ] & { depositHash: string; sender: string };
 }
 
 export declare namespace ITokenData {
@@ -89,17 +97,22 @@ export declare namespace ITokenData {
 export interface LiquidityInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "ANALYZER"
       | "DEFAULT_ADMIN_ROLE"
+      | "RELAYER"
       | "UPGRADE_INTERFACE_VERSION"
-      | "analyzeAndRelayDeposits"
+      | "WITHDRAWAL"
+      | "WITHDRAWAL_FEE_RATIO_LIMIT"
+      | "amlPermitter"
       | "cancelDeposit"
       | "claimWithdrawals"
       | "claimableWithdrawals"
+      | "collectedWithdrawalFees"
+      | "deploymentTime"
       | "depositERC1155"
       | "depositERC20"
       | "depositERC721"
       | "depositNativeToken"
+      | "eligibilityPermitter"
       | "getDepositData"
       | "getDepositDataBatch"
       | "getDepositDataHash"
@@ -114,12 +127,20 @@ export interface LiquidityInterface extends Interface {
       | "initialize"
       | "isDepositValid"
       | "onERC1155Received"
+      | "pauseDeposits"
+      | "paused"
       | "processWithdrawals"
       | "proxiableUUID"
+      | "relayDeposits"
       | "renounceRole"
       | "revokeRole"
+      | "setPermitter"
+      | "setWithdrawalFeeRatio"
       | "supportsInterface"
+      | "unpauseDeposits"
       | "upgradeToAndCall"
+      | "withdrawCollectedFees"
+      | "withdrawalFeeRatio"
   ): FunctionFragment;
 
   getEvent(
@@ -127,29 +148,43 @@ export interface LiquidityInterface extends Interface {
       | "ClaimedWithdrawal"
       | "DepositCanceled"
       | "Deposited"
-      | "DepositsAnalyzedAndRelayed"
+      | "DepositsRelayed"
       | "DirectWithdrawalFailed"
       | "DirectWithdrawalSuccessed"
       | "Initialized"
+      | "Paused"
+      | "PermitterSet"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
+      | "Unpaused"
       | "Upgraded"
       | "WithdrawalClaimable"
+      | "WithdrawalFeeCollected"
+      | "WithdrawalFeeRatioSet"
+      | "WithdrawalFeeWithdrawn"
   ): EventFragment;
 
-  encodeFunctionData(functionFragment: "ANALYZER", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "RELAYER", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "analyzeAndRelayDeposits",
-    values: [BigNumberish, BigNumberish[], BigNumberish]
+    functionFragment: "WITHDRAWAL",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "WITHDRAWAL_FEE_RATIO_LIMIT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "amlPermitter",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "cancelDeposit",
@@ -164,20 +199,39 @@ export interface LiquidityInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "collectedWithdrawalFees",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deploymentTime",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "depositERC1155",
-    values: [AddressLike, BytesLike, BigNumberish, BigNumberish]
+    values: [
+      AddressLike,
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "depositERC20",
-    values: [AddressLike, BytesLike, BigNumberish]
+    values: [AddressLike, BytesLike, BigNumberish, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "depositERC721",
-    values: [AddressLike, BytesLike, BigNumberish]
+    values: [AddressLike, BytesLike, BigNumberish, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "depositNativeToken",
-    values: [BytesLike]
+    values: [BytesLike, BytesLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "eligibilityPermitter",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getDepositData",
@@ -232,17 +286,30 @@ export interface LiquidityInterface extends Interface {
       AddressLike,
       AddressLike,
       AddressLike,
+      AddressLike,
       AddressLike[]
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "isDepositValid",
-    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, AddressLike]
+    values: [
+      BigNumberish,
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      boolean,
+      AddressLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "onERC1155Received",
     values: [AddressLike, AddressLike, BigNumberish, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "pauseDeposits",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "processWithdrawals",
     values: [WithdrawalLib.WithdrawalStruct[], BytesLike[]]
@@ -250,6 +317,10 @@ export interface LiquidityInterface extends Interface {
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "relayDeposits",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -260,25 +331,50 @@ export interface LiquidityInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPermitter",
+    values: [AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setWithdrawalFeeRatio",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unpauseDeposits",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawCollectedFees",
+    values: [AddressLike, BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawalFeeRatio",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "ANALYZER", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "RELAYER", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "WITHDRAWAL", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "analyzeAndRelayDeposits",
+    functionFragment: "WITHDRAWAL_FEE_RATIO_LIMIT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "amlPermitter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -291,6 +387,14 @@ export interface LiquidityInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "claimableWithdrawals",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "collectedWithdrawalFees",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deploymentTime",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -307,6 +411,10 @@ export interface LiquidityInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "depositNativeToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "eligibilityPermitter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -357,6 +465,11 @@ export interface LiquidityInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "pauseDeposits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "processWithdrawals",
     data: BytesLike
   ): Result;
@@ -365,16 +478,40 @@ export interface LiquidityInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "relayDeposits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setPermitter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setWithdrawalFeeRatio",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "unpauseDeposits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawCollectedFees",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawalFeeRatio",
     data: BytesLike
   ): Result;
 }
@@ -411,6 +548,7 @@ export namespace DepositedEvent {
     recipientSaltHash: BytesLike,
     tokenIndex: BigNumberish,
     amount: BigNumberish,
+    isEligible: boolean,
     depositedAt: BigNumberish
   ];
   export type OutputTuple = [
@@ -419,6 +557,7 @@ export namespace DepositedEvent {
     recipientSaltHash: string,
     tokenIndex: bigint,
     amount: bigint,
+    isEligible: boolean,
     depositedAt: bigint
   ];
   export interface OutputObject {
@@ -427,6 +566,7 @@ export namespace DepositedEvent {
     recipientSaltHash: string;
     tokenIndex: bigint;
     amount: bigint;
+    isEligible: boolean;
     depositedAt: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -435,22 +575,19 @@ export namespace DepositedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace DepositsAnalyzedAndRelayedEvent {
+export namespace DepositsRelayedEvent {
   export type InputTuple = [
     upToDepositId: BigNumberish,
-    rejectedIndices: BigNumberish[],
     gasLimit: BigNumberish,
     message: BytesLike
   ];
   export type OutputTuple = [
     upToDepositId: bigint,
-    rejectedIndices: bigint[],
     gasLimit: bigint,
     message: string
   ];
   export interface OutputObject {
     upToDepositId: bigint;
-    rejectedIndices: bigint[];
     gasLimit: bigint;
     message: string;
   }
@@ -497,6 +634,37 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace PausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
+  export interface OutputObject {
+    account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace PermitterSetEvent {
+  export type InputTuple = [
+    amlPermitter: AddressLike,
+    eligibilityPermitter: AddressLike
+  ];
+  export type OutputTuple = [
+    amlPermitter: string,
+    eligibilityPermitter: string
+  ];
+  export interface OutputObject {
+    amlPermitter: string;
+    eligibilityPermitter: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -562,6 +730,18 @@ export namespace RoleRevokedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UnpausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
+  export interface OutputObject {
+    account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace UpgradedEvent {
   export type InputTuple = [implementation: AddressLike];
   export type OutputTuple = [implementation: string];
@@ -579,6 +759,50 @@ export namespace WithdrawalClaimableEvent {
   export type OutputTuple = [withdrawalHash: string];
   export interface OutputObject {
     withdrawalHash: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawalFeeCollectedEvent {
+  export type InputTuple = [token: BigNumberish, amount: BigNumberish];
+  export type OutputTuple = [token: bigint, amount: bigint];
+  export interface OutputObject {
+    token: bigint;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawalFeeRatioSetEvent {
+  export type InputTuple = [tokenIndex: BigNumberish, feeRatio: BigNumberish];
+  export type OutputTuple = [tokenIndex: bigint, feeRatio: bigint];
+  export interface OutputObject {
+    tokenIndex: bigint;
+    feeRatio: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawalFeeWithdrawnEvent {
+  export type InputTuple = [
+    recipient: AddressLike,
+    token: BigNumberish,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [recipient: string, token: bigint, amount: bigint];
+  export interface OutputObject {
+    recipient: string;
+    token: bigint;
+    amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -629,21 +853,17 @@ export interface Liquidity extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  ANALYZER: TypedContractMethod<[], [string], "view">;
-
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
+
+  RELAYER: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
-  analyzeAndRelayDeposits: TypedContractMethod<
-    [
-      upToDepositId: BigNumberish,
-      rejectDepositIds: BigNumberish[],
-      gasLimit: BigNumberish
-    ],
-    [void],
-    "payable"
-  >;
+  WITHDRAWAL: TypedContractMethod<[], [string], "view">;
+
+  WITHDRAWAL_FEE_RATIO_LIMIT: TypedContractMethod<[], [bigint], "view">;
+
+  amlPermitter: TypedContractMethod<[], [string], "view">;
 
   cancelDeposit: TypedContractMethod<
     [depositId: BigNumberish, deposit: DepositLib.DepositStruct],
@@ -663,12 +883,22 @@ export interface Liquidity extends BaseContract {
     "view"
   >;
 
+  collectedWithdrawalFees: TypedContractMethod<
+    [arg0: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
+  deploymentTime: TypedContractMethod<[], [bigint], "view">;
+
   depositERC1155: TypedContractMethod<
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
       tokenId: BigNumberish,
-      amount: BigNumberish
+      amount: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
@@ -678,7 +908,9 @@ export interface Liquidity extends BaseContract {
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
-      amount: BigNumberish
+      amount: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
@@ -688,17 +920,25 @@ export interface Liquidity extends BaseContract {
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
-      tokenId: BigNumberish
+      tokenId: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
   >;
 
   depositNativeToken: TypedContractMethod<
-    [recipientSaltHash: BytesLike],
+    [
+      recipientSaltHash: BytesLike,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
+    ],
     [void],
     "payable"
   >;
+
+  eligibilityPermitter: TypedContractMethod<[], [string], "view">;
 
   getDepositData: TypedContractMethod<
     [depositId: BigNumberish],
@@ -756,7 +996,8 @@ export interface Liquidity extends BaseContract {
       _l1ScrollMessenger: AddressLike,
       _rollup: AddressLike,
       _withdrawal: AddressLike,
-      _analyzer: AddressLike,
+      _claim: AddressLike,
+      _relayer: AddressLike,
       _contribution: AddressLike,
       initialERC20Tokens: AddressLike[]
     ],
@@ -770,6 +1011,7 @@ export interface Liquidity extends BaseContract {
       recipientSaltHash: BytesLike,
       tokenIndex: BigNumberish,
       amount: BigNumberish,
+      isEligible: boolean,
       sender: AddressLike
     ],
     [boolean],
@@ -788,6 +1030,10 @@ export interface Liquidity extends BaseContract {
     "view"
   >;
 
+  pauseDeposits: TypedContractMethod<[], [void], "nonpayable">;
+
+  paused: TypedContractMethod<[], [boolean], "view">;
+
   processWithdrawals: TypedContractMethod<
     [
       withdrawals: WithdrawalLib.WithdrawalStruct[],
@@ -798,6 +1044,12 @@ export interface Liquidity extends BaseContract {
   >;
 
   proxiableUUID: TypedContractMethod<[], [string], "view">;
+
+  relayDeposits: TypedContractMethod<
+    [upToDepositId: BigNumberish, gasLimit: BigNumberish],
+    [void],
+    "payable"
+  >;
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -811,11 +1063,25 @@ export interface Liquidity extends BaseContract {
     "nonpayable"
   >;
 
+  setPermitter: TypedContractMethod<
+    [_amlPermitter: AddressLike, _eligibilityPermitter: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  setWithdrawalFeeRatio: TypedContractMethod<
+    [tokenIndex: BigNumberish, feeRatio: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
     "view"
   >;
+
+  unpauseDeposits: TypedContractMethod<[], [void], "nonpayable">;
 
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
@@ -823,30 +1089,40 @@ export interface Liquidity extends BaseContract {
     "payable"
   >;
 
+  withdrawCollectedFees: TypedContractMethod<
+    [recipient: AddressLike, tokenIndices: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
+
+  withdrawalFeeRatio: TypedContractMethod<
+    [arg0: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "ANALYZER"
+    nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "DEFAULT_ADMIN_ROLE"
+    nameOrSignature: "RELAYER"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "analyzeAndRelayDeposits"
-  ): TypedContractMethod<
-    [
-      upToDepositId: BigNumberish,
-      rejectDepositIds: BigNumberish[],
-      gasLimit: BigNumberish
-    ],
-    [void],
-    "payable"
-  >;
+    nameOrSignature: "WITHDRAWAL"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "WITHDRAWAL_FEE_RATIO_LIMIT"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "amlPermitter"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "cancelDeposit"
   ): TypedContractMethod<
@@ -865,13 +1141,21 @@ export interface Liquidity extends BaseContract {
     nameOrSignature: "claimableWithdrawals"
   ): TypedContractMethod<[arg0: BytesLike], [bigint], "view">;
   getFunction(
+    nameOrSignature: "collectedWithdrawalFees"
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "deploymentTime"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "depositERC1155"
   ): TypedContractMethod<
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
       tokenId: BigNumberish,
-      amount: BigNumberish
+      amount: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
@@ -882,7 +1166,9 @@ export interface Liquidity extends BaseContract {
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
-      amount: BigNumberish
+      amount: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
@@ -893,14 +1179,27 @@ export interface Liquidity extends BaseContract {
     [
       tokenAddress: AddressLike,
       recipientSaltHash: BytesLike,
-      tokenId: BigNumberish
+      tokenId: BigNumberish,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
     ],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "depositNativeToken"
-  ): TypedContractMethod<[recipientSaltHash: BytesLike], [void], "payable">;
+  ): TypedContractMethod<
+    [
+      recipientSaltHash: BytesLike,
+      amlPermission: BytesLike,
+      eligibilityPermission: BytesLike
+    ],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "eligibilityPermitter"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getDepositData"
   ): TypedContractMethod<
@@ -966,7 +1265,8 @@ export interface Liquidity extends BaseContract {
       _l1ScrollMessenger: AddressLike,
       _rollup: AddressLike,
       _withdrawal: AddressLike,
-      _analyzer: AddressLike,
+      _claim: AddressLike,
+      _relayer: AddressLike,
       _contribution: AddressLike,
       initialERC20Tokens: AddressLike[]
     ],
@@ -981,6 +1281,7 @@ export interface Liquidity extends BaseContract {
       recipientSaltHash: BytesLike,
       tokenIndex: BigNumberish,
       amount: BigNumberish,
+      isEligible: boolean,
       sender: AddressLike
     ],
     [boolean],
@@ -1000,6 +1301,12 @@ export interface Liquidity extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "pauseDeposits"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "paused"
+  ): TypedContractMethod<[], [boolean], "view">;
+  getFunction(
     nameOrSignature: "processWithdrawals"
   ): TypedContractMethod<
     [
@@ -1012,6 +1319,13 @@ export interface Liquidity extends BaseContract {
   getFunction(
     nameOrSignature: "proxiableUUID"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "relayDeposits"
+  ): TypedContractMethod<
+    [upToDepositId: BigNumberish, gasLimit: BigNumberish],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
@@ -1027,8 +1341,25 @@ export interface Liquidity extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setPermitter"
+  ): TypedContractMethod<
+    [_amlPermitter: AddressLike, _eligibilityPermitter: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setWithdrawalFeeRatio"
+  ): TypedContractMethod<
+    [tokenIndex: BigNumberish, feeRatio: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "unpauseDeposits"
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
@@ -1036,6 +1367,16 @@ export interface Liquidity extends BaseContract {
     [void],
     "payable"
   >;
+  getFunction(
+    nameOrSignature: "withdrawCollectedFees"
+  ): TypedContractMethod<
+    [recipient: AddressLike, tokenIndices: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawalFeeRatio"
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   getEvent(
     key: "ClaimedWithdrawal"
@@ -1059,11 +1400,11 @@ export interface Liquidity extends BaseContract {
     DepositedEvent.OutputObject
   >;
   getEvent(
-    key: "DepositsAnalyzedAndRelayed"
+    key: "DepositsRelayed"
   ): TypedContractEvent<
-    DepositsAnalyzedAndRelayedEvent.InputTuple,
-    DepositsAnalyzedAndRelayedEvent.OutputTuple,
-    DepositsAnalyzedAndRelayedEvent.OutputObject
+    DepositsRelayedEvent.InputTuple,
+    DepositsRelayedEvent.OutputTuple,
+    DepositsRelayedEvent.OutputObject
   >;
   getEvent(
     key: "DirectWithdrawalFailed"
@@ -1087,6 +1428,20 @@ export interface Liquidity extends BaseContract {
     InitializedEvent.OutputObject
   >;
   getEvent(
+    key: "Paused"
+  ): TypedContractEvent<
+    PausedEvent.InputTuple,
+    PausedEvent.OutputTuple,
+    PausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "PermitterSet"
+  ): TypedContractEvent<
+    PermitterSetEvent.InputTuple,
+    PermitterSetEvent.OutputTuple,
+    PermitterSetEvent.OutputObject
+  >;
+  getEvent(
     key: "RoleAdminChanged"
   ): TypedContractEvent<
     RoleAdminChangedEvent.InputTuple,
@@ -1108,6 +1463,13 @@ export interface Liquidity extends BaseContract {
     RoleRevokedEvent.OutputObject
   >;
   getEvent(
+    key: "Unpaused"
+  ): TypedContractEvent<
+    UnpausedEvent.InputTuple,
+    UnpausedEvent.OutputTuple,
+    UnpausedEvent.OutputObject
+  >;
+  getEvent(
     key: "Upgraded"
   ): TypedContractEvent<
     UpgradedEvent.InputTuple,
@@ -1120,6 +1482,27 @@ export interface Liquidity extends BaseContract {
     WithdrawalClaimableEvent.InputTuple,
     WithdrawalClaimableEvent.OutputTuple,
     WithdrawalClaimableEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawalFeeCollected"
+  ): TypedContractEvent<
+    WithdrawalFeeCollectedEvent.InputTuple,
+    WithdrawalFeeCollectedEvent.OutputTuple,
+    WithdrawalFeeCollectedEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawalFeeRatioSet"
+  ): TypedContractEvent<
+    WithdrawalFeeRatioSetEvent.InputTuple,
+    WithdrawalFeeRatioSetEvent.OutputTuple,
+    WithdrawalFeeRatioSetEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawalFeeWithdrawn"
+  ): TypedContractEvent<
+    WithdrawalFeeWithdrawnEvent.InputTuple,
+    WithdrawalFeeWithdrawnEvent.OutputTuple,
+    WithdrawalFeeWithdrawnEvent.OutputObject
   >;
 
   filters: {
@@ -1145,7 +1528,7 @@ export interface Liquidity extends BaseContract {
       DepositCanceledEvent.OutputObject
     >;
 
-    "Deposited(uint256,address,bytes32,uint32,uint256,uint256)": TypedContractEvent<
+    "Deposited(uint256,address,bytes32,uint32,uint256,bool,uint256)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
@@ -1156,15 +1539,15 @@ export interface Liquidity extends BaseContract {
       DepositedEvent.OutputObject
     >;
 
-    "DepositsAnalyzedAndRelayed(uint256,uint256[],uint256,bytes)": TypedContractEvent<
-      DepositsAnalyzedAndRelayedEvent.InputTuple,
-      DepositsAnalyzedAndRelayedEvent.OutputTuple,
-      DepositsAnalyzedAndRelayedEvent.OutputObject
+    "DepositsRelayed(uint256,uint256,bytes)": TypedContractEvent<
+      DepositsRelayedEvent.InputTuple,
+      DepositsRelayedEvent.OutputTuple,
+      DepositsRelayedEvent.OutputObject
     >;
-    DepositsAnalyzedAndRelayed: TypedContractEvent<
-      DepositsAnalyzedAndRelayedEvent.InputTuple,
-      DepositsAnalyzedAndRelayedEvent.OutputTuple,
-      DepositsAnalyzedAndRelayedEvent.OutputObject
+    DepositsRelayed: TypedContractEvent<
+      DepositsRelayedEvent.InputTuple,
+      DepositsRelayedEvent.OutputTuple,
+      DepositsRelayedEvent.OutputObject
     >;
 
     "DirectWithdrawalFailed(bytes32,tuple)": TypedContractEvent<
@@ -1200,6 +1583,28 @@ export interface Liquidity extends BaseContract {
       InitializedEvent.OutputObject
     >;
 
+    "Paused(address)": TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
+    >;
+    Paused: TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
+    >;
+
+    "PermitterSet(address,address)": TypedContractEvent<
+      PermitterSetEvent.InputTuple,
+      PermitterSetEvent.OutputTuple,
+      PermitterSetEvent.OutputObject
+    >;
+    PermitterSet: TypedContractEvent<
+      PermitterSetEvent.InputTuple,
+      PermitterSetEvent.OutputTuple,
+      PermitterSetEvent.OutputObject
+    >;
+
     "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
       RoleAdminChangedEvent.InputTuple,
       RoleAdminChangedEvent.OutputTuple,
@@ -1233,6 +1638,17 @@ export interface Liquidity extends BaseContract {
       RoleRevokedEvent.OutputObject
     >;
 
+    "Unpaused(address)": TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
+    >;
+    Unpaused: TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
+    >;
+
     "Upgraded(address)": TypedContractEvent<
       UpgradedEvent.InputTuple,
       UpgradedEvent.OutputTuple,
@@ -1253,6 +1669,39 @@ export interface Liquidity extends BaseContract {
       WithdrawalClaimableEvent.InputTuple,
       WithdrawalClaimableEvent.OutputTuple,
       WithdrawalClaimableEvent.OutputObject
+    >;
+
+    "WithdrawalFeeCollected(uint32,uint256)": TypedContractEvent<
+      WithdrawalFeeCollectedEvent.InputTuple,
+      WithdrawalFeeCollectedEvent.OutputTuple,
+      WithdrawalFeeCollectedEvent.OutputObject
+    >;
+    WithdrawalFeeCollected: TypedContractEvent<
+      WithdrawalFeeCollectedEvent.InputTuple,
+      WithdrawalFeeCollectedEvent.OutputTuple,
+      WithdrawalFeeCollectedEvent.OutputObject
+    >;
+
+    "WithdrawalFeeRatioSet(uint32,uint256)": TypedContractEvent<
+      WithdrawalFeeRatioSetEvent.InputTuple,
+      WithdrawalFeeRatioSetEvent.OutputTuple,
+      WithdrawalFeeRatioSetEvent.OutputObject
+    >;
+    WithdrawalFeeRatioSet: TypedContractEvent<
+      WithdrawalFeeRatioSetEvent.InputTuple,
+      WithdrawalFeeRatioSetEvent.OutputTuple,
+      WithdrawalFeeRatioSetEvent.OutputObject
+    >;
+
+    "WithdrawalFeeWithdrawn(address,uint32,uint256)": TypedContractEvent<
+      WithdrawalFeeWithdrawnEvent.InputTuple,
+      WithdrawalFeeWithdrawnEvent.OutputTuple,
+      WithdrawalFeeWithdrawnEvent.OutputObject
+    >;
+    WithdrawalFeeWithdrawn: TypedContractEvent<
+      WithdrawalFeeWithdrawnEvent.InputTuple,
+      WithdrawalFeeWithdrawnEvent.OutputTuple,
+      WithdrawalFeeWithdrawnEvent.OutputObject
     >;
   };
 }

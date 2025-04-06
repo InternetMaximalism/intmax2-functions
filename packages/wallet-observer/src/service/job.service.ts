@@ -30,7 +30,7 @@ export const performJob = async () => {
 
   const messages = await Promise.all([...walletClients, ...mockWalletClients].map(getBalance));
 
-  if (messages.length !== 0) {
+  if (messages.some((message) => message.includes("No"))) {
     const discord = Discord.getInstance();
     await discord.sendMessageWitForReady("INFO", messages.join("").replaceAll(",", ""));
   }
