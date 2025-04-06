@@ -5,8 +5,8 @@ import {
   createNetworkClient,
   logger,
 } from "@intmax2-functions/shared";
-import { getDepositedEvent, getDepositsAnalyzedAndRelayedEvent } from "./event.service";
-import { submitAnalyzeAndRelayDeposits } from "./submit.service";
+import { getDepositedEvent, getDepositsRelayedEvent } from "./event.service";
+import { submitRelayDeposits } from "./submit.service";
 import { splitDepositSummary } from "./summarize.service";
 
 export const performJob = async () => {
@@ -41,7 +41,7 @@ const processAnalyzer = async (
 
   logger.info(`New deposit events: ${processedDepositEvents.length}`);
 
-  const processedState = await getDepositsAnalyzedAndRelayedEvent(
+  const processedState = await getDepositsRelayedEvent(
     ethereumClient,
     currentBlockNumber,
     lastProcessedEvent,
@@ -54,7 +54,7 @@ const processAnalyzer = async (
 
   if (depositSummary.shouldSubmit) {
     for (const batch of depositSummary.batches) {
-      await submitAnalyzeAndRelayDeposits(ethereumClient, batch);
+      await submitRelayDeposits(ethereumClient, batch);
       await updateEventState(event, batch.blockNumber);
     }
   }

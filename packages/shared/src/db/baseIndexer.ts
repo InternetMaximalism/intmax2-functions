@@ -1,16 +1,18 @@
-import type { DocumentReference } from "@google-cloud/firestore";
-import { FIRESTORE_COLLECTIONS } from "../constants";
+import type { DocumentReference, Query } from "@google-cloud/firestore";
+import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import type { FirestoreDocumentKey, IndexerInfo, IndexerInfoData } from "../types";
+import type { FirestoreDocumentKey, IndexerFilters, IndexerInfo, IndexerInfoData } from "../types";
 import { db } from "./firestore";
 
 export class BaseIndexer {
   protected db: FirebaseFirestore.Firestore;
   protected key: FirestoreDocumentKey;
   protected indexerDocRef: DocumentReference;
-  private cache: Map<string, IndexerInfoData["info"][]>;
+  private cache: Map<string, IndexerInfoData[]>;
   private lastFetchTime: number;
   private readonly CACHE_EXPIRY = 1000 * 60;
+  protected readonly defaultOrderField = "__name__";
+  protected readonly defaultOrderDirection = "asc";
 
   constructor(doc: FirestoreDocumentKey) {
     this.db = db;
@@ -24,8 +26,8 @@ export class BaseIndexer {
     const batch = this.db.batch();
     const now = new Date();
 
-    for (const { address, info } of indexerInfos) {
-      const addressRef = this.indexerDocRef.collection("addresses").doc(address);
+    for (const info of indexerInfos) {
+      const addressRef = this.indexerDocRef.collection("addresses").doc(info.address);
 
       batch.set(
         addressRef,
@@ -45,17 +47,54 @@ export class BaseIndexer {
     }
   }
 
-  async listIndexers(): Promise<IndexerInfo["info"][]> {
+  async syncIndexerActiveStates(activeIndexers: string[]) {
+    const indexerCollection = this.indexerDocRef.collection("addresses");
+
     try {
-      const cachedBuilders = this.getCache<IndexerInfo["info"][]>(this.key);
+      await this.db.runTransaction(async (transaction) => {
+        const snapshot = await transaction.get(indexerCollection);
+        if (snapshot.empty) {
+          logger.info("No indexers found to update active status");
+          return;
+        }
+
+        snapshot.forEach((doc) => {
+          const address = doc.id;
+          const isActive = activeIndexers.includes(address);
+
+          transaction.update(doc.ref, {
+            active: isActive,
+            updatedAt: new Date(),
+          });
+        });
+
+        logger.info(
+          `Updated ${snapshot.size} indexers' active status. Set ${activeIndexers.length} to active.`,
+        );
+      });
+
+      this.invalidateCache();
+    } catch (error) {
+      logger.error(`Failed to update indexer active status: ${error}`);
+      throw new AppError(
+        500,
+        ErrorCode.INTERNAL_SERVER_ERROR,
+        "Failed to update indexer active status",
+      );
+    }
+  }
+
+  async listIndexers(): Promise<IndexerInfo[]> {
+    try {
+      const cachedBuilders = this.getCache<IndexerInfo[]>(this.key);
       if (cachedBuilders) return cachedBuilders;
 
       const query = this.indexerDocRef.collection("addresses").where("active", "==", true);
       const snapshot = await query.get();
       const indexers = snapshot.docs.map((doc) => {
         const data = doc.data();
-        const { updatedAt, active, ...indexerInfo } = data;
-        return indexerInfo as IndexerInfo["info"];
+        const { updatedAt, active, lastSyncedTime, metadata, ...indexerInfo } = data;
+        return indexerInfo as IndexerInfo;
       });
       if (indexers.length === 0) return [];
 
@@ -68,6 +107,57 @@ export class BaseIndexer {
     }
   }
 
+  private async list(buildQuery?: (query: Query) => Query) {
+    try {
+      let query: Query = this.indexerDocRef.collection("addresses");
+
+      if (buildQuery) {
+        query = buildQuery(query);
+      }
+
+      const allItems = [];
+      let lastDoc: FirebaseFirestore.DocumentSnapshot | null = null;
+
+      do {
+        let batchQuery = query.limit(FIRESTORE_MAX_BATCH_SIZE);
+        if (lastDoc) {
+          batchQuery = batchQuery.startAfter(lastDoc);
+        }
+
+        const snapshot = await batchQuery.get();
+        const batchItems = snapshot.docs.map((doc) => {
+          return { ...doc.data() } as IndexerInfo;
+        });
+
+        allItems.push(...batchItems);
+        if (snapshot.size < FIRESTORE_MAX_BATCH_SIZE) {
+          lastDoc = null;
+        } else {
+          lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        }
+      } while (lastDoc);
+
+      return allItems;
+    } catch (error) {
+      logger.error(error);
+      throw new AppError(
+        500,
+        ErrorCode.INTERNAL_SERVER_ERROR,
+        `Failed to list ${(error as Error).message}`,
+      );
+    }
+  }
+
+  async fetchIndexers(filters?: IndexerFilters) {
+    return this.list((query) => {
+      let modified = query;
+      if (filters?.lastSyncedTime) {
+        modified = modified.where("lastSyncedTime", ">", filters.lastSyncedTime);
+      }
+      return modified;
+    });
+  }
+
   private getCache<T>(key: string): T | null {
     const cache = this.cache.get(key);
     if (cache && Date.now() - this.lastFetchTime < this.CACHE_EXPIRY) {
@@ -76,12 +166,12 @@ export class BaseIndexer {
     return null;
   }
 
-  private setCache(key: string, data: IndexerInfo["info"][]): void {
+  private setCache(key: string, data: IndexerInfo[]): void {
     this.cache.set(key, data);
     this.lastFetchTime = Date.now();
   }
 
-  private invalidateCache(): void {
+  invalidateCache(): void {
     this.cache.clear();
     this.lastFetchTime = 0;
   }

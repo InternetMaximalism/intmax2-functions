@@ -2,12 +2,13 @@ import type { Address } from "./utils";
 
 export type IndexerInfo = {
   address: Address;
-  info: {
-    url: string;
-    speed: number;
-    fee: number;
-    active: boolean;
-  };
+  url: string;
+  lastSyncedTime: Date;
+  metadata: Record<string, unknown>;
 };
 
 export type IndexerInfoData = Omit<IndexerInfo, "address">;
+
+export interface IndexerFilters {
+  lastSyncedTime?: Date;
+}

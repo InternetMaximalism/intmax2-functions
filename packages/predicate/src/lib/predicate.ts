@@ -1,4 +1,4 @@
-import { config } from "@intmax2-functions/shared";
+import { BadRequestError, config } from "@intmax2-functions/shared";
 import type {
   IPredicateClient,
   PredicateConfig,
@@ -31,6 +31,21 @@ export class Predicate {
   }
 
   async evaluatePolicy(body: PredicateRequest): Promise<PredicateResponse> {
-    return this.predicateClient.evaluatePolicy(body);
+    try {
+      const response = await fetch(config.PREDICATE_API_URL, {
+        method: "POST",
+        headers: { "x-api-key": config.PREDICATE_API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Predicate API error (${response.status}): ${errorText}`);
+      }
+
+      return (await response.json()) as PredicateResponse;
+    } catch (error) {
+      throw new BadRequestError(`Predicate API error: ${(error as Error).message}`);
+    }
   }
 }

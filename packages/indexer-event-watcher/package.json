@@ -1,10 +1,8 @@
 {
-  "name": "block-sync-monitor",
+  "name": "indexer-event-watcher",
   "version": "1.0.0",
   "dependencies": {
-    "@intmax2-functions/shared": "workspace:*",
-    "axios": "^1.8.4",
-    "viem": "^2.24.2"
+    "@intmax2-functions/shared": "workspace:*"
   },
   "scripts": {
     "start": "node dist/index.js",

@@ -3,6 +3,6 @@ export type EventData = {
   lastBlockNumber: number;
 };
 
-export type DepositAnalyzedAndRelayedEventData = EventData & {
+export type DepositsRelayedEventData = EventData & {
   lastUpToDepositId: number;
 };

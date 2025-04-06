@@ -11,7 +11,7 @@ To set up the development environment:
 yarn
 
 # dev
-yarn workspace v1-wallet-observer dev
+yarn workspace wallet-observer dev
 
 # build
 yarn build

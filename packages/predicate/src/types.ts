@@ -5,7 +5,7 @@ export interface PredicateRequest {
   from: string;
   to: string;
   data: string;
-  value: string;
+  msg_value: string;
 }
 
 export interface PredicateResponse {

@@ -24,8 +24,7 @@ export const FIRESTORE_DOCUMENTS = {
 
 export const FIRESTORE_DOCUMENT_EVENTS = {
   DEPOSITED: "deposited",
-  DEPOSITS_ANALYZED_AND_RELAYED: "depositsAnalyzedAndRelayed",
-  DEPOSITS_ANALYZED_AND_RELAYED_TOKEN_MAPPER: "depositsAnalyzedAndRelayedTokenMapper",
+  DEPOSITS_RELAYED_TOKEN_MAPPER: "depositsRelayedTokenMapper",
   MOCK_MESSENGER_RELAYER: "mockMessengerRelayer",
   MOCK_L2_SENT_MESSAGE: "mockL2SentMessage",
   BLOCK_BUILDER_HEART_BEAT: "blockBuilderHeartBeat",

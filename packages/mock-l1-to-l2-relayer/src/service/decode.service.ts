@@ -1,11 +1,11 @@
 import {
   BLOCK_RANGE_MINIMUM,
   type BatchedCalldata,
-  type DepositsAnalyzedAndRelayedEvent,
+  type DepositsRelayedEvent,
   RollupAbi,
   type SentMessageEvent,
   config,
-  depositsAnalyzedAndRelayedEvent,
+  depositsRelayedEvent,
   fetchEvents,
 } from "@intmax2-functions/shared";
 import {
@@ -68,28 +68,25 @@ const fetchLatestRejectedIds = async (
   eventBlockNumber: bigint,
   lastProcessedDepositId: bigint,
 ) => {
-  const depositsAnalyzedAndRelayedEvents = await fetchEvents<DepositsAnalyzedAndRelayedEvent>(
-    ethereumClient,
-    {
-      startBlockNumber: eventBlockNumber,
-      endBlockNumber: eventBlockNumber,
-      blockRange: BLOCK_RANGE_MINIMUM,
-      contractAddress: config.LIQUIDITY_CONTRACT_ADDRESS as `0x${string}`,
-      eventInterface: depositsAnalyzedAndRelayedEvent,
-      args: {
-        upToDepositId: lastProcessedDepositId,
-      },
+  const depositsRelayedEvents = await fetchEvents<DepositsRelayedEvent>(ethereumClient, {
+    startBlockNumber: eventBlockNumber,
+    endBlockNumber: eventBlockNumber,
+    blockRange: BLOCK_RANGE_MINIMUM,
+    contractAddress: config.LIQUIDITY_CONTRACT_ADDRESS as `0x${string}`,
+    eventInterface: depositsRelayedEvent,
+    args: {
+      upToDepositId: lastProcessedDepositId,
     },
-  );
-  if (depositsAnalyzedAndRelayedEvents.length === 0) {
-    throw new Error("No DepositsAnalyzedAndRelayed event found");
+  });
+  if (depositsRelayedEvents.length === 0) {
+    throw new Error("No DepositsRelayed event found");
   }
 
-  if (depositsAnalyzedAndRelayedEvents.length > 1) {
+  if (depositsRelayedEvents.length > 1) {
     throw new Error("Multiple DepositsAnalyzedAndRelayed events found");
   }
 
-  return depositsAnalyzedAndRelayedEvents[0].args.rejectDepositIds;
+  return [];
 };
 
 export const extractValidDeposits = (

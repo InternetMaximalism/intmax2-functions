@@ -1,15 +1,17 @@
-import { config } from "@intmax2-functions/shared";
-
-const getBlockBuilders = () => {
-  return [
-    {
-      fee: 0.041,
-      speed: 3,
-      url: config.BLOCK_BUILDER_URL,
-    },
-  ];
-};
+import { FIRESTORE_DOCUMENTS, getIndexer } from "@intmax2-functions/shared";
+import { getRandomBuilders } from "../lib/builder";
 
 export const listBlockBuilderNodes = async () => {
-  return getBlockBuilders();
+  const indexer = getIndexer(FIRESTORE_DOCUMENTS.BUILDERS);
+  const activeBuilders = await indexer.listIndexers();
+  return getRandomBuilders(activeBuilders);
+};
+
+export const getBlockBuilderMeta = async () => {
+  const indexer = getIndexer(FIRESTORE_DOCUMENTS.BUILDERS);
+  const activeBuilders = await indexer.listIndexers();
+
+  return {
+    total: activeBuilders.length,
+  };
 };

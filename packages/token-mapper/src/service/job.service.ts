@@ -1,5 +1,5 @@
 import {
-  type DepositAnalyzedAndRelayedEventData,
+  type DepositsRelayedEventData,
   Event,
   FIRESTORE_DOCUMENT_EVENTS,
   config,
@@ -12,10 +12,10 @@ import { saveTokenIndexMappings } from "./mapper.service";
 
 export const performJob = async (): Promise<void> => {
   const ethereumClient = createNetworkClient(config.NETWORK_TYPE);
-  const event = new Event(FIRESTORE_DOCUMENT_EVENTS.DEPOSITS_ANALYZED_AND_RELAYED_TOKEN_MAPPER);
+  const event = new Event(FIRESTORE_DOCUMENT_EVENTS.DEPOSITS_RELAYED_TOKEN_MAPPER);
   const [currentBlockNumber, lastProcessedEvent] = await Promise.all([
     await ethereumClient.getBlockNumber(),
-    event.getEvent<DepositAnalyzedAndRelayedEventData>(),
+    event.getEvent<DepositsRelayedEventData>(),
   ]);
 
   const eventData = await processTokenMapper(
@@ -29,7 +29,7 @@ export const performJob = async (): Promise<void> => {
 const processTokenMapper = async (
   ethereumClient: PublicClient,
   currentBlockNumber: bigint,
-  lastProcessedEvent: DepositAnalyzedAndRelayedEventData | null,
+  lastProcessedEvent: DepositsRelayedEventData | null,
 ) => {
   const { depositIds, tokenInfoMap } = await fetchUnprocessedDepositTokenEntries(
     ethereumClient,
