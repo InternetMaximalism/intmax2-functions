@@ -1,14 +1,14 @@
 import type { DocumentReference, Query } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import type { FirestoreDocumentKey, IndexerFilters, IndexerInfo, IndexerInfoData } from "../types";
+import type { FirestoreDocumentKey, IndexerFilters, IndexerInfo } from "../types";
 import { db } from "./firestore";
 
 export class BaseIndexer {
   protected db: FirebaseFirestore.Firestore;
   protected key: FirestoreDocumentKey;
   protected indexerDocRef: DocumentReference;
-  private cache: Map<string, IndexerInfoData[]>;
+  private cache: Map<string, string>;
   private lastFetchTime: number;
   private readonly CACHE_EXPIRY = 1000 * 60;
   protected readonly defaultOrderField = "__name__";
@@ -161,13 +161,13 @@ export class BaseIndexer {
   private getCache<T>(key: string): T | null {
     const cache = this.cache.get(key);
     if (cache && Date.now() - this.lastFetchTime < this.CACHE_EXPIRY) {
-      return cache as T;
+      return JSON.parse(cache) as T;
     }
     return null;
   }
 
   private setCache(key: string, data: IndexerInfo[]): void {
-    this.cache.set(key, data);
+    this.cache.set(key, JSON.stringify(data));
     this.lastFetchTime = Date.now();
   }
 
