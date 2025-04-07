@@ -5,7 +5,7 @@
     "@intmax2-functions/shared": "workspace:*",
     "axios": "^1.8.4",
     "coingecko-api-v3": "^0.0.29",
-    "viem": "^2.24.2"
+    "viem": "^2.26.0"
   },
   "scripts": {
     "start": "node dist/index.js",
@@ -15,6 +15,6 @@
   },
   "devDependencies": {
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
