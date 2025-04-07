@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@google-cloud/firestore": "^7.11.0",
-    "@google-cloud/storage": "^7.15.2",
+    "@google-cloud/storage": "^7.16.0",
     "@hono/node-server": "^1.14.0",
     "abitype": "^1.0.8",
     "alchemy-sdk": "^3.5.6",
@@ -17,7 +17,7 @@
     "http-status": "1.7.4",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
-    "viem": "^2.24.2",
+    "viem": "^2.26.0",
     "zod": "^3.24.2"
   },
   "scripts": {
@@ -30,7 +30,7 @@
   "packageManager": "yarn@4.6.0",
   "devDependencies": {
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "vitest": "^3.1.1"
   }
 }
