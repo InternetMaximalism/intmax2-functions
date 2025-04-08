@@ -1,91 +1,6 @@
-import type { DepositEvent, DepositEventLog } from "@intmax2-functions/shared";
+import { type DepositEvent } from "@intmax2-functions/shared";
 import { GAS_CONFIG, SUMMARY_BATCH_SIZE } from "../constants";
 import type { BatchParams } from "../types";
-
-export const summarizeDepositAnalysis = async (
-  results: Array<DepositEventLog & { isRejected: boolean }>,
-  processedState: {
-    lastUpToDepositId: bigint;
-    rejectDepositIds: bigint[];
-  },
-) => {
-  const sortedDepositIds = results.map((result) => result.depositId).sort((a, b) => Number(b - a));
-
-  const upToDepositId = sortedDepositIds[0] as bigint;
-  if (!upToDepositId) {
-    throw new Error("No upToDepositId found.");
-  }
-
-  if (processedState.lastUpToDepositId >= upToDepositId) {
-    return {
-      shouldSubmit: false,
-      upToDepositId,
-      rejectDepositIds: [],
-      numDepositsToRelay: 0,
-      gasLimit: 0,
-    };
-  }
-
-  const rejectDepositIds = results
-    .filter((result) => result.isRejected) // NOTE: Attention
-    .map((result) => result.depositId);
-
-  const filterRejectDepositIds = rejectDepositIds.filter(
-    (rejectDepositId) => !processedState.rejectDepositIds.includes(rejectDepositId),
-  ); // NOTE: Prevents issues even when executed multiple times
-
-  const numDepositsToRelay = sortedDepositIds.length - filterRejectDepositIds.length;
-  const gasLimit = calculateAnalyzeAndRelayGasLimit(numDepositsToRelay);
-
-  return {
-    upToDepositId,
-    rejectDepositIds: filterRejectDepositIds,
-    numDepositsToRelay,
-    gasLimit,
-    shouldSubmit: true,
-  };
-};
-
-export const summarizeDepositAnalysisForPredicate = async (
-  results: DepositEventLog[],
-  processedState: {
-    lastUpToDepositId: bigint;
-    rejectDepositIds: bigint[];
-  },
-) => {
-  const sortedDepositIds = results.map((result) => result.depositId).sort((a, b) => Number(b - a));
-
-  const upToDepositId = sortedDepositIds[0] as bigint;
-  if (!upToDepositId) {
-    throw new Error("No upToDepositId found.");
-  }
-
-  if (processedState.lastUpToDepositId >= upToDepositId) {
-    return {
-      shouldSubmit: false,
-      upToDepositId,
-      rejectDepositIds: [],
-      numDepositsToRelay: 0,
-      gasLimit: 0,
-    };
-  }
-
-  const rejectDepositIds: bigint[] = []; // NOTE: Predicate prevents rejection on contract layer
-  const filterRejectDepositIds = rejectDepositIds.filter(
-    (rejectDepositId) => !processedState.rejectDepositIds.includes(rejectDepositId),
-  ); // NOTE: Prevents issues even when executed multiple times
-
-  const numDepositsToRelay = sortedDepositIds.length - filterRejectDepositIds.length;
-  const gasLimit = calculateAnalyzeAndRelayGasLimit(numDepositsToRelay);
-
-  return {
-    upToDepositId,
-    rejectDepositIds: filterRejectDepositIds,
-    numDepositsToRelay,
-    gasLimit,
-    shouldSubmit: true,
-  };
-};
 
 const calculateAnalyzeAndRelayGasLimit = (numDepositsToRelay: number) => {
   const { baseGas, perDepositGas, bufferGas } = GAS_CONFIG;
@@ -97,7 +12,6 @@ export const splitDepositSummary = async (
   processedDepositEvents: DepositEvent[],
   processedState: {
     lastUpToDepositId: bigint;
-    rejectDepositIds: bigint[];
   },
   currentBlockNumber: bigint,
 ) => {
@@ -117,49 +31,22 @@ export const splitDepositSummary = async (
     };
   }
 
-  // NOTE If isRejected is true, add depositId to this array
-  const baseRejectDepositIds: bigint[] = [];
-  // NOTE: Prevents issues even when executed multiple times
-  const rejectDepositIds = baseRejectDepositIds.filter(
-    (rejectDepositId) => !processedState.rejectDepositIds.includes(rejectDepositId),
-  );
-  const sortedRejectIds = [...rejectDepositIds].sort((a, b) => Number(a - b));
+  const batches: BatchParams[] = [];
+  const depositIds = generateDepositIds(Number(minDepositId), Number(maxDepositId));
 
-  if (rejectDepositIds.length === 0) {
-    const numDepositsToRelay = maxDepositId - minDepositId + 1n;
-    return {
-      shouldSubmit: true,
-      batches: [
-        {
-          upToDepositId: maxDepositId,
-          rejectDepositIds: [],
-          numDepositsToRelay,
-          gasLimit: calculateAnalyzeAndRelayGasLimit(Number(numDepositsToRelay)),
-          blockNumber: currentBlockNumber,
-        },
-      ],
-    };
-  }
-
-  const batches = [];
   let currentStartDepositId = minDepositId;
-
-  for (let i = 0; i < rejectDepositIds.length; i += SUMMARY_BATCH_SIZE) {
-    const batchRejectDepositIds = sortedRejectIds.slice(i, i + SUMMARY_BATCH_SIZE);
-    const isLastBatch = i + SUMMARY_BATCH_SIZE >= sortedRejectIds.length;
-
+  for (let i = 0; i < depositIds.length; i += SUMMARY_BATCH_SIZE) {
+    const batchDepositIds = depositIds.slice(i, i + SUMMARY_BATCH_SIZE);
+    const isLastBatch = i + SUMMARY_BATCH_SIZE >= depositIds.length;
     const batchUpToDepositId = isLastBatch
       ? maxDepositId
-      : sortedRejectIds[i + SUMMARY_BATCH_SIZE - 1];
-
-    const depositsInRange = batchUpToDepositId - currentStartDepositId + 1n;
-    const numDepositsToRelay = depositsInRange - BigInt(batchRejectDepositIds.length);
+      : batchDepositIds[batchDepositIds.length - 1];
+    const numDepositsToRelay = batchUpToDepositId - currentStartDepositId + 1n;
 
     if (numDepositsToRelay < 0n) {
       throw new Error(
         `Invalid numDepositsToRelay calculated: ${numDepositsToRelay} ` +
-          `(range: ${currentStartDepositId} to ${batchUpToDepositId}, ` +
-          `rejects: ${batchRejectDepositIds.length})`,
+          `(range: ${currentStartDepositId} to ${batchUpToDepositId}`,
       );
     }
     const gasLimit = calculateAnalyzeAndRelayGasLimit(Number(numDepositsToRelay));
@@ -167,7 +54,6 @@ export const splitDepositSummary = async (
 
     const batchParams: BatchParams = {
       upToDepositId: batchUpToDepositId,
-      rejectDepositIds: batchRejectDepositIds,
       numDepositsToRelay,
       gasLimit,
       blockNumber: isLastBatch ? currentBlockNumber : blockNumber,
@@ -190,4 +76,11 @@ const getEventBlockNumber = (processedDepositEvents: DepositEvent[], depositId: 
     throw new Error(`DepositId ${depositId} not found.`);
   }
   return processedDepositEvents[index].blockNumber;
+};
+
+const generateDepositIds = (minDepositId: number, maxDepositId: number): bigint[] => {
+  const depositIds = Array.from({ length: maxDepositId - minDepositId + 1 }, (_, index) =>
+    BigInt(minDepositId + index),
+  );
+  return depositIds;
 };
