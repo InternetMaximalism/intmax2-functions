@@ -84,7 +84,6 @@ export const getDepositsRelayedEvent = async (
 
     return {
       lastUpToDepositId: getMaxDepositId(upToDepositIds),
-      rejectDepositIds: [],
     };
   } catch (error) {
     logger.error(
