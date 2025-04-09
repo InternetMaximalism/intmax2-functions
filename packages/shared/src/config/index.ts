@@ -1,4 +1,4 @@
-import { url, cleanEnv, json, num, str } from "envalid";
+import { url, bool, cleanEnv, json, num, str } from "envalid";
 
 export const config = cleanEnv(process.env, {
   // app
@@ -66,4 +66,6 @@ export const config = cleanEnv(process.env, {
   ALLOWLIST_BLOCK_BUILDER_POSSIBILITIES: num({ default: 0.5 }),
   // validity prover
   API_VALIDITY_PROVER_BASE_URL: str({ default: "http://localhost:3003" }),
+  // wallet observer
+  USE_MOCK_WALLET_OBSERVER: bool({ default: false }),
 });
