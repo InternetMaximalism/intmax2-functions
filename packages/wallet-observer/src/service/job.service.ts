@@ -1,5 +1,6 @@
 import {
   Discord,
+  config,
   createNetworkClient,
   getMockWalletClient,
   getWalletClient,
@@ -18,15 +19,17 @@ export const performJob = async () => {
     })
     .flat();
 
-  const mockWalletClients = mockWalletTypes
-    .map((type) => {
-      return type.types.map((networkType) => ({
-        type: type.name,
-        ethereumClient: createNetworkClient(networkType),
-        walletClientData: getMockWalletClient(type.name, networkType),
-      }));
-    })
-    .flat();
+  const mockWalletClients = config.USE_MOCK_WALLET_OBSERVER
+    ? mockWalletTypes
+        .map((type) => {
+          return type.types.map((networkType) => ({
+            type: type.name,
+            ethereumClient: createNetworkClient(networkType),
+            walletClientData: getMockWalletClient(type.name, networkType),
+          }));
+        })
+        .flat()
+    : [];
 
   const messages = await Promise.all([...walletClients, ...mockWalletClients].map(getBalance));
 
