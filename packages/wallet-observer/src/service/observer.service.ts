@@ -1,3 +1,4 @@
+import { config } from "@intmax2-functions/shared";
 import { formatEther, parseEther } from "viem";
 import { REQUIRED_ETH } from "../constants";
 import type { WalletClient } from "../type";
@@ -14,6 +15,7 @@ export const getBalance = async ({ type, ethereumClient, walletClientData }: Wal
 
   return `
   Name: ${type}
+  NetworkEnvironment: ${config.NETWORK_ENVIRONMENT}
   Address:  ${address}
   Chain: ${chain}
   Balance:  ${balanceAsEther} ETH
