@@ -12,7 +12,7 @@ export const config = cleanEnv(process.env, {
     default: "debug",
   }),
   // auth
-  ALLOWED_ORIGINS: str({ default: "*" }),
+  ALLOWED_ORIGINS: str({ default: "http://localhost:3000,http://localhost:5173" }),
   AUTH_IP_ALLOW_LIST: str({ devDefault: "127.0.0.1,::1" }),
   // gcp
   K_SERVICE: str({ default: process.env.CLOUD_RUN_JOB || "default-service" }),
