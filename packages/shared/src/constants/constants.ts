@@ -99,6 +99,6 @@ export const ETHERS_CONFIRMATIONS = 1;
 export const SHUTDOWN_TIMEOUT = 2000;
 
 export const CACHE_TIMEOUTS = {
-  LIST: 15 * 1000, // 15 seconds
+  LIST: 30 * 1000, // 30 seconds
   DETAIL: 180 * 1000, // 180 seconds
 } as const;
