@@ -10,7 +10,7 @@ export class BaseIndexer {
   protected indexerDocRef: DocumentReference;
   private cache: Map<string, string>;
   private lastFetchTime: number;
-  private readonly CACHE_EXPIRY = 1000 * 60;
+  private readonly CACHE_EXPIRY = 1000 * 5; // 5 seconds
   protected readonly defaultOrderField = "__name__";
   protected readonly defaultOrderDirection = "asc";
 
