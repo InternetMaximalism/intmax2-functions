@@ -1,10 +1,11 @@
-import { type Token, fetchTokenList, sleep } from "@intmax2-functions/shared";
+import { type Token, fetchTokenList, logger, sleep } from "@intmax2-functions/shared";
 
 export class TokenPrice {
   private static instance: TokenPrice | null = null;
   private interval: NodeJS.Timeout | null = null;
-  private readonly FETCH_INTERVAL = 1000 * 60 * 60;
+  private readonly FETCH_INTERVAL = 1000 * 60 * 5; // 5 minutes
   private tokenPriceList: Token[] = [];
+  private initialized: boolean = false;
 
   public static getInstance() {
     if (!TokenPrice.instance) {
@@ -14,19 +15,27 @@ export class TokenPrice {
   }
 
   async initialize() {
-    await this.fetchAndCacheTokenList();
+    try {
+      await this.fetchAndCacheTokenList();
+    } catch (error) {
+      logger.error(`Error fetching token list: ${(error as Error).message}`);
+    }
 
+    this.initialized = true;
     this.startScheduler();
   }
 
-  // TODO: FIXME: if the token list is not found ...
   private async fetchAndCacheTokenList() {
     this.tokenPriceList = await fetchTokenList();
   }
 
   async getTokenPriceList() {
-    while (!this.tokenPriceList.length) {
+    while (!this.initialized) {
       await sleep(100);
+    }
+
+    if (!this.tokenPriceList.length) {
+      await this.fetchAndCacheTokenList();
     }
 
     return this.tokenPriceList;
