@@ -7,6 +7,7 @@ import {
   LiquidityAbi,
   Liquidity__factory,
   type RetryOptions,
+  TRANSACTION_INCREMENT_RATE,
   TRANSACTION_MAX_RETRIES,
   TRANSACTION_MISSING_REVERT_DATA,
   TRANSACTION_REPLACEMENT_FEE_TOO_LOW,
@@ -39,7 +40,7 @@ export const submitRelayDeposits = async (
 
   for (let attempt = 0; attempt < TRANSACTION_MAX_RETRIES; attempt++) {
     try {
-      const multiplier = calculateGasMultiplier(attempt);
+      const multiplier = calculateGasMultiplier(attempt, TRANSACTION_INCREMENT_RATE);
 
       const { transactionHash } = await submitRelayDepositsWithRetry(
         ethereumClient,
