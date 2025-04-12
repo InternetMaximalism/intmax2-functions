@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { DEFAULT_EXPIRES_IN, MIN_EXPIRES_IN } from "../constants";
 
-export const saveQueryMapValidation = z.strictObject({
-  query: z.string(),
+export const saveTxMapValidation = z.strictObject({
+  digest: z.string(),
+  data: z.string(),
   expiresIn: z
     .number()
     .optional()
@@ -18,8 +19,8 @@ export const saveQueryMapValidation = z.strictObject({
     }),
 });
 
-export type SaveQueryMapValidationType = z.infer<typeof saveQueryMapValidation>;
+export type SaveTxMapValidationType = z.infer<typeof saveTxMapValidation>;
 
-export const getQueryMapValidation = z.strictObject({
-  key: z.string(),
+export const getTxMapValidation = z.strictObject({
+  digest: z.string(),
 });
