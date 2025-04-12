@@ -1,5 +1,5 @@
 {
-  "name": "token-data-fetcher",
+  "name": "token-metadata-sync",
   "version": "1.0.0",
   "dependencies": {
     "@intmax2-functions/shared": "workspace:*",

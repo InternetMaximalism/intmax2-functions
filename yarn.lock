@@ -3975,24 +3975,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"token-data-fetcher@workspace:packages/token-data-fetcher":
+"token-map-register@workspace:packages/token-map-register":
   version: 0.0.0-use.local
-  resolution: "token-data-fetcher@workspace:packages/token-data-fetcher"
+  resolution: "token-map-register@workspace:packages/token-map-register"
   dependencies:
     "@intmax2-functions/shared": "workspace:*"
-    axios: "npm:^1.8.4"
-    coingecko-api-v3: "npm:^0.0.29"
     tsx: "npm:^4.19.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.26.0"
   languageName: unknown
   linkType: soft
 
-"token-mapper@workspace:packages/token-mapper":
+"token-metadata-sync@workspace:packages/token-metadata-sync":
   version: 0.0.0-use.local
-  resolution: "token-mapper@workspace:packages/token-mapper"
+  resolution: "token-metadata-sync@workspace:packages/token-metadata-sync"
   dependencies:
     "@intmax2-functions/shared": "workspace:*"
+    axios: "npm:^1.8.4"
+    coingecko-api-v3: "npm:^0.0.29"
     tsx: "npm:^4.19.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.26.0"
