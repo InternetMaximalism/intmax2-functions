@@ -4,7 +4,7 @@ import * as txMapController from "../controllers/txMap.controller";
 
 export const route = new Hono();
 
-route.use("/*", (c, next) => cacheMiddleware(c, next, CACHE_TIMEOUTS.DETAIL));
-
 route.post("/", txMapController.saveTxMap);
+
+route.use("/*", (c, next) => cacheMiddleware(c, next, CACHE_TIMEOUTS.DETAIL));
 route.get("/:digest", txMapController.getTxMap);

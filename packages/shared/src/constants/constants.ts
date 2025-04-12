@@ -104,7 +104,7 @@ export const SHUTDOWN_TIMEOUT = 2000;
 
 export const CACHE_TIMEOUTS = {
   LIST: 30 * 1000, // 30 seconds
-  DETAIL: 180 * 1000, // 180 seconds
+  DETAIL: 60 * 1000, // 60 seconds
   BLOCK_BUILDER_INDEXER_LIST: 120 * 1000, // 120 seconds
 } as const;
 

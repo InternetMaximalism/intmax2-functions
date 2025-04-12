@@ -37,7 +37,8 @@ export class TxMap {
       if (!doc.exists) {
         return null;
       }
-      return { digest: doc.id, ...doc.data() } as TxMapData;
+      const { data } = doc.data() as TxMapData;
+      return { digest: doc.id, data };
     } catch (error) {
       logger.error(error);
       throw new AppError(500, ErrorCode.INTERNAL_SERVER_ERROR, "Failed to get tx map");
