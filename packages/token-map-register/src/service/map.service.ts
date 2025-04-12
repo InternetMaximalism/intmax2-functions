@@ -1,4 +1,4 @@
-import { TokenMapping, TokenMappingData, TokenType } from "@intmax2-functions/shared";
+import { TokenMap, TokenMapData, TokenType } from "@intmax2-functions/shared";
 import { type PublicClient, erc20Abi } from "viem";
 import { MULTICALL_SIZE } from "../constants";
 import type { TokenInfo } from "../types";
@@ -9,7 +9,7 @@ type MulticallResult = {
   error?: Error;
 };
 
-export const saveTokenIndexMappings = async (
+export const saveTokenIndexMaps = async (
   ethereumClient: PublicClient,
   tokenInfoMap: Map<number, TokenInfo>,
 ) => {
@@ -26,7 +26,7 @@ export const saveTokenIndexMappings = async (
   const tokenValues = Array.from(newERC20TokenMap.values());
   const metadata = await fetchTokenMetadata(ethereumClient, tokenValues);
   const enrichedTokens = enrichTokensWithMetadata(newERC20TokenMap, metadata);
-  await saveTokenMappings(enrichedTokens);
+  await saveTokenMaps(enrichedTokens);
 
   return enrichedTokens;
 };
@@ -45,10 +45,10 @@ const filterERC20Tokens = (tokenInfoMap: Map<number, TokenInfo>) => {
 
 const filterNewERC20Tokens = async (erc20TokenMap: Map<number, TokenInfo>) => {
   const tokenIndexes = Array.from(erc20TokenMap.keys()).map(String);
-  const existingMappings = await TokenMapping.getInstance().fetchTokenMappings({
+  const existingMaps = await TokenMap.getInstance().fetchTokenMaps({
     tokenIndexes,
   });
-  const existingIndexSet = new Set(existingMappings.map((mapping) => String(mapping.tokenIndex)));
+  const existingIndexSet = new Set(existingMaps.map((map) => String(map.tokenIndex)));
 
   return new Map(
     Array.from(erc20TokenMap.entries()).filter(([index]) => !existingIndexSet.has(String(index))),
@@ -104,7 +104,7 @@ const enrichTokensWithMetadata = (
   });
 };
 
-const saveTokenMappings = async (enrichedTokens: TokenMappingData[]) => {
-  const tokenMapping = TokenMapping.getInstance();
-  await tokenMapping.addTokenMappingsBatch(enrichedTokens);
+const saveTokenMaps = async (enrichedTokens: TokenMapData[]) => {
+  const tokenMap = TokenMap.getInstance();
+  await tokenMap.saveTokenMapsBatch(enrichedTokens);
 };

@@ -1,7 +1,7 @@
 import {
   DEFAULT_IMAGE_PATH,
-  TokenMapping,
-  type TokenMappingData,
+  TokenMap,
+  type TokenMapData,
   type TokenPaginationValidationType,
 } from "@intmax2-functions/shared";
 import { DEFAULT_PAGE_SIZE } from "../constants";
@@ -12,51 +12,49 @@ export const list = async (
   tokenIndexes: string[] = [],
   paginationOptions: TokenPaginationValidationType = {},
 ) => {
-  const tokenMappings = await fetchTokenMappings(tokenIndexes);
+  const tokenMaps = await fetchTokenMaps(tokenIndexes);
 
   if (Object.keys(paginationOptions).length === 0) {
     return {
-      items: await formatTokenMappings(tokenMappings),
+      items: await formatTokenMaps(tokenMaps),
       nextCursor: null,
-      total: tokenMappings.length,
+      total: tokenMaps.length,
     };
   }
 
   const perPage = paginationOptions.perPage || DEFAULT_PAGE_SIZE;
   const { startIndex, endIndex } = calculatePaginationIndices(
-    tokenMappings,
+    tokenMaps,
     paginationOptions.cursor,
     perPage,
   );
-  const items = tokenMappings.slice(startIndex, endIndex);
-  const nextCursor = getNextCursor(items, tokenMappings.length, startIndex, perPage);
+  const items = tokenMaps.slice(startIndex, endIndex);
+  const nextCursor = getNextCursor(items, tokenMaps.length, startIndex, perPage);
 
   return {
-    items: await formatTokenMappings(items),
+    items: await formatTokenMaps(items),
     nextCursor,
-    total: tokenMappings.length,
+    total: tokenMaps.length,
   };
 };
 
-const fetchTokenMappings = async (tokenIndexes: string[]) => {
-  const tokenMapping = TokenMapping.getInstance();
-  const tokenMappings = tokenIndexes.length
-    ? await tokenMapping.fetchTokenMappings({ tokenIndexes })
-    : await tokenMapping.fetchAllTokenMappings();
+const fetchTokenMaps = async (tokenIndexes: string[]) => {
+  const tokenMap = TokenMap.getInstance();
+  const tokenMaps = tokenIndexes.length
+    ? await tokenMap.fetchTokenMaps({ tokenIndexes })
+    : await tokenMap.fetchAllTokenMaps();
 
-  return tokenMappings;
+  return tokenMaps;
 };
 
-const formatTokenMappings = async (tokenMappings: TokenMappingData[]) => {
+const formatTokenMaps = async (tokenMaps: TokenMapData[]) => {
   const tokenPrice = TokenPrice.getInstance();
   const tokenPriceList = await tokenPrice.getTokenPriceList();
 
-  return tokenMappings.map((mapping) => {
-    const priceData = tokenPriceList.find(
-      (item) => item.contractAddress === mapping.contractAddress,
-    );
+  return tokenMaps.map((map) => {
+    const priceData = tokenPriceList.find((item) => item.contractAddress === map.contractAddress);
     return {
-      ...mapping,
+      ...map,
       price: priceData?.price ?? 0,
       image: priceData?.image ?? DEFAULT_IMAGE_PATH,
     };

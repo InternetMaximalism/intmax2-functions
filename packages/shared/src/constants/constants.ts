@@ -13,8 +13,8 @@ export const CLIENT_SERVICE = "clientServiceName";
 export const FIRESTORE_COLLECTIONS = {
   INDEXERS: "indexers",
   EVENTS: "events",
-  QUERY_MAP: "queryMap",
-  TOKEN_MAPPINGS: "tokenMappings", // tokenMap
+  QUERY_MAPS: "queryMaps",
+  TOKEN_MAPS: "tokenMaps",
 } as const;
 
 export const FIRESTORE_DOCUMENTS = {

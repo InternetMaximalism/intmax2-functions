@@ -1,6 +1,6 @@
-import { TokenMapping, type TokenMappingData, logger } from "@intmax2-functions/shared";
+import { TokenMap, type TokenMapData, logger } from "@intmax2-functions/shared";
 
-const data: TokenMappingData[] = [
+const data: TokenMapData[] = [
   {
     tokenIndex: 0,
     symbol: "ETH",
@@ -10,8 +10,8 @@ const data: TokenMappingData[] = [
 ];
 
 const bootstrap = async () => {
-  const tokenMapping = new TokenMapping();
-  await tokenMapping.addTokenMappingsBatch(data);
-  logger.info(`Token mappings added successfully`);
+  const tokenMap = new TokenMap();
+  await tokenMap.saveTokenMapsBatch(data);
+  logger.info(`Token maps saved: ${JSON.stringify(data)}`);
 };
 bootstrap();

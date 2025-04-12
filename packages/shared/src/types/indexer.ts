@@ -9,6 +9,6 @@ export type IndexerInfo = {
 
 export type IndexerInfoData = Omit<IndexerInfo, "address">;
 
-export interface IndexerFilters {
+export interface IndexerFilter {
   lastSyncedTime?: Date;
 }

@@ -1,6 +1,6 @@
 # token-map-register
 
-The token-map-register is token association mapping.
+The token-map-register is token association map.
 
 > token-map-register
 

@@ -1,7 +1,7 @@
 import type { DocumentReference, Query } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import type { FirestoreDocumentKey, IndexerFilters, IndexerInfo } from "../types";
+import type { FirestoreDocumentKey, IndexerFilter, IndexerInfo } from "../types";
 import { db } from "./firestore";
 
 export class BaseIndexer {
@@ -148,11 +148,11 @@ export class BaseIndexer {
     }
   }
 
-  async fetchIndexers(filters?: IndexerFilters) {
+  async fetchIndexers(filter?: IndexerFilter) {
     return this.list((query) => {
       let modified = query;
-      if (filters?.lastSyncedTime) {
-        modified = modified.where("lastSyncedTime", ">", filters.lastSyncedTime);
+      if (filter?.lastSyncedTime) {
+        modified = modified.where("lastSyncedTime", ">", filter.lastSyncedTime);
       }
       return modified;
     });

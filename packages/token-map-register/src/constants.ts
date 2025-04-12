@@ -3,7 +3,7 @@ export const MULTICALL_SIZE = 4096;
 export const ETHEREUM_TOKEN_INDEX = 0;
 
 // token
-export const ETHEREUM_TOKEN_MAPPINGS = {
+export const ETHEREUM_TOKEN_MAP = {
   tokenIndex: ETHEREUM_TOKEN_INDEX,
   symbol: "ETH",
   decimals: 18,

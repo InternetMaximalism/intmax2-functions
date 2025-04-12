@@ -8,7 +8,7 @@ export class QueryMap {
   private readonly collection: CollectionReference;
 
   constructor() {
-    this.collection = db.collection(FIRESTORE_COLLECTIONS.QUERY_MAP);
+    this.collection = db.collection(FIRESTORE_COLLECTIONS.QUERY_MAPS);
   }
 
   public static getInstance() {
