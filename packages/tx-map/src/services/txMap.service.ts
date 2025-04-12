@@ -1,4 +1,4 @@
-import { NotFoundError, TxMap, SaveTxMapValidationType } from "@intmax2-functions/shared";
+import { NotFoundError, SaveTxMapValidationType, TxMap } from "@intmax2-functions/shared";
 
 export const saveTxMap = async ({ expiresIn, digest, ...rest }: SaveTxMapValidationType) => {
   const expiresAt = new Date(Date.now() + expiresIn * 1000);

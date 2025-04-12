@@ -1,6 +1,6 @@
 # tx-map-cleaner
 
-The `tx-map-cleaner`
+The tx-map-cleaner is a background service designed to periodically clean up expired entries in the tx-map storage.
 
 ## Usage
 

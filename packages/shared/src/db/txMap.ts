@@ -1,8 +1,8 @@
 import type { CollectionReference } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import { db } from "./firestore";
 import { TxMapData } from "../types";
+import { db } from "./firestore";
 
 export class TxMap {
   private static instance: TxMap | null = null;
@@ -37,7 +37,8 @@ export class TxMap {
       if (!doc.exists) {
         return null;
       }
-      return { digest: doc.id, ...doc.data() } as TxMapData;
+      const { data } = doc.data() as TxMapData;
+      return { digest: doc.id, data };
     } catch (error) {
       logger.error(error);
       throw new AppError(500, ErrorCode.INTERNAL_SERVER_ERROR, "Failed to get tx map");
