@@ -2,6 +2,8 @@
 
 The token-mapper is token association mapping.
 
+> token-map-register
+
 ## Usage
 
 To set up the development environment:

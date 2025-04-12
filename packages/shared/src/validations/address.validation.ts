@@ -1,10 +1,10 @@
 import { z } from "zod";
 import type { Address } from "../types";
 
-const ETHEREUM_ADDRESS_REGREX = /^0x[a-fA-F0-9]{40}$/;
+const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 
 const isValidEthereumAddress = (address: string): boolean => {
-  return ETHEREUM_ADDRESS_REGREX.test(address);
+  return ETHEREUM_ADDRESS_REGEX.test(address);
 };
 
 export const addressSchema = z.custom<Address>(

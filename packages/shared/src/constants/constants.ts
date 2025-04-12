@@ -13,7 +13,8 @@ export const CLIENT_SERVICE = "clientServiceName";
 export const FIRESTORE_COLLECTIONS = {
   INDEXERS: "indexers",
   EVENTS: "events",
-  TOKEN_MAPPINGS: "tokenMappings",
+  QUERY_MAP: "queryMap",
+  TOKEN_MAPPINGS: "tokenMappings", // tokenMap
 } as const;
 
 export const FIRESTORE_DOCUMENTS = {
@@ -94,6 +95,9 @@ export const TRANSACTION_ALREADY_EXECUTED = "Message was already successfully ex
 // ethers
 export const ETHERS_WAIT_TRANSACTION_TIMEOUT_MESSAGE = "timeout";
 export const ETHERS_CONFIRMATIONS = 1;
+
+// map
+export const MAP_KEY_LENGTH = 8;
 
 // app
 export const SHUTDOWN_TIMEOUT = 2000;
