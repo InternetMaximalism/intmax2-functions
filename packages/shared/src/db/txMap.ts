@@ -1,8 +1,8 @@
 import type { CollectionReference } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import { db } from "./firestore";
 import { TxMapData } from "../types";
+import { db } from "./firestore";
 
 export class TxMap {
   private static instance: TxMap | null = null;
