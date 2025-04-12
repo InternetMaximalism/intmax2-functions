@@ -11,7 +11,7 @@ To set up the development environment:
 yarn
 
 # dev
-yarn workspace token-metadata-sync dev
+yarn workspace tx-map-cleaner dev
 
 # build
 yarn build

@@ -2,8 +2,6 @@
 
 The token-map-register is token association map.
 
-> token-map-register
-
 ## Usage
 
 To set up the development environment:

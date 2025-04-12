@@ -55,11 +55,12 @@ packages
 ├── mock-l1-to-l2-relayer
 ├── mock-l2-to-l1-relayer
 ├── predicate
-├── query-map
 ├── shared
 ├── token
 ├── token-map-register
 ├── token-metadata-sync
+├── tx-map
+├── tx-map-cleaner
 └── wallet-observer
 ```
 
