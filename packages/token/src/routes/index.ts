@@ -1,5 +1,5 @@
 import { BASE_PATH, healthRoute } from "@intmax2-functions/shared";
-import { tokenMappingsRoute } from "./tokenMappings.route";
+import { tokenMapsRoute } from "./tokenMaps.route";
 import { tokenPricesRoute } from "./tokenPrices.route";
 
 export const routes = [
@@ -12,7 +12,7 @@ export const routes = [
     route: tokenPricesRoute,
   },
   {
-    path: `${BASE_PATH}/token-mappings`,
-    route: tokenMappingsRoute,
+    path: `${BASE_PATH}/token-maps`,
+    route: tokenMapsRoute,
   },
 ];

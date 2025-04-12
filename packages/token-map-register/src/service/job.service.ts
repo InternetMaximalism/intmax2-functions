@@ -8,7 +8,7 @@ import {
 } from "@intmax2-functions/shared";
 import type { PublicClient } from "viem";
 import { fetchUnprocessedDepositTokenEntries } from "./event.service";
-import { saveTokenIndexMappings } from "./mapper.service";
+import { saveTokenIndexMaps } from "./map.service";
 
 export const performJob = async (): Promise<void> => {
   const ethereumClient = createNetworkClient(config.NETWORK_TYPE);
@@ -44,8 +44,8 @@ const processTokenMapper = async (
     };
   }
 
-  const results = await saveTokenIndexMappings(ethereumClient, tokenInfoMap);
-  logger.info(`Added ${results.length} new token mappings.`);
+  const results = await saveTokenIndexMaps(ethereumClient, tokenInfoMap);
+  logger.info(`Added ${results.length} new token maps.`);
 
   return {
     lastBlockNumber: Number(currentBlockNumber),

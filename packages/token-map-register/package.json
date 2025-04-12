@@ -1,5 +1,5 @@
 {
-  "name": "token-mapper",
+  "name": "token-map-register",
   "version": "1.0.0",
   "dependencies": {
     "@intmax2-functions/shared": "workspace:*",

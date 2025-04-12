@@ -1,6 +1,6 @@
-# token-mapper
+# token-map-register
 
-The token-mapper is token association mapping.
+The token-map-register is token association map.
 
 > token-map-register
 
@@ -13,7 +13,7 @@ To set up the development environment:
 yarn
 
 # dev
-yarn workspace token-mapper dev
+yarn workspace token-map-register dev
 
 # build
 yarn build

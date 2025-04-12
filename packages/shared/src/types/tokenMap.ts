@@ -1,10 +1,10 @@
-export type TokenMappingData = {
+export type TokenMapData = {
   tokenIndex: number;
   contractAddress: string;
   symbol: string;
   decimals: number;
 };
 
-export interface TokenMappingFilters {
+export interface TokenMapFilter {
   tokenIndexes?: string[];
 }

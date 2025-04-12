@@ -1,28 +1,28 @@
 import type { CollectionReference, Query } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS, FIRESTORE_MAX_BATCH_SIZE } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import type { TokenMappingData, TokenMappingFilters } from "../types";
+import type { TokenMapData, TokenMapFilter } from "../types";
 import { db } from "./firestore";
 
-export class TokenMapping {
-  private static instance: TokenMapping | null = null;
+export class TokenMap {
+  private static instance: TokenMap | null = null;
   private readonly db = db;
   private readonly collection: CollectionReference;
   protected readonly defaultOrderField = "__name__";
   protected readonly defaultOrderDirection = "asc";
 
   constructor() {
-    this.collection = db.collection(FIRESTORE_COLLECTIONS.TOKEN_MAPPINGS);
+    this.collection = db.collection(FIRESTORE_COLLECTIONS.TOKEN_MAPS);
   }
 
   public static getInstance() {
-    if (!TokenMapping.instance) {
-      TokenMapping.instance = new TokenMapping();
+    if (!TokenMap.instance) {
+      TokenMap.instance = new TokenMap();
     }
-    return TokenMapping.instance;
+    return TokenMap.instance;
   }
 
-  async addTokenMappingsBatch(inputs: TokenMappingData[]) {
+  async saveTokenMapsBatch(inputs: TokenMapData[]) {
     const batches = [];
     const now = new Date();
 
@@ -57,7 +57,7 @@ export class TokenMapping {
       throw new AppError(
         500,
         ErrorCode.INTERNAL_SERVER_ERROR,
-        `Failed to add tokenMappings: ${(error as Error).message}`,
+        `Failed to save tokenMaps: ${(error as Error).message}`,
       );
     }
   }
@@ -84,7 +84,7 @@ export class TokenMapping {
 
         const snapshot = await batchQuery.get();
         const batchItems = snapshot.docs.map((doc) => {
-          return { ...doc.data() } as TokenMappingData;
+          return { ...doc.data() } as TokenMapData;
         });
 
         allItems.push(...batchItems);
@@ -106,17 +106,17 @@ export class TokenMapping {
     }
   }
 
-  async fetchTokenMappings(filters?: TokenMappingFilters) {
+  async fetchTokenMaps(filter?: TokenMapFilter) {
     return this.list((query) => {
       let modified = query;
-      if (filters?.tokenIndexes) {
-        modified = modified.where("__name__", "in", filters.tokenIndexes);
+      if (filter?.tokenIndexes) {
+        modified = modified.where("__name__", "in", filter.tokenIndexes);
       }
       return modified;
     });
   }
 
-  async fetchAllTokenMappings() {
+  async fetchAllTokenMaps() {
     return this.list();
   }
 }
