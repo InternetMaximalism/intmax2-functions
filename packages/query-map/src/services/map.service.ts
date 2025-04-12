@@ -1,8 +1,14 @@
-import { NotFoundError, QueryMap, generateRandomKey } from "@intmax2-functions/shared";
+import {
+  NotFoundError,
+  QueryMap,
+  SaveQueryMapValidationType,
+  generateRandomKey,
+} from "@intmax2-functions/shared";
 
-export const saveQueryMap = async (query: string) => {
+export const saveQueryMap = async ({ query, expiresIn }: SaveQueryMapValidationType) => {
   const randomKey = generateRandomKey();
-  await QueryMap.getInstance().saveQueryMap(randomKey, query);
+  const expiresAt = new Date(Date.now() + expiresIn * 1000);
+  await QueryMap.getInstance().saveQueryMap(randomKey, { query, expiresAt });
   return {
     key: randomKey,
   };

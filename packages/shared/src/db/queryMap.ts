@@ -21,7 +21,8 @@ export class QueryMap {
   async saveQueryMap<T>(key: string, queryMap: Partial<T>) {
     try {
       const ref = this.collection.doc(key);
-      await ref.set(queryMap, { merge: true });
+      await ref.set(queryMap);
+      return { id: ref.id, ...queryMap } as T;
     } catch (error) {
       logger.error(error);
       throw new AppError(500, ErrorCode.INTERNAL_SERVER_ERROR, "Failed to save query map");

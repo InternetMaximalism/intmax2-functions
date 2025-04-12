@@ -107,3 +107,7 @@ export const CACHE_TIMEOUTS = {
   DETAIL: 180 * 1000, // 180 seconds
   BLOCK_BUILDER_INDEXER_LIST: 120 * 1000, // 120 seconds
 } as const;
+
+// query map
+export const MIN_EXPIRES_IN = 300; // 5 minutes
+export const DEFAULT_EXPIRES_IN = 86400 * 5; // 1 day * 5

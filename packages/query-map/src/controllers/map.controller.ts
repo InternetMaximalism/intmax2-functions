@@ -2,10 +2,11 @@ import { getQueryMapValidation, saveQueryMapValidation } from "@intmax2-function
 import type { Context } from "hono";
 import * as mapService from "../services/map.service";
 
+// NOTE: ID duplicate
 export const saveQueryMap = async (c: Context) => {
   const body = await c.req.json();
   const parsed = await saveQueryMapValidation.parseAsync(body);
-  const result = await mapService.saveQueryMap(parsed.query);
+  const result = await mapService.saveQueryMap(parsed);
   return c.json(result);
 };
 
