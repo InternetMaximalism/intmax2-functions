@@ -15,7 +15,6 @@ import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
 import { secureHeaders } from "hono/secure-headers";
 import { timeout } from "hono/timeout";
-import { appendTrailingSlash } from "hono/trailing-slash";
 import { name } from "../package.json";
 import { routes } from "./routes";
 
@@ -29,7 +28,6 @@ app.use(limiter);
 app.use(timeout(APP_TIMEOUT));
 app.use(requestMiddleware);
 
-app.use(appendTrailingSlash());
 app.use(prettyJSON());
 
 configureLogging(app);
