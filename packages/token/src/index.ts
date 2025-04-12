@@ -16,7 +16,6 @@ import { compress } from "hono/compress";
 import { prettyJSON } from "hono/pretty-json";
 import { secureHeaders } from "hono/secure-headers";
 import { timeout } from "hono/timeout";
-import { appendTrailingSlash } from "hono/trailing-slash";
 import { name } from "../package.json";
 import { bootstrap } from "./lib/bootstrap";
 import { TokenPrice } from "./lib/tokenPrice";
@@ -34,7 +33,6 @@ app.use(limiter);
 app.use(timeout(APP_TIMEOUT));
 app.use(requestMiddleware);
 
-app.use(appendTrailingSlash());
 app.use(compress());
 app.use(prettyJSON());
 

@@ -1,5 +1,5 @@
 import { BASE_PATH, healthRoute } from "@intmax2-functions/shared";
-import { route as mapRoute } from "./map.route";
+import { route as mapRoute } from "./txMap.route";
 
 export const routes = [
   {
