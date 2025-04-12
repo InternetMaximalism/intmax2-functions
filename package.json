@@ -12,8 +12,8 @@
     "lint": "biome lint .",
     "format": "biome check --write --unsafe .",
     "check": "biome check .",
-    "token-mapper-bootstrap": "npx tsx --env-file=./.env packages/token-mapper/scripts/bootstrap.ts",
-    "token-image-bootstrap": "npx tsx --env-file=./.env packages/token-data-fetcher/scripts/bootstrap.ts"
+    "token-map-bootstrap": "npx tsx --env-file=./.env packages/token-map-register/scripts/bootstrap.ts",
+    "token-image-bootstrap": "npx tsx --env-file=./.env packages/token-metadata-sync/scripts/bootstrap.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
