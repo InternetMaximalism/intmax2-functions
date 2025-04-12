@@ -3496,6 +3496,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"query-map@workspace:packages/query-map":
+  version: 0.0.0-use.local
+  resolution: "query-map@workspace:packages/query-map"
+  dependencies:
+    "@intmax2-functions/shared": "workspace:*"
+    hono: "npm:^4.7.5"
+    tsx: "npm:^4.19.3"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "quick-format-unescaped@npm:^4.0.3":
   version: 4.0.4
   resolution: "quick-format-unescaped@npm:4.0.4"
