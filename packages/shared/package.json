@@ -27,7 +27,6 @@
     "typecheck": "tsc --noEmit",
     "test:watch": "vitest"
   },
-  "packageManager": "yarn@4.6.0",
   "devDependencies": {
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",

@@ -2608,13 +2608,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.7.5":
-  version: 4.7.5
-  resolution: "hono@npm:4.7.5"
-  checksum: 10c0/01ea7ae684224afd5b27989adb1bd7efe6cde89a9da3f3f15bfb106c4d8d8a63c82d87c2a4a383184a25b40946b086b088ae9e0679c9975e2dd93ce8220c44fe
-  languageName: node
-  linkType: hard
-
 "hono@npm:^4.7.6":
   version: 4.7.6
   resolution: "hono@npm:4.7.6"
@@ -4006,7 +3999,7 @@ __metadata:
   dependencies:
     "@hono/node-server": "npm:^1.14.1"
     "@intmax2-functions/shared": "workspace:*"
-    hono: "npm:^4.7.5"
+    hono: "npm:^4.7.6"
     tsx: "npm:^4.19.3"
     typescript: "npm:^5.8.3"
   languageName: unknown
