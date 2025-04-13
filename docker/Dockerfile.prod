@@ -14,9 +14,10 @@ WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 COPY packages ./packages/
-COPY ./tsconfig.json ./
 
 RUN yarn install --immutable
+
+COPY ./tsconfig.json ./
 
 RUN yarn build
 
@@ -34,7 +35,6 @@ FROM node:22.14.0-bookworm-slim AS production
 
 ENV NODE_ENV=production
 ENV YARN_CACHE_FOLDER=/home/app/.yarn-cache
-ENV TMPDIR=/home/app/tmpp
 ENV NODE_OPTIONS="\
   --max-http-header-size=8192 \
   --max-old-space-size=512 \
@@ -59,15 +59,19 @@ RUN useradd --create-home --shell /bin/bash app && \
     chown -R app:app /home/app
 
 WORKDIR /usr/src/app
-
 RUN chown -R app:app /usr/src/app
-
-USER app
 
 COPY --chown=app:app --from=builder /usr/src/app/package.json /usr/src/app/yarn.lock ./
 COPY --chown=app:app --from=builder /tmp/packages ./packages/
 
-RUN yarn workspaces focus --all --production && rm -rf $TMPDIR/*
+RUN find /usr/src/app -type d -exec chmod 755 {} \; && \
+    find /usr/src/app -type f -exec chmod 644 {} \;
+
+USER app
+
+RUN yarn workspaces focus --all --production && \
+    rm -rf .yarn/cache && \
+    rm -rf /home/app/tmp/*
 
 EXPOSE 3000
 
