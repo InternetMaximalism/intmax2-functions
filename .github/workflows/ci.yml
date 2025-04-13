@@ -28,7 +28,7 @@ jobs:
       run: corepack enable
 
     - name: Set Yarn version
-      run: corepack prepare yarn@4.6.0 --activate
+      run: corepack prepare yarn@4.9.1 --activate
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
