@@ -46,7 +46,7 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: yarn
+      run: yarn install --immutable
 
     - name: Lint
       run: yarn lint
@@ -56,3 +56,6 @@ jobs:
 
     - name: Build
       run: yarn build
+
+    - name: Check for security vulnerabilities
+      run: yarn npm audit
