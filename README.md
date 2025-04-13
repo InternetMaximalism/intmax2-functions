@@ -70,3 +70,10 @@ packages
 gcloud emulators firestore start
 export FIRESTORE_EMULATOR_HOST="HOST:PORT" # We will use what is displayed in the console.
 ```
+
+## Docker
+
+```sh
+docker build -f docker/Dockerfile -t intmax2-functions .
+docker run --rm -p 3000:3000 --env-file .env intmax2-functions workspace token start
+```
