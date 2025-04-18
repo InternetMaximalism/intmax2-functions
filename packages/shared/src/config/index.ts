@@ -1,4 +1,5 @@
 import { url, bool, cleanEnv, json, num, str } from "envalid";
+import { version } from "../../../../package.json";
 
 export const config = cleanEnv(process.env, {
   // app
@@ -11,6 +12,7 @@ export const config = cleanEnv(process.env, {
     choices: ["fatal", "error", "warn", "info", "debug", "trace"],
     default: "debug",
   }),
+  SERVICE_VERSION: str({ default: version }),
   // auth
   ALLOWED_ORIGINS: str({ default: "http://localhost:3000,http://localhost:5173" }),
   AUTH_IP_ALLOW_LIST: str({ devDefault: "127.0.0.1,::1" }),
