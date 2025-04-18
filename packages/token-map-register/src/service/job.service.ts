@@ -12,21 +12,17 @@ import { saveTokenIndexMaps } from "./map.service";
 
 export const performJob = async (): Promise<void> => {
   const ethereumClient = createNetworkClient(config.NETWORK_TYPE);
-  const event = new Event(FIRESTORE_DOCUMENT_EVENTS.DEPOSITS_RELAYED_TOKEN_MAPPER);
+  const event = new Event(FIRESTORE_DOCUMENT_EVENTS.DEPOSITS_RELAYED_TOKEN_MAPS);
   const [currentBlockNumber, lastProcessedEvent] = await Promise.all([
     await ethereumClient.getBlockNumber(),
     event.getEvent<DepositsRelayedEventData>(),
   ]);
 
-  const eventData = await processTokenMapper(
-    ethereumClient,
-    currentBlockNumber,
-    lastProcessedEvent,
-  );
+  const eventData = await processTokenMap(ethereumClient, currentBlockNumber, lastProcessedEvent);
   await updateEventData(event, eventData);
 };
 
-const processTokenMapper = async (
+const processTokenMap = async (
   ethereumClient: PublicClient,
   currentBlockNumber: bigint,
   lastProcessedEvent: DepositsRelayedEventData | null,
