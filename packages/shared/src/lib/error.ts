@@ -80,7 +80,7 @@ export const handleError = (err: unknown, c: Context) => {
     return c.json({ code: err.code, message: err.message }, err.statusCode as ContentfulStatusCode);
   }
 
-  logger.error("Unhandled error:", err);
+  logger.error(`Unhandled error: ${(err as Error).stack}`);
 
   const isProduction = config.NODE_ENV === "production";
   const statusCode = err instanceof Error ? 500 : 400;
