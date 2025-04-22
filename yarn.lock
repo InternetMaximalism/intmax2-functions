@@ -860,7 +860,7 @@ __metadata:
     ethers: "npm:^6.13.5"
     hono: "npm:^4.7.7"
     hono-rate-limiter: "npm:^0.4.2"
-    http-status: "npm:1.7.4"
+    http-status: "npm:2.1.0"
     pino: "npm:^9.6.0"
     pino-pretty: "npm:^13.0.0"
     tsx: "npm:^4.19.3"
@@ -2650,10 +2650,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-status@npm:1.7.4":
-  version: 1.7.4
-  resolution: "http-status@npm:1.7.4"
-  checksum: 10c0/7b550096af22c8330218d1ff3d0736d3d5c84b90f499fdd16b2f7fc74895b18d7ff1e35ca4cb2ce138617347826480da5460ba6ae90eef0783e2c67a49471f10
+"http-status@npm:2.1.0":
+  version: 2.1.0
+  resolution: "http-status@npm:2.1.0"
+  checksum: 10c0/1580ba46fc8bf1c777beec55a4f7c0aecdeb8d42fea8761d2040327183bb398947664cde15cf76256aa036d5ccccf7c6bea971e5ec20daa474bc40ef3e578f5d
   languageName: node
   linkType: hard
 
