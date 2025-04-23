@@ -12,6 +12,7 @@ export const config = cleanEnv(process.env, {
     choices: ["fatal", "error", "warn", "info", "debug", "trace"],
     default: "debug",
   }),
+  APP_TARGET: str({ default: "dev" }),
   SERVICE_VERSION: str({ default: version }),
   // auth
   ALLOWED_ORIGINS: str({ default: "http://localhost:3000,http://localhost:5173" }),
