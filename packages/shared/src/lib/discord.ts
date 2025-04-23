@@ -36,7 +36,7 @@ export class Discord {
       const channelId = this.getChannelIDByMessageType(messageType);
       const channel = (await this.client.channels.fetch(channelId)) as TextChannel;
       await channel
-        .send(`[${messageType}] ${this.serviceName} ${message}`)
+        .send(`[${messageType}] [${config.APP_TARGET}] ${this.serviceName} ${message}`)
         .then((message) => logger.info(`Sent message: ${message.content}`))
         .catch(logger.error);
     } catch (error) {
