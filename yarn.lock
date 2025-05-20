@@ -1965,12 +1965,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"coingecko-api-v3@npm:^0.0.29":
-  version: 0.0.29
-  resolution: "coingecko-api-v3@npm:0.0.29"
+"coingecko-api-v3@npm:^0.0.31":
+  version: 0.0.31
+  resolution: "coingecko-api-v3@npm:0.0.31"
   dependencies:
     https: "npm:^1.0.0"
-  checksum: 10c0/5d57f7ac5e2be3ef69b28bb7f5deaf934c642222b7b986371f9c49c327a523a4d8936abbc529a49a30940748f924031cb90e81cbb3f228655ab7644ad7c1b512
+  checksum: 10c0/945b62c542b6ebf49d4f266d4c3e751f917ca496b32c638f1c1d30bb766f07937bd217ff4d5f32152b2b69dfa27a257bd3ef9131be345ed68a2bd25ae5b4b6cc
   languageName: node
   linkType: hard
 
@@ -4404,7 +4404,7 @@ __metadata:
   dependencies:
     "@intmax2-functions/shared": "workspace:*"
     axios: "npm:^1.9.0"
-    coingecko-api-v3: "npm:^0.0.29"
+    coingecko-api-v3: "npm:^0.0.31"
     tsx: "npm:^4.19.4"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.29.4"
