@@ -44,6 +44,8 @@ yarn workspace block-sync-monitor dev
 
 ## Packages Structure
 
+The project is divided into the following workspaces:
+
 ```sh
 packages
 ├── block-sync-monitor
@@ -66,6 +68,8 @@ packages
 
 ## Local Emulator
 
+If your development workflow involves Firestore, you can start a local emulator:
+
 ```sh
 gcloud emulators firestore start
 export FIRESTORE_EMULATOR_HOST="HOST:PORT" # We will use what is displayed in the console.
@@ -73,7 +77,19 @@ export FIRESTORE_EMULATOR_HOST="HOST:PORT" # We will use what is displayed in th
 
 ## Docker
 
+Build and run the project in a Docker container:
+
 ```sh
 docker build -f docker/Dockerfile -t intmax2-functions .
 docker run --rm -p 3000:3000 --env-file .env intmax2-functions workspace token start
+```
+
+## Bootstrap Tasks
+
+```sh
+# Bootstrap token map configuration
+yarn token-map-bootstrap
+
+# Bootstrap token image assets
+yarn token-image-bootstrap
 ```
