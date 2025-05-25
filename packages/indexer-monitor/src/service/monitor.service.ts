@@ -32,7 +32,7 @@ const checkIndexerAvailability = async (ethereumClient: PublicClient, indexers: 
         await requestHealthCheck(indexer.url);
         return { ...indexer, status: "available" };
       } catch (error) {
-        logger.error(`Error checking indexer availability: ${error}`);
+        logger.warn(`Error checking indexer availability: ${error}`);
         return { ...indexer, status: "error" };
       }
     }),
