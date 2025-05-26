@@ -18,7 +18,7 @@
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0",
     "viem": "^2.29.4",
-    "zod": "^3.25.7"
+    "zod": "^3.25.28"
   },
   "scripts": {
     "start": "node dist/index.js",
