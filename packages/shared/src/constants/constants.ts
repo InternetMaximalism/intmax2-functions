@@ -3,7 +3,6 @@ import { config } from "../config";
 // app
 export const BASE_PATH = "v1";
 export const APP_TIMEOUT = 30000;
-export const RATE_LIMIT = 1000;
 
 // logger
 export const SLOW_THRESHOLD = 1000;
