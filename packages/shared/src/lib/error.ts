@@ -60,6 +60,8 @@ export class InternalServerError extends AppError {
   }
 }
 
+const IGNORE_ERROR_MESSAGES = ["URI malformed"];
+
 export const handleError = (err: unknown, c: Context) => {
   if (err instanceof HTTPException) {
     return c.json({ code: `HTTP_${err.status}`, message: err.message }, err.status);
@@ -80,7 +82,9 @@ export const handleError = (err: unknown, c: Context) => {
     return c.json({ code: err.code, message: err.message }, err.statusCode as ContentfulStatusCode);
   }
 
-  logger.error(`Unhandled error: ${(err as Error).stack}`);
+  if (err instanceof Error && !IGNORE_ERROR_MESSAGES.includes(err.message)) {
+    logger.warn(`Unhandled error: ${(err as Error).stack}`);
+  }
 
   const isProduction = config.NODE_ENV === "production";
   const statusCode = err instanceof Error ? 500 : 400;
