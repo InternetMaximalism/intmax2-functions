@@ -17,6 +17,9 @@ export const config = cleanEnv(process.env, {
   // auth
   ALLOWED_ORIGINS: str({ default: "http://localhost:3000,http://localhost:5173" }),
   AUTH_IP_ALLOW_LIST: str({ devDefault: "127.0.0.1,::1" }),
+  RATE_LIMIT: num({
+    default: 1000,
+  }),
   // gcp
   K_SERVICE: str({ default: process.env.CLOUD_RUN_JOB || "default-service" }),
   K_REVISION: str({ default: process.env.CLOUD_RUN_EXECUTION || "default-revision" }),
