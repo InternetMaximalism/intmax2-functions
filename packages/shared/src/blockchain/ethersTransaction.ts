@@ -61,7 +61,7 @@ export const executeEthersTransaction = async ({
     };
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(`Transaction failed: ${error.message}`);
+      logger.warn(`Transaction failed: ${error.message}`);
       throw error;
     } else {
       console.error("An unknown error occurred");
