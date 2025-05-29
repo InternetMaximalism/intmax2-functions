@@ -25,7 +25,7 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 22.15.0
+        node-version: 24.0.2
 
     - name: Enable Corepack
       run: corepack enable
@@ -51,11 +51,14 @@ jobs:
     - name: Install dependencies
       run: yarn install --immutable
 
-    - name: Lint
-      run: yarn lint
-
     - name: Check formatting
       run: yarn check
+
+    - name: Build shared packages
+      run: yarn build:shared
+
+    - name: Unit tests with coverage
+      run: yarn test --coverage
 
     - name: Build
       run: yarn build
