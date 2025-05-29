@@ -13,7 +13,8 @@
     "format": "biome check --write --unsafe .",
     "check": "biome check .",
     "token-map-bootstrap": "npx tsx --env-file=./.env packages/token-map-register/scripts/bootstrap.ts",
-    "token-image-bootstrap": "npx tsx --env-file=./.env packages/token-metadata-sync/scripts/bootstrap.ts"
+    "token-image-bootstrap": "npx tsx --env-file=./.env packages/token-metadata-sync/scripts/bootstrap.ts",
+    "replay-messenger": "npx tsx --env-file=./.env packages/deposit-analyzer/scripts/replay-messenger.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
