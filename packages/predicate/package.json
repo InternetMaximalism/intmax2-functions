@@ -5,7 +5,7 @@
     "@hono/node-server": "^1.14.3",
     "@intmax2-functions/shared": "workspace:*",
     "axios": "^1.9.0",
-    "hono": "^4.7.10",
+    "hono": "^4.7.11",
     "predicate-sdk": "^0.1.3"
   },
   "scripts": {
