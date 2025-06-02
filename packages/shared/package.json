@@ -7,7 +7,7 @@
     "@google-cloud/storage": "^7.16.0",
     "@hono/node-server": "^1.14.3",
     "abitype": "^1.0.8",
-    "alchemy-sdk": "^3.5.10",
+    "alchemy-sdk": "^3.6.0",
     "axios": "^1.9.0",
     "discord.js": "^14.19.3",
     "envalid": "^8.0.0",
