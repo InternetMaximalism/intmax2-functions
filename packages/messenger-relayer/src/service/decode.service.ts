@@ -16,17 +16,24 @@ export const generateCalldata = async (claimableRequest: ScrollMessengerResult) 
   });
 
   const batchedCalldata: BatchedCalldata[] = [];
-  const maxLength = Math.max(withdrawals.length, claimables.length);
-  const numBatches = Math.ceil(maxLength / MAX_BATCH_SIZE);
-  const optimalBatchSize = Math.ceil(maxLength / numBatches);
 
-  for (let i = 0; i < maxLength; i += optimalBatchSize) {
-    const batchWithdrawals = withdrawals.slice(i, i + optimalBatchSize);
-    const batchClaimable = claimables.slice(i, i + optimalBatchSize);
+  const allItems = [
+    ...withdrawals.map((item) => ({ type: "withdrawal", data: item })),
+    ...claimables.map((item) => ({ type: "claimable", data: item })),
+  ];
+
+  for (let i = 0; i < allItems.length; i += MAX_BATCH_SIZE) {
+    const batchItems = allItems.slice(i, i + MAX_BATCH_SIZE);
+    const batchWithdrawals = batchItems
+      .filter((item) => item.type === "withdrawal")
+      .map((item) => item.data);
+    const batchClaimables = batchItems
+      .filter((item) => item.type === "claimable")
+      .map((item) => item.data);
 
     const encodedCalldata = encodeFunctionData({
       ...functionData,
-      args: [batchWithdrawals, batchClaimable],
+      args: [batchWithdrawals, batchClaimables],
     });
 
     batchedCalldata.push({ encodedCalldata });
