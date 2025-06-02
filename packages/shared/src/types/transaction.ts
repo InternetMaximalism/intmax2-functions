@@ -19,6 +19,7 @@ export interface ContractCallOptionsEthers {
   value?: bigint;
   nonce?: number;
   gasPrice?: bigint;
+  gasLimit?: bigint;
   maxFeePerGas?: bigint;
   maxPriorityFeePerGas?: bigint;
 }
