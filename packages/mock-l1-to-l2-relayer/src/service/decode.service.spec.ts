@@ -1,6 +1,6 @@
 import { encodeFunctionData } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { MAX_BATCH_SIZE } from "../constants";
+import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 import {
   extractValidDeposits,
   generateBatchedCalldata,
@@ -38,12 +38,12 @@ describe("Deposit Processing", () => {
         depositHashes: [],
       };
 
-      const result = generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+      const result = generateBatchedCalldata(validDeposits, MAX_RELAYER_BATCH_SIZE);
 
       expect(result).toHaveLength(0);
     });
 
-    it("should batch deposits correctly according to MAX_BATCH_SIZE", () => {
+    it("should batch deposits correctly according to MAX_RELAYER_BATCH_SIZE", () => {
       const validDeposits = {
         depositIds: [BigInt(1), BigInt(2), BigInt(3), BigInt(4)],
         depositHashes: MOCK_HASHES,
@@ -111,7 +111,7 @@ describe("Deposit Processing", () => {
         depositHashes,
         rejectedIds,
       );
-      const result = generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+      const result = generateBatchedCalldata(validDeposits, MAX_RELAYER_BATCH_SIZE);
 
       expect(validDeposits.depositIds).toHaveLength(0);
       expect(result).toHaveLength(0);
@@ -124,7 +124,7 @@ describe("Deposit Processing", () => {
         depositHashes: [],
       };
 
-      const result = generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+      const result = generateBatchedCalldata(validDeposits, MAX_RELAYER_BATCH_SIZE);
 
       expect(result).toHaveLength(0);
       expect(encodeFunctionData).not.toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe("Deposit Processing", () => {
         depositHashes,
         rejectedIds,
       );
-      const result = generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+      const result = generateBatchedCalldata(validDeposits, MAX_RELAYER_BATCH_SIZE);
 
       expect(validDeposits.depositIds).toHaveLength(3);
       expect(result).toHaveLength(1);
