@@ -14,7 +14,7 @@ import {
   encodeFunctionData,
   prepareEncodeFunctionData,
 } from "viem";
-import { MAX_BATCH_SIZE } from "../constants";
+import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 import type { ValidDeposits } from "../types";
 
 export const generateDepositsCalldata = async (
@@ -31,7 +31,7 @@ export const generateDepositsCalldata = async (
 
   const validDeposits = extractValidDeposits(lastProcessedDepositId, depositHashes, rejectedIds);
 
-  return generateBatchedCalldata(validDeposits, MAX_BATCH_SIZE);
+  return generateBatchedCalldata(validDeposits, MAX_RELAYER_BATCH_SIZE);
 };
 
 export const generateBatchedCalldata = (validDeposits: ValidDeposits, maxBatchSize: number) => {

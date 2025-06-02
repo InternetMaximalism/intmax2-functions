@@ -1,2 +1,2 @@
 // batch
-export const MAX_BATCH_SIZE = 250;
+export const MAX_RELAYER_BATCH_SIZE = 450;

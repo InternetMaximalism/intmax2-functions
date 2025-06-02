@@ -5,7 +5,7 @@ import {
 } from "@intmax2-functions/shared";
 import type { PublicClient } from "viem";
 import { encodeFunctionData, prepareEncodeFunctionData } from "viem";
-import { MAX_BATCH_SIZE } from "../constants";
+import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 import { decodeL2SentMessage } from "./decode.service";
 import { fetchPendingWithdrawalHashes } from "./event.service";
 import { relayMessageWithProof } from "./submit.service";
@@ -56,8 +56,8 @@ const processBatchedCalldata = (claimables: string[]) => {
   });
 
   const batchedCalldata: BatchedCalldata[] = [];
-  for (let i = 0; i < claimables.length; i += MAX_BATCH_SIZE) {
-    const batchWithdrawalHashes = claimables.slice(i, i + MAX_BATCH_SIZE);
+  for (let i = 0; i < claimables.length; i += MAX_RELAYER_BATCH_SIZE) {
+    const batchWithdrawalHashes = claimables.slice(i, i + MAX_RELAYER_BATCH_SIZE);
     const encodedCalldata = encodeFunctionData({
       ...functionData,
       args: [[], batchWithdrawalHashes],
