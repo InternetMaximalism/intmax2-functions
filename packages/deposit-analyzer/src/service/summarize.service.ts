@@ -1,5 +1,5 @@
 import { type DepositEvent } from "@intmax2-functions/shared";
-import { GAS_CONFIG, SUMMARY_BATCH_SIZE } from "../constants";
+import { GAS_CONFIG, MAX_DEPOSIT_BATCH_SIZE } from "../constants";
 import type { BatchParams } from "../types";
 
 const calculateAnalyzeAndRelayGasLimit = (numDepositsToRelay: number) => {
@@ -35,9 +35,9 @@ export const splitDepositSummary = async (
   const depositIds = generateDepositIds(Number(minDepositId), Number(maxDepositId));
 
   let currentStartDepositId = minDepositId;
-  for (let i = 0; i < depositIds.length; i += SUMMARY_BATCH_SIZE) {
-    const batchDepositIds = depositIds.slice(i, i + SUMMARY_BATCH_SIZE);
-    const isLastBatch = i + SUMMARY_BATCH_SIZE >= depositIds.length;
+  for (let i = 0; i < depositIds.length; i += MAX_DEPOSIT_BATCH_SIZE) {
+    const batchDepositIds = depositIds.slice(i, i + MAX_DEPOSIT_BATCH_SIZE);
+    const isLastBatch = i + MAX_DEPOSIT_BATCH_SIZE >= depositIds.length;
     const batchUpToDepositId = isLastBatch
       ? maxDepositId
       : batchDepositIds[batchDepositIds.length - 1];

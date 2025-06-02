@@ -1,5 +1,5 @@
 // batch
-export const SUMMARY_BATCH_SIZE = 450;
+export const MAX_DEPOSIT_BATCH_SIZE = 450;
 
 // gasLimit
 export const GAS_CONFIG = {
