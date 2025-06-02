@@ -12,3 +12,4 @@ export const DEFAULT_SLEEP_TIME = 1000;
 
 // batch
 export const MAX_RELAYER_BATCH_SIZE = 100;
+export const RELAYER_FIXED_GAS_LIMIT = 4400000n;

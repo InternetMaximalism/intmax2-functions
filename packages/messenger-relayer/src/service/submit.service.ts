@@ -1,5 +1,5 @@
 import {
-  type ContractCallOptions,
+  type ContractCallOptionsEthers,
   type ContractCallParameters,
   ETHERS_CONFIRMATIONS,
   ETHERS_WAIT_TRANSACTION_TIMEOUT_MESSAGE,
@@ -27,6 +27,7 @@ import {
 } from "@intmax2-functions/shared";
 import { ethers } from "ethers";
 import { type Abi, type PublicClient, toHex } from "viem";
+import { RELAYER_FIXED_GAS_LIMIT } from "../constants";
 import type { ScrollMessengerResult } from "../types";
 
 export const relayMessageWithProof = async (
@@ -139,10 +140,11 @@ export const submitMessageToScroll = async (
   retryOptions.maxFeePerGas = maxFeePerGas;
   retryOptions.maxPriorityFeePerGas = maxPriorityFeePerGas;
 
-  const contractCallOptions: ContractCallOptions = {
+  const contractCallOptions: ContractCallOptionsEthers = {
     nonce: currentNonce,
     maxFeePerGas,
     maxPriorityFeePerGas,
+    gasLimit: RELAYER_FIXED_GAS_LIMIT,
   };
 
   const provider = new ethers.JsonRpcProvider(ethereumClient.transport.url);

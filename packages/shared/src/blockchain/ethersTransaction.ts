@@ -14,7 +14,8 @@ export const getEthersTxOptions = (
   contractCallOptions: ContractCallOptionsEthers,
 ) => {
   const { functionName, args } = contractCallParams;
-  const { nonce, gasPrice, maxFeePerGas, maxPriorityFeePerGas, value } = contractCallOptions ?? {};
+  const { nonce, gasPrice, maxFeePerGas, maxPriorityFeePerGas, gasLimit, value } =
+    contractCallOptions ?? {};
 
   if (gasPrice) {
     logger.info(
@@ -25,6 +26,7 @@ export const getEthersTxOptions = (
       nonce,
       gasPrice,
       type: 0,
+      ...(gasLimit ? { gasLimit } : {}),
     };
   }
 
@@ -37,6 +39,7 @@ export const getEthersTxOptions = (
     maxFeePerGas,
     maxPriorityFeePerGas,
     ...(value ? { value } : {}),
+    ...(gasLimit ? { gasLimit } : {}),
   };
 };
 
