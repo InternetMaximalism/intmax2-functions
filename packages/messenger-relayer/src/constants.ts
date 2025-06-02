@@ -11,4 +11,4 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_SLEEP_TIME = 1000;
 
 // batch
-export const MAX_BATCH_SIZE = 100;
+export const MAX_RELAYER_BATCH_SIZE = 100;

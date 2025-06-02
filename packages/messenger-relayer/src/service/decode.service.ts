@@ -1,6 +1,6 @@
 import { type BatchedCalldata, LiquidityAbi } from "@intmax2-functions/shared";
 import { decodeFunctionData, encodeFunctionData, prepareEncodeFunctionData } from "viem";
-import { MAX_BATCH_SIZE } from "../constants";
+import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 import type { ScrollMessengerResult } from "../types";
 
 export const generateCalldata = async (claimableRequest: ScrollMessengerResult) => {
@@ -22,8 +22,8 @@ export const generateCalldata = async (claimableRequest: ScrollMessengerResult) 
     ...claimables.map((item) => ({ type: "claimable", data: item })),
   ];
 
-  for (let i = 0; i < allItems.length; i += MAX_BATCH_SIZE) {
-    const batchItems = allItems.slice(i, i + MAX_BATCH_SIZE);
+  for (let i = 0; i < allItems.length; i += MAX_RELAYER_BATCH_SIZE) {
+    const batchItems = allItems.slice(i, i + MAX_RELAYER_BATCH_SIZE);
     const batchWithdrawals = batchItems
       .filter((item) => item.type === "withdrawal")
       .map((item) => item.data);
