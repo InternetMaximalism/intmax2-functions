@@ -5,7 +5,6 @@ import {
   ETHERS_CONFIRMATIONS,
   IL1ScrollMessenger__factory,
   L1ScrollMessengerAbi,
-  L1_SCROLL_MESSENGER_CONTRACT_ADDRESS,
   type SentMessageEvent,
   TRANSACTION_WAIT_TRANSACTION_TIMEOUT,
   createNetworkClient,
@@ -39,8 +38,6 @@ const GAS_CONFIG = {
 const FIXED_DEPOSIT_VALUE = "0.1";
 
 const fetchSentMessages = async (ethereumClient: PublicClient) => {
-  validateBlockRange("SentMessage", RELAY_CONFIG.startBlockNumber, RELAY_CONFIG.endBlockNumber);
-
   const l1SentMessageEvents = await fetchEvents<SentMessageEvent>(ethereumClient, {
     startBlockNumber: RELAY_CONFIG.startBlockNumber,
     endBlockNumber: RELAY_CONFIG.endBlockNumber,
@@ -135,6 +132,16 @@ const main = async () => {
   console.log("debug: RELAY_CONFIG", RELAY_CONFIG);
 
   const ethereumClient = createNetworkClient("ethereum");
+  const isValid = validateBlockRange(
+    "fetchSentMessages",
+    RELAY_CONFIG.startBlockNumber,
+    RELAY_CONFIG.endBlockNumber,
+  );
+  if (!isValid) {
+    console.log("Invalid block range for fetching sent messages.");
+    return;
+  }
+
   const events = await fetchSentMessages(ethereumClient);
   console.log("Fetched Sent Messages:", events);
 

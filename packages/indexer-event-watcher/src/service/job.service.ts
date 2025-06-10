@@ -1,9 +1,12 @@
 import {
+  BUILDER_REGISTRY_CONTRACT_DEPLOYED_BLOCK,
   Event,
   type EventData,
   FIRESTORE_DOCUMENT_EVENTS,
   createNetworkClient,
+  getStartBlockNumber,
   logger,
+  validateBlockRange,
 } from "@intmax2-functions/shared";
 import { getHeartBeatEvents } from "./event.service";
 import { processIndexer } from "./indexer.service";
@@ -17,16 +20,30 @@ export const performJob = async (): Promise<void> => {
     event.getEvent<EventData>(),
   ]);
 
-  await processHeartBeatEvents(ethereumClient, currentBlockNumber, lastProcessedEvent);
+  const startBlockNumber = getStartBlockNumber(
+    lastProcessedEvent,
+    BUILDER_REGISTRY_CONTRACT_DEPLOYED_BLOCK,
+  );
+  const isValid = validateBlockRange(
+    "blockBuilderHeartbeatEvent",
+    startBlockNumber,
+    currentBlockNumber,
+  );
+  if (!isValid) {
+    logger.info("Skipping block builder heartbeat event due to invalid block range.");
+    return;
+  }
+
+  await processHeartBeatEvents(ethereumClient, startBlockNumber, currentBlockNumber);
   await updateEventState(event, currentBlockNumber);
 };
 
 const processHeartBeatEvents = async (
   ethereumClient: ReturnType<typeof createNetworkClient>,
+  startBlockNumber: bigint,
   currentBlockNumber: bigint,
-  lastProcessedEvent: EventData | null,
 ) => {
-  const events = await getHeartBeatEvents(ethereumClient, currentBlockNumber, lastProcessedEvent);
+  const events = await getHeartBeatEvents(ethereumClient, startBlockNumber, currentBlockNumber);
   if (events.length === 0) {
     logger.info("No new heart beat events found.");
     return;

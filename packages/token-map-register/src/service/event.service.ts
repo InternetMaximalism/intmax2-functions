@@ -62,7 +62,15 @@ const getDepositIds = async (
 ) => {
   const { startBlockNumber, lastUpToDepositId } =
     await getStartBlockNumberAndLastUpToDepositId(lastProcessedEvent);
-  validateBlockRange("depositsRelayedEvent", startBlockNumber, currentBlockNumber);
+
+  const isValid = validateBlockRange("depositsRelayedEvent", startBlockNumber, currentBlockNumber);
+  if (!isValid) {
+    logger.info("Skipping depositsRelayedEvent due to invalid block range.");
+    return {
+      depositIds: [],
+      startBlockNumber,
+    };
+  }
 
   const depositsRelayedEvents = await fetchEvents<DepositsRelayedEvent>(ethereumClient, {
     startBlockNumber,
