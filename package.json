@@ -1,7 +1,26 @@
 {
   "name": "intmax2-functions",
-  "private": true,
   "version": "0.1.15",
+  "license": "MIT",
+  "description": "A collection of functions for INTMAX.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InternetMaximalism/intmax2-functions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/InternetMaximalism/intmax2-functions/issues"
+  },
+  "homepage": "https://github.com/InternetMaximalism/intmax2-funcitons#readme",
+  "keywords": [
+    "intmax2",
+    "blockchain",
+    "functions",
+    "api"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=4.0.0"
+  },
   "workspaces": [
     "packages/*"
   ],
@@ -20,13 +39,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@vitest/coverage-v8": "^3.1.4",
+    "@vitest/coverage-v8": "^3.2.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.3"
   },
   "packageManager": "yarn@4.9.1",
   "volta": {
-    "node": "24.0.2",
+    "node": "24.2.0",
     "yarn": "4.9.1"
   }
 }
