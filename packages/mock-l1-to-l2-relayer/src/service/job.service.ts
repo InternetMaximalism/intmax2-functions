@@ -2,8 +2,11 @@ import {
   Event,
   type EventData,
   FIRESTORE_DOCUMENT_EVENTS,
+  MOCK_L1_SCROLL_MESSENGER_CONTRACT_DEPLOYED_BLOCK,
   createNetworkClient,
+  getStartBlockNumber,
   logger,
+  validateBlockRange,
 } from "@intmax2-functions/shared";
 import { generateDepositsCalldata } from "./decode.service";
 import { fetchSentMessages } from "./event.service";
@@ -19,10 +22,20 @@ export const performJob = async (): Promise<void> => {
     event.getEvent<EventData>(),
   ]);
 
+  const startBlockNumber = getStartBlockNumber(
+    lastProcessedEvent,
+    MOCK_L1_SCROLL_MESSENGER_CONTRACT_DEPLOYED_BLOCK,
+  );
+  const isValid = validateBlockRange("SentMessage", startBlockNumber, currentBlockNumber);
+  if (!isValid) {
+    logger.info("Skipping process mock L1 to L2 relayer due to invalid block range.");
+    return;
+  }
+
   const l1SentMessageEvents = await fetchSentMessages(
     ethereumClient,
+    startBlockNumber,
     currentBlockNumber,
-    lastProcessedEvent,
   );
 
   logger.info(`Fetched ${l1SentMessageEvents.length} sent messages from L1 to L2`);

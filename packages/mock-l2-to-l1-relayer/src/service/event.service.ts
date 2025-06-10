@@ -1,31 +1,20 @@
 import {
   BLOCK_RANGE_MINIMUM,
-  type EventData,
   LIQUIDITY_CONTRACT_ADDRESS,
-  LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   MOCK_L2_SCROLL_MESSENGER_CONTRACT_ADDRESS,
-  MOCK_L2_SCROLL_MESSENGER_CONTRACT_DEPLOYED_BLOCK,
   type SentMessageEvent,
   type WithdrawalClaimableEvent,
   fetchEvents,
-  getStartBlockNumber,
   l2MockSentMessageEvent,
-  validateBlockRange,
   withdrawalClaimableEvent,
 } from "@intmax2-functions/shared";
 import type { PublicClient } from "viem";
 
 export const getL2SentMessage = async (
   ethereumClient: PublicClient,
+  startBlockNumber: bigint,
   currentBlockNumber: bigint,
-  lastProcessedEvent: EventData | null,
 ) => {
-  const startBlockNumber = getStartBlockNumber(
-    lastProcessedEvent,
-    MOCK_L2_SCROLL_MESSENGER_CONTRACT_DEPLOYED_BLOCK,
-  );
-  validateBlockRange("SentMessage", startBlockNumber, currentBlockNumber);
-
   const sentMessageEvents = await fetchEvents<SentMessageEvent>(ethereumClient, {
     startBlockNumber,
     endBlockNumber: currentBlockNumber,
@@ -40,16 +29,10 @@ export const getL2SentMessage = async (
 
 export const fetchPendingWithdrawalHashes = async (
   ethereumClient: PublicClient,
+  startBlockNumber: bigint,
   currentBlockNumber: bigint,
-  lastProcessedEvent: EventData | null,
   withdrawalHashes: string[],
 ) => {
-  const startBlockNumber = getStartBlockNumber(
-    lastProcessedEvent,
-    LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
-  );
-  validateBlockRange("WithdrawalClaimable", startBlockNumber, currentBlockNumber);
-
   const events = await fetchEvents<WithdrawalClaimableEvent>(ethereumClient, {
     startBlockNumber,
     endBlockNumber: currentBlockNumber,

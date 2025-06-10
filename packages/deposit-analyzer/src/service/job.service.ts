@@ -36,7 +36,7 @@ const processAnalyzer = async (
   );
   const isValid = validateBlockRange("depositedEvent", startBlockNumber, currentBlockNumber);
   if (!isValid) {
-    logger.info("Skipping deposited due to invalid block range.");
+    logger.info("Skipping process deposit analyzer due to invalid block range.");
     return;
   }
 

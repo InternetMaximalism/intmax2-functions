@@ -1,7 +1,11 @@
 import {
   type BatchedCalldata,
+  LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   LiquidityAbi,
   type SentMessageEventLog,
+  getStartBlockNumber,
+  logger,
+  validateBlockRange,
 } from "@intmax2-functions/shared";
 import type { PublicClient } from "viem";
 import { encodeFunctionData, prepareEncodeFunctionData } from "viem";
@@ -28,10 +32,18 @@ export const filterWithdrawalClaimableEvents = async (
       withdrawalHashes.push(...claimables);
     }
   }
+
+  const startBlockNumber = getStartBlockNumber(null, LIQUIDITY_CONTRACT_DEPLOYED_BLOCK);
+  const isValid = validateBlockRange("WithdrawalClaimable", startBlockNumber, currentBlockNumber);
+  if (!isValid) {
+    logger.info("Skipping WithdrawalClaimable due to invalid block range.");
+    return;
+  }
+
   const pendingWithdrawalHashes = await fetchPendingWithdrawalHashes(
     ethereumClient,
+    startBlockNumber,
     currentBlockNumber,
-    null,
     withdrawalHashes,
   );
 
