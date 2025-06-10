@@ -4,29 +4,21 @@ import {
   type DepositsRelayedEvent,
   type EventData,
   LIQUIDITY_CONTRACT_ADDRESS,
-  LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   LiquidityAbi,
   depositedEvent,
   depositsRelayedEvent,
   fetchEvents,
-  getStartBlockNumber,
   logger,
-  validateBlockRange,
 } from "@intmax2-functions/shared";
 import type { Abi, PublicClient } from "viem";
 
 export const getDepositedEvent = async (
   ethereumClient: PublicClient,
+  startBlockNumber: bigint,
   currentBlockNumber: bigint,
   lastProcessedEvent: EventData | null,
 ) => {
   try {
-    const startBlockNumber = getStartBlockNumber(
-      lastProcessedEvent,
-      LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
-    );
-    validateBlockRange("depositedEvent", startBlockNumber, currentBlockNumber);
-
     const depositEvents = await fetchEvents<DepositEvent>(ethereumClient, {
       startBlockNumber,
       endBlockNumber: currentBlockNumber,
@@ -61,16 +53,10 @@ export const getDepositedEvent = async (
 
 export const getDepositsRelayedEvent = async (
   ethereumClient: PublicClient,
+  startBlockNumber: bigint,
   currentBlockNumber: bigint,
-  lastProcessedEvent: EventData | null,
 ) => {
   try {
-    const startBlockNumber = getStartBlockNumber(
-      lastProcessedEvent,
-      LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
-    );
-    validateBlockRange("depositsRelayedEvent", startBlockNumber, currentBlockNumber);
-
     const depositsRelayedEvents = await fetchEvents<DepositsRelayedEvent>(ethereumClient, {
       startBlockNumber,
       endBlockNumber: currentBlockNumber,

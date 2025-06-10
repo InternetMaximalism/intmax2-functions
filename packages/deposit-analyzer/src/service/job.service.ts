@@ -2,8 +2,11 @@ import {
   Event,
   type EventData,
   FIRESTORE_DOCUMENT_EVENTS,
+  LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
   createNetworkClient,
+  getStartBlockNumber,
   logger,
+  validateBlockRange,
 } from "@intmax2-functions/shared";
 import { getDepositedEvent, getDepositsRelayedEvent } from "./event.service";
 import { submitRelayDeposits } from "./submit.service";
@@ -27,8 +30,19 @@ const processAnalyzer = async (
   event: Event,
   lastProcessedEvent: EventData | null,
 ) => {
+  const startBlockNumber = getStartBlockNumber(
+    lastProcessedEvent,
+    LIQUIDITY_CONTRACT_DEPLOYED_BLOCK,
+  );
+  const isValid = validateBlockRange("depositedEvent", startBlockNumber, currentBlockNumber);
+  if (!isValid) {
+    logger.info("Skipping deposited due to invalid block range.");
+    return;
+  }
+
   const processedDepositEvents = await getDepositedEvent(
     ethereumClient,
+    startBlockNumber,
     currentBlockNumber,
     lastProcessedEvent,
   );
@@ -43,8 +57,8 @@ const processAnalyzer = async (
 
   const processedState = await getDepositsRelayedEvent(
     ethereumClient,
+    startBlockNumber,
     currentBlockNumber,
-    lastProcessedEvent,
   );
   const depositSummary = await splitDepositSummary(
     processedDepositEvents,

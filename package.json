@@ -2,7 +2,7 @@
   "name": "intmax2-functions",
   "version": "0.1.15",
   "license": "MIT",
-  "description": "A collection of functions for INTMAX.",
+  "description": "A collection of functions for INTMAX",
   "repository": {
     "type": "git",
     "url": "https://github.com/InternetMaximalism/intmax2-functions.git"
