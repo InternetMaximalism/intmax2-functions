@@ -1,11 +1,17 @@
-import { RollupAbi, config, createNetworkClient, logger } from "@intmax2-functions/shared";
+import {
+  RollupAbi,
+  config,
+  createNetworkClient,
+  logger,
+  API_TIMEOUT,
+} from "@intmax2-functions/shared";
 import axios, { AxiosError } from "axios";
 import { getContract } from "viem";
-import { ACCEPTABLE_BLOCK_DIFFERENCE, API_TIMEOUT } from "../constants";
+import { ACCEPTABLE_BLOCK_DIFFERENCE } from "../constants";
 import type { BlockNumberResponse } from "../type";
 
+// NOTE: Validity prover endpoint block from US
 export const fetchLatestValidityProverBlockNumber = async () => {
-  // NOTE: Validity prover endpoint block from US
   const validityProverUrl = `${config.API_VALIDITY_PROVER_BASE_URL}/validity-prover/block-number`;
   try {
     const response = await axios.get<BlockNumberResponse>(validityProverUrl, {
