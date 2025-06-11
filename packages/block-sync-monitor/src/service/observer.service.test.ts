@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { compareBlockNumbers } from "./observer.service";
 import { logger } from "@intmax2-functions/shared";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { compareBlockNumbers } from "./observer.service";
 
 vi.mock("@intmax2-functions/shared", () => ({
   logger: {

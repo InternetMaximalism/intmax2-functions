@@ -44,9 +44,8 @@ export const getDepositedEvent = async (
 
     return depositEvents;
   } catch (error) {
-    logger.error(
-      `Error fetching deposited events: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
+    const message = error instanceof Error ? error.message : "Unknown error";
+    logger.error(`Error fetching deposited events: ${message}`);
     throw error;
   }
 };
@@ -72,9 +71,8 @@ export const getDepositsRelayedEvent = async (
       lastUpToDepositId: getMaxDepositId(upToDepositIds),
     };
   } catch (error) {
-    logger.error(
-      `Error fetching depositsRelayedEvent events: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
+    const message = error instanceof Error ? error.message : "Unknown error";
+    logger.error(`Error fetching depositsRelayedEvent events: ${message}`);
     throw error;
   }
 };

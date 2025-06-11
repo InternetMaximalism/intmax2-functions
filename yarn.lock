@@ -1964,6 +1964,7 @@ __metadata:
     tsx: "npm:^4.19.4"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.0"
+    vitest: "npm:^3.2.3"
   languageName: unknown
   linkType: soft
 
@@ -2279,6 +2280,7 @@ __metadata:
     tsx: "npm:^4.19.4"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.0"
+    vitest: "npm:^3.2.3"
   languageName: unknown
   linkType: soft
 
