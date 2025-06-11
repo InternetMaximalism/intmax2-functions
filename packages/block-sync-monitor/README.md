@@ -1,6 +1,6 @@
 # block-sync-monitor
 
-This is an app that monitors the wallet balance and sends notifications.
+A monitoring service that tracks and validates block synchronization between the validity prover and rollup contract.
 
 ## Usage
 
