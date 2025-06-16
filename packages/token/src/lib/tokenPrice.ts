@@ -31,10 +31,12 @@ export class TokenPrice {
 
   async getTokenPriceList() {
     while (!this.initialized) {
+      logger.info("TokenPrice not initialized, waiting...");
       await sleep(100);
     }
 
     if (!this.tokenPriceList.length) {
+      logger.info("Token price list is empty, fetching data...");
       await this.fetchAndCacheTokenList();
     }
 
