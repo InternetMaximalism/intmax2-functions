@@ -3729,6 +3729,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mint-scheduler@workspace:packages/mint-scheduler":
+  version: 0.0.0-use.local
+  resolution: "mint-scheduler@workspace:packages/mint-scheduler"
+  dependencies:
+    "@intmax2-functions/shared": "workspace:*"
+    tsx: "npm:^4.19.4"
+    typescript: "npm:^5.8.3"
+    viem: "npm:^2.31.0"
+  languageName: unknown
+  linkType: soft
+
 "mkdirp@npm:^3.0.1":
   version: 3.0.1
   resolution: "mkdirp@npm:3.0.1"
