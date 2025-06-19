@@ -67,6 +67,9 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.development
+.env.stage
+.env.state-beta
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -99,8 +102,3 @@ Thumbs.db
 # build
 dist
 tsconfig.tsbuildinfo
-
-# env
-.env.development
-.env.stage
-.env.state-beta
