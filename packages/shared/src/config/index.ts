@@ -29,6 +29,10 @@ export const config = cleanEnv(process.env, {
   FIRESTORE_DATABASE_ID: str({ devDefault: "(default)" }),
   // block builder
   BLOCK_BUILDER_URL: url({ devDefault: "http://localhost:3001" }),
+  // proxy
+  BLOCK_BUILDER_VERSION: str({ default: "0.0.0" }),
+  PROXY_DOMAIN: str({ default: "localhost" }),
+  PROXY_FRP_TOKEN: str({ default: "dummy" }),
   // network
   NETWORK_TYPE: str({
     choices: ["ethereum", "scroll"],

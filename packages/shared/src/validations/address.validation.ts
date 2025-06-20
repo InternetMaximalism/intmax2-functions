@@ -7,14 +7,12 @@ const isValidEthereumAddress = (address: string): boolean => {
   return ETHEREUM_ADDRESS_REGEX.test(address);
 };
 
-export const addressSchema = z.custom<Address>(
-  (val) => {
-    return isValidEthereumAddress(val as string);
-  },
-  {
+export const addressSchema = z
+  .string()
+  .refine((val) => isValidEthereumAddress(val), {
     message: "Invalid Ethereum address format",
-  },
-);
+  })
+  .transform((val) => val.toLowerCase() as Address);
 
 export const addressValidation = z.strictObject({
   address: addressSchema,
@@ -25,5 +23,5 @@ export const addressesValidation = z.strictObject({
     .array(addressSchema)
     .min(1)
     .max(30)
-    .transform((addresses) => [...new Set(addresses)]),
+    .transform((addresses) => [...new Set(addresses.map((addr) => addr.toLowerCase()))]),
 });

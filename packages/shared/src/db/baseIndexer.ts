@@ -151,6 +151,9 @@ export class BaseIndexer {
   async fetchIndexers(filter?: IndexerFilter) {
     return this.list((query) => {
       let modified = query;
+      if (filter?.addresses && filter.addresses.length > 0) {
+        modified = modified.where("address", "in", filter.addresses);
+      }
       if (filter?.lastSyncedTime) {
         modified = modified.where("lastSyncedTime", ">", filter.lastSyncedTime);
       }
