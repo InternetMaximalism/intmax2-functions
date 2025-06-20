@@ -4749,7 +4749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.20.3":
+"tsx@npm:^4.19.4, tsx@npm:^4.20.3":
   version: 4.20.3
   resolution: "tsx@npm:4.20.3"
   dependencies:
@@ -4897,7 +4897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.31.3":
+"viem@npm:^2.31.0, viem@npm:^2.31.3":
   version: 2.31.3
   resolution: "viem@npm:2.31.3"
   dependencies:
