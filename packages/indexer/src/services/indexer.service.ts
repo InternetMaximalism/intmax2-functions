@@ -4,6 +4,7 @@ import { getRandomBuilders } from "../lib/builder";
 export const listBlockBuilderNodes = async () => {
   const indexerInstance = getIndexer(FIRESTORE_DOCUMENTS.BUILDERS);
   const activeBuilders = await indexerInstance.listIndexers();
+
   return getRandomBuilders(activeBuilders);
 };
 
