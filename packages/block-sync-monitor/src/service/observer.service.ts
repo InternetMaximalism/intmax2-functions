@@ -12,7 +12,7 @@ import type { BlockNumberResponse } from "../type";
 
 // NOTE: Validity prover endpoint block from US
 export const fetchLatestValidityProverBlockNumber = async () => {
-  const validityProverUrl = `${config.API_VALIDITY_PROVER_BASE_URL}/validity-prover/block-number`;
+  const validityProverUrl = `${config.API_VALIDITY_PROVER_BASE_URL}/block-number`;
   try {
     const response = await axios.get<BlockNumberResponse>(validityProverUrl, {
       timeout: API_TIMEOUT,
