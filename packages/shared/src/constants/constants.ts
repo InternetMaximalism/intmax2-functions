@@ -116,3 +116,7 @@ export const CACHE_TIMEOUTS = {
 // query map
 export const MIN_EXPIRES_IN = 300; // 5 minutes
 export const DEFAULT_EXPIRES_IN = 86400 * 5; // 1 day * 5
+
+// mint
+export const MINT_AVAILABLE_FROM = "2025-06-23T00:00:00Z"; // UTC
+export const ITX_AMOUNT_TO_LIQUIDITY = "3910156250000000000000000";
