@@ -3,4 +3,5 @@
 /* eslint-disable */
 export * as liquidity from "./liquidity";
 export * as test from "./test";
+export * as minter from "./minter";
 

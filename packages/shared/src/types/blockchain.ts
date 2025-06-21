@@ -70,3 +70,19 @@ export interface WithdrawalClaimableEventLog {
 export interface BatchedCalldata {
   encodedCalldata: string;
 }
+
+export interface MintedEvent extends BaseEvent {
+  args: MintedEventLog;
+}
+
+export interface MintedEventLog {
+  amount: bigint;
+}
+
+export interface TransferredToLiquidityEvent extends BaseEvent {
+  args: TransferredToLiquidityEventLog;
+}
+
+export interface TransferredToLiquidityEventLog {
+  amount: bigint;
+}

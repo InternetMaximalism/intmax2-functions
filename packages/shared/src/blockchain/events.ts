@@ -25,6 +25,12 @@ export const blockBuilderHeartbeatEvent = parseAbiItem(
   "event BlockBuilderHeartbeat(address indexed blockBuilder, string url)",
 );
 
+export const mintedEvent = parseAbiItem("event Minted(uint256 amount)");
+
+export const transferredToLiquidityEvent = parseAbiItem(
+  "event TransferredToLiquidity(uint256 amount)",
+);
+
 export const getEventLogs = async (
   client: PublicClient,
   address: `0x${string}`,

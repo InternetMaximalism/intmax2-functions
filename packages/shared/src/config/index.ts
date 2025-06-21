@@ -46,6 +46,8 @@ export const config = cleanEnv(process.env, {
   ALCHEMY_API_KEY: str({ devDefault: "dummy" }),
   TRANSACTION_WAIT_TRANSACTION_TIMEOUT: num({ default: 30_000 }),
   TRANSACTION_INCREMENT_RATE: num({ default: 0.3 }),
+  // mint
+  MINT_AVAILABLE_FROM: str({ devDefault: "2025-06-23T00:00:00Z" }),
   // predicate
   PREDICATE_API_URL: url({ devDefault: "http://localhost:3002" }),
   PREDICATE_API_KEY: str({ devDefault: "dummy" }),
@@ -57,6 +59,8 @@ export const config = cleanEnv(process.env, {
   WITHDRAWAL_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
   CLAIM_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
   ROLLUP_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
+  MINTER_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
+  MINTER_CONTRACT_DEPLOYED_BLOCK: num({ devDefault: 0 }),
   // messenger contract
   L1_SCROLL_MESSENGER_CONTRACT_ADDRESS: str({ devDefault: "0x" }),
   MOCK_L1_SCROLL_MESSENGER_CONTRACT_ADDRESS: str({ default: "0x" }),

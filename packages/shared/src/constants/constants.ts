@@ -17,6 +17,7 @@ export const FIRESTORE_COLLECTIONS = {
   EVENTS: "events",
   TX_MAPS: "txMaps",
   TOKEN_MAPS: "tokenMaps",
+  MINTER_EVENTS: "minterEvents",
 } as const;
 
 export const FIRESTORE_DOCUMENTS = {
@@ -31,6 +32,7 @@ export const FIRESTORE_DOCUMENT_EVENTS = {
   MOCK_MESSENGER_RELAYER: "mockMessengerRelayer",
   MOCK_L2_SENT_MESSAGE: "mockL2SentMessage",
   BLOCK_BUILDER_HEART_BEAT: "blockBuilderHeartBeat",
+  MINTER: "minter",
 } as const;
 
 export const FIRESTORE_MAX_BATCH_SIZE = 500;
@@ -62,6 +64,8 @@ export const LIQUIDITY_CONTRACT_ADDRESS = config.LIQUIDITY_CONTRACT_ADDRESS as `
 export const LIQUIDITY_CONTRACT_DEPLOYED_BLOCK = config.LIQUIDITY_CONTRACT_DEPLOYED_BLOCK;
 export const L1_SCROLL_MESSENGER_CONTRACT_ADDRESS =
   config.L1_SCROLL_MESSENGER_CONTRACT_ADDRESS as `0x${string}`;
+export const MINTER_CONTRACT_ADDRESS = config.MINTER_CONTRACT_ADDRESS as `0x${string}`;
+export const MINTER_CONTRACT_DEPLOYED_BLOCK = config.MINTER_CONTRACT_DEPLOYED_BLOCK;
 
 // mock
 export const MOCK_L1_SCROLL_MESSENGER_CONTRACT_ADDRESS =
@@ -113,3 +117,9 @@ export const CACHE_TIMEOUTS = {
 // query map
 export const MIN_EXPIRES_IN = 300; // 5 minutes
 export const DEFAULT_EXPIRES_IN = 86400 * 5; // 1 day * 5
+
+// mint
+export const MINT_AVAILABLE_FROM = config.MINT_AVAILABLE_FROM;
+export const ITX_AMOUNT_TO_LIQUIDITY = "3910156250000000000000000";
+export const MINT_INTERVAL_WEEKS = 4;
+export const TRANSFER_INTERVAL_WEEKS = 1;

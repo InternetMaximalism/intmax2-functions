@@ -11,5 +11,6 @@ export { IL2ScrollMessenger__factory } from "./factories/@scroll-tech/contracts/
 export { Liquidity__factory } from './factories/contracts/liquidity/Liquidity__factory';
 export { MockL1ScrollMessenger__factory } from "./factories/contracts/test/MockL1ScrollMessanger.sol/MockL1ScrollMessenger__factory";
 export { MockL2ScrollMessenger__factory } from "./factories/contracts/test/MockL2ScrollMessanger.sol/MockL2ScrollMessenger__factory";
+export { Minter__factory } from "./factories/contracts/minter/Minter__factory";
 export type { contracts };
 
