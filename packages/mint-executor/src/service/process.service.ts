@@ -127,6 +127,7 @@ const executeMintOperation = async (
   mintEvent: MintEvent,
 ) => {
   logger.info("Executing mint operation");
+
   const receipt = await mint(ethereumClient);
   await mintEvent.addEvent({
     type: "mint",
