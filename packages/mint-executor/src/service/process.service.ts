@@ -1,9 +1,9 @@
 import {
   Alchemy,
   ITX_AMOUNT_TO_LIQUIDITY,
-  MintEvent,
-  MintEventData,
-  MintedEvent,
+  type MintEvent,
+  type MintEventData,
+  type MintedEvent,
   createNetworkClient,
   logger,
 } from "@intmax2-functions/shared";
