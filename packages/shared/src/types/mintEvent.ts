@@ -4,6 +4,7 @@ export type MintEventData = {
   id: string;
   type: MintEventType;
   blockNumber: number;
+  blockTimestamp: number;
   transactionHash: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;

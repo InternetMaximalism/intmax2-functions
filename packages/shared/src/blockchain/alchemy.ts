@@ -3,10 +3,11 @@ import { config } from "../config";
 import { logger } from "../lib";
 
 export class Alchemy {
+  private static instance: Alchemy | null = null;
   private alchemy: AlchemyInstance;
   private networkKey = `${config.NETWORK_TYPE}-${config.NETWORK_ENVIRONMENT}`;
 
-  constructor(apiKey = config.ALCHEMY_API_KEY) {
+  private constructor(apiKey = config.ALCHEMY_API_KEY) {
     logger.debug(`Attempting to get alchemy network for: "${this.networkKey}"`);
 
     const network = this.getNetwork();
@@ -16,6 +17,13 @@ export class Alchemy {
       maxRetries: 5,
     };
     this.alchemy = new AlchemyInstance({ ...settings });
+  }
+
+  static getInstance(apiKey?: string): Alchemy {
+    if (!Alchemy.instance) {
+      Alchemy.instance = new Alchemy(apiKey);
+    }
+    return Alchemy.instance;
   }
 
   private getNetwork = () => {

@@ -1,4 +1,5 @@
 import {
+  Alchemy,
   ITX_AMOUNT_TO_LIQUIDITY,
   MintEvent,
   MintEventData,
@@ -6,6 +7,7 @@ import {
   createNetworkClient,
   logger,
 } from "@intmax2-functions/shared";
+import { hexToNumber } from "viem";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
 import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
 import { mint } from "./mint.service";
@@ -71,6 +73,7 @@ const saveNewEvents = async (
       mintEvent.addEvent({
         type: "mint",
         blockNumber: Number(newEvents?.mint?.blockNumber),
+        blockTimestamp: hexToNumber(newEvents?.mint?.blockTimestamp as `0x${string}`) * 1000,
         transactionHash: newEvents?.mint?.transactionHash?.toLowerCase()!,
       }),
     );
@@ -82,6 +85,8 @@ const saveNewEvents = async (
       mintEvent.addEvent({
         type: "transferToLiquidity",
         blockNumber: Number(newEvents?.transferToLiquidity?.blockNumber),
+        blockTimestamp:
+          hexToNumber(newEvents?.transferToLiquidity?.blockTimestamp as `0x${string}`) * 1000,
         transactionHash: newEvents?.transferToLiquidity?.transactionHash?.toLowerCase()!,
       }),
     );
@@ -131,9 +136,11 @@ const executeMintOperation = async (
   logger.info("Executing mint operation");
 
   const receipt = await mint(ethereumClient);
+  const block = await Alchemy.getInstance().getBlock(BigInt(receipt.blockNumber));
   await mintEvent.addEvent({
     type: "mint",
     blockNumber: Number(receipt.blockNumber),
+    blockTimestamp: Number(block.timestamp) * 1000,
     transactionHash: receipt.hash.toLowerCase(),
   });
 };
@@ -145,9 +152,11 @@ const executeTransferOperation = async (
   logger.info("Executing transfer to liquidity operation");
 
   const receipt = await transferToLiquidity(ethereumClient, BigInt(ITX_AMOUNT_TO_LIQUIDITY));
+  const block = await Alchemy.getInstance().getBlock(BigInt(receipt.blockNumber));
   await mintEvent.addEvent({
     type: "transferToLiquidity",
     blockNumber: Number(receipt.blockNumber),
+    blockTimestamp: Number(block.timestamp) * 1000,
     transactionHash: receipt.hash.toLowerCase(),
   });
 };
