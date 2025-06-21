@@ -35,11 +35,11 @@ describe("Interval Service", () => {
       expect(result).toBe(false);
     });
 
-    it("should return true when enough time has passed since last mint (more than 4 days)", () => {
-      // Create a date 5 days ago at midnight
-      const fiveDaysAgo = new Date();
-      fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-      fiveDaysAgo.setHours(0, 0, 0, 0);
+    it("should return true when enough time has passed since last mint (more than 4 weeks)", () => {
+      // Create a date 5 weeks ago at midnight
+      const fiveWeeksAgo = new Date();
+      fiveWeeksAgo.setDate(fiveWeeksAgo.getDate() - 5 * 7); // 5 weeks = 35 days
+      fiveWeeksAgo.setHours(0, 0, 0, 0);
 
       const now = Date.now();
 
@@ -49,19 +49,19 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(fiveDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(fiveDaysAgo.getTime()),
+        createdAt: Timestamp.fromMillis(fiveWeeksAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(fiveWeeksAgo.getTime()),
       };
 
       const result = shouldExecuteMint(now, mockMintEvent);
       expect(result).toBe(true);
     });
 
-    it("should return false when not enough time has passed since last mint (less than 4 days)", () => {
-      // Create a date 2 days ago at midnight
-      const twoDaysAgo = new Date();
-      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-      twoDaysAgo.setHours(0, 0, 0, 0);
+    it("should return false when not enough time has passed since last mint (less than 4 weeks)", () => {
+      // Create a date 2 weeks ago at midnight
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 2 * 7); // 2 weeks = 14 days
+      twoWeeksAgo.setHours(0, 0, 0, 0);
 
       const now = Date.now();
 
@@ -71,21 +71,21 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(twoDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(twoDaysAgo.getTime()),
+        createdAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
       };
 
       const result = shouldExecuteMint(now, mockMintEvent);
       expect(result).toBe(false);
     });
 
-    it("should return true when exactly 4 days have passed since last mint", () => {
-      // Create a date exactly 4 days ago at midnight
-      const fourDaysAgo = new Date();
-      fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
-      fourDaysAgo.setHours(0, 0, 0, 0);
+    it("should return true when exactly 4 weeks have passed since last mint", () => {
+      // Create a date exactly 4 weeks ago at midnight
+      const fourWeeksAgo = new Date();
+      fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 4 * 7); // 4 weeks = 28 days
+      fourWeeksAgo.setHours(0, 0, 0, 0);
 
-      // Set now to be exactly 4 days later at midnight
+      // Set now to be exactly 4 weeks later at midnight
       const now = new Date();
       now.setHours(0, 0, 0, 0);
 
@@ -95,8 +95,8 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(fourDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(fourDaysAgo.getTime()),
+        createdAt: Timestamp.fromMillis(fourWeeksAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(fourWeeksAgo.getTime()),
       };
 
       const result = shouldExecuteMint(now.getTime(), mockMintEvent);
@@ -172,11 +172,11 @@ describe("Interval Service", () => {
       expect(result).toBe(false);
     });
 
-    it("should return true when enough time has passed since last transfer (more than 1 day)", () => {
-      // Create a date 2 days ago at midnight
-      const twoDaysAgo = new Date();
-      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-      twoDaysAgo.setHours(0, 0, 0, 0);
+    it("should return true when enough time has passed since last transfer (more than 1 week)", () => {
+      // Create a date 2 weeks ago at midnight
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 2 * 7); // 2 weeks = 14 days
+      twoWeeksAgo.setHours(0, 0, 0, 0);
 
       const now = Date.now();
 
@@ -186,22 +186,21 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(twoDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(twoDaysAgo.getTime()),
+        createdAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
       };
 
       const result = shouldExecuteTransfer(now, mockTransferEvent);
       expect(result).toBe(true);
     });
 
-    it("should return false when not enough time has passed since last transfer (same day)", () => {
-      // Create a transfer event from earlier today
-      const today = new Date();
-      const earlierToday = new Date(today);
-      earlierToday.setHours(8, 0, 0, 0);
+    it("should return false when not enough time has passed since last transfer (less than 1 week)", () => {
+      // Create a transfer event from 3 days ago
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      threeDaysAgo.setHours(8, 0, 0, 0);
 
-      const now = new Date(today);
-      now.setHours(15, 0, 0, 0); // Later the same day
+      const now = Date.now();
 
       const mockTransferEvent: MintEventData = {
         id: "test-id",
@@ -209,21 +208,21 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(earlierToday.getTime()),
-        updatedAt: Timestamp.fromMillis(earlierToday.getTime()),
+        createdAt: Timestamp.fromMillis(threeDaysAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(threeDaysAgo.getTime()),
       };
 
-      const result = shouldExecuteTransfer(now.getTime(), mockTransferEvent);
+      const result = shouldExecuteTransfer(now, mockTransferEvent);
       expect(result).toBe(false);
     });
 
-    it("should return true when exactly 1 day has passed since last transfer", () => {
-      // Create a date exactly 1 day ago at midnight
-      const oneDayAgo = new Date();
-      oneDayAgo.setDate(oneDayAgo.getDate() - 1);
-      oneDayAgo.setHours(0, 0, 0, 0);
+    it("should return true when exactly 1 week has passed since last transfer", () => {
+      // Create a date exactly 1 week ago at midnight
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // 1 week = 7 days
+      oneWeekAgo.setHours(0, 0, 0, 0);
 
-      // Set now to be exactly 1 day later at midnight
+      // Set now to be exactly 1 week later at midnight
       const now = new Date();
       now.setHours(0, 0, 0, 0);
 
@@ -233,8 +232,8 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(oneDayAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(oneDayAgo.getTime()),
+        createdAt: Timestamp.fromMillis(oneWeekAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(oneWeekAgo.getTime()),
       };
 
       const result = shouldExecuteTransfer(now.getTime(), mockTransferEvent);
@@ -242,10 +241,10 @@ describe("Interval Service", () => {
     });
 
     it("should handle date normalization correctly for transfer", () => {
-      // Create a transfer event from yesterday at different hour
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(23, 59, 59, 999); // Almost midnight
+      // Create a transfer event from 8 days ago at different hour
+      const eightDaysAgo = new Date();
+      eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
+      eightDaysAgo.setHours(23, 59, 59, 999); // Almost midnight
 
       // Current time is today at early hour
       const now = new Date();
@@ -257,12 +256,12 @@ describe("Interval Service", () => {
         blockNumber: 12345,
         blockTimestamp: 1640995200,
         transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(yesterday.getTime()),
-        updatedAt: Timestamp.fromMillis(yesterday.getTime()),
+        createdAt: Timestamp.fromMillis(eightDaysAgo.getTime()),
+        updatedAt: Timestamp.fromMillis(eightDaysAgo.getTime()),
       };
 
       const result = shouldExecuteTransfer(now.getTime(), mockTransferEvent);
-      expect(result).toBe(true); // Different days, so should execute
+      expect(result).toBe(true); // More than 1 week has passed, so should execute
     });
 
     it("should handle edge case with very recent transfer event", () => {
@@ -298,7 +297,7 @@ describe("Interval Service", () => {
     it("should handle daylight saving time transitions for mint", () => {
       // Test around DST transition (assuming US Eastern Time)
       const beforeDST = new Date("2025-03-08T12:00:00Z"); // Before DST starts
-      const afterDST = new Date("2025-03-15T12:00:00Z"); // After DST starts (1 week later)
+      const afterDST = new Date("2025-04-05T12:00:00Z"); // After DST starts (4 weeks later)
 
       const mockMintEvent: MintEventData = {
         id: "test-id",
@@ -317,7 +316,7 @@ describe("Interval Service", () => {
     it("should handle leap year dates correctly", () => {
       // Test with leap year date
       const leapYearDate = new Date("2024-02-29T12:00:00Z"); // Leap year
-      const oneWeekLater = new Date("2024-03-07T12:00:00Z");
+      const fourWeeksLater = new Date("2024-03-28T12:00:00Z"); // 4 weeks later
 
       const mockMintEvent: MintEventData = {
         id: "test-id",
@@ -329,7 +328,7 @@ describe("Interval Service", () => {
         updatedAt: Timestamp.fromMillis(leapYearDate.getTime()),
       };
 
-      const result = shouldExecuteMint(oneWeekLater.getTime(), mockMintEvent);
+      const result = shouldExecuteMint(fourWeeksLater.getTime(), mockMintEvent);
       expect(result).toBe(true);
     });
   });

@@ -7,7 +7,7 @@ import {
 } from "@intmax2-functions/shared";
 
 export const shouldExecuteMint = (now: number, mintEvent: MintEventData | null) => {
-  const INTERVAL_WEEKS_MS = MINT_INTERVAL_WEEKS * 24 * 60 * 60 * 1000;
+  const INTERVAL_WEEKS_MS = MINT_INTERVAL_WEEKS * 7 * 24 * 60 * 60 * 1000;
 
   if (!mintEvent) {
     const shouldExecute = now >= new Date(MINT_AVAILABLE_FROM).getTime();
@@ -27,7 +27,7 @@ export const shouldExecuteMint = (now: number, mintEvent: MintEventData | null) 
 };
 
 export const shouldExecuteTransfer = (now: number, mintEvent: MintEventData | null) => {
-  const INTERVAL_WEEKS_MS = TRANSFER_INTERVAL_WEEKS * 24 * 60 * 60 * 1000;
+  const INTERVAL_WEEKS_MS = TRANSFER_INTERVAL_WEEKS * 7 * 24 * 60 * 60 * 1000;
 
   if (!mintEvent) {
     const shouldExecute = now >= new Date(MINT_AVAILABLE_FROM).getTime();
