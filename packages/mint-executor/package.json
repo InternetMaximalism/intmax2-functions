@@ -1,5 +1,5 @@
 {
-  "name": "mint-scheduler",
+  "name": "mint-executor",
   "version": "1.0.0",
   "dependencies": {
     "@intmax2-functions/shared": "workspace:*",

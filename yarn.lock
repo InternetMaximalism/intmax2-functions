@@ -3694,9 +3694,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mint-scheduler@workspace:packages/mint-scheduler":
+"mint-executor@workspace:packages/mint-executor":
   version: 0.0.0-use.local
-  resolution: "mint-scheduler@workspace:packages/mint-scheduler"
+  resolution: "mint-executor@workspace:packages/mint-executor"
   dependencies:
     "@intmax2-functions/shared": "workspace:*"
     tsx: "npm:^4.19.4"

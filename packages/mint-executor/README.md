@@ -1,6 +1,6 @@
-# mint-scheduler
+# mint-executor
 
-`mint-scheduler`
+`mint-executor`
 
 ## Usage
 
@@ -11,7 +11,7 @@ To set up the development environment:
 yarn
 
 # dev
-yarn workspace mint-scheduler dev
+yarn workspace mint-executor dev
 
 # build
 yarn build

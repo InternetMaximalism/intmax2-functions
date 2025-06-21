@@ -9,12 +9,19 @@ export const mockWalletConfigs: Record<MockWalletType, `0x${string}`> = {
   mockMessenger: config.MOCK_MESSENGER_PRIVATE_KEY as `0x${string}`,
 };
 
-type WalletType = "builder" | "depositAnalyzer" | "withdrawal";
+type WalletType =
+  | "builder"
+  | "depositAnalyzer"
+  | "withdrawal"
+  | "blockBuilderReward"
+  | "tokenManager";
 
 const walletConfigs: Record<WalletType, number> = {
   builder: 0,
   depositAnalyzer: 1,
   withdrawal: 2,
+  blockBuilderReward: 3,
+  tokenManager: 4,
 };
 
 export const getMockWalletClient = (

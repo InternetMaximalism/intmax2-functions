@@ -1,0 +1,192 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "mint",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "transferTo",
+      "inputs": [
+        { "name": "to", "type": "address", "internalType": "address" },
+        { "name": "amount", "type": "uint256", "internalType": "uint256" }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "transferToLiquidity",
+      "inputs": [{ "name": "amount", "type": "uint256", "internalType": "uint256" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "Minted",
+      "inputs": [
+        { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "TransferredTo",
+      "inputs": [
+        { "name": "to", "type": "address", "indexed": false, "internalType": "address" },
+        { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "TransferredToLiquidity",
+      "inputs": [
+        { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+      ],
+      "anonymous": false
+    },
+    { "type": "error", "name": "AddressZero", "inputs": [] },
+    { "type": "error", "name": "InsufficientBalance", "inputs": [] },
+    { "type": "error", "name": "MintFailed", "inputs": [] },
+    { "type": "error", "name": "NoTokensMinted", "inputs": [] },
+    { "type": "error", "name": "TransferFailed", "inputs": [] },
+    { "type": "error", "name": "ZeroAmount", "inputs": [] },
+    { "type": "error", "name": "ZeroRecipient", "inputs": [] }
+  ],
+  "bytecode": { "object": "0x", "sourceMap": "", "linkReferences": {} },
+  "deployedBytecode": { "object": "0x", "sourceMap": "", "linkReferences": {} },
+  "methodIdentifiers": {
+    "mint()": "1249c58b",
+    "transferTo(address,uint256)": "2ccb1b30",
+    "transferToLiquidity(uint256)": "dec58c00"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.27+commit.40a35a09\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"AddressZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MintFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoTokensMinted\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TransferFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAmount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroRecipient\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Minted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TransferredTo\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TransferredToLiquidity\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferToLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Interface for the Minter contract that handles INTMAX token minting and distribution\",\"errors\":{\"AddressZero()\":[{\"details\":\"Thrown when an address parameter is the zero address\"}],\"InsufficientBalance()\":[{\"details\":\"Thrown when insufficient balance for transfer\"}],\"MintFailed()\":[{\"details\":\"Thrown when mint operation fails due to balance decrease\"}],\"NoTokensMinted()\":[{\"details\":\"Thrown when no tokens were minted\"}],\"TransferFailed()\":[{\"details\":\"Thrown when transfer fails\"}],\"ZeroAmount()\":[{\"details\":\"Thrown when transfer amount is zero\"}],\"ZeroRecipient()\":[{\"details\":\"Thrown when transfer recipient is zero address\"}]},\"events\":{\"Minted(uint256)\":{\"params\":{\"amount\":\"The amount of tokens minted\"}},\"TransferredTo(address,uint256)\":{\"params\":{\"amount\":\"The amount of tokens transferred\",\"to\":\"The address receiving the tokens\"}},\"TransferredToLiquidity(uint256)\":{\"params\":{\"amount\":\"The amount of tokens transferred\"}}},\"kind\":\"dev\",\"methods\":{\"mint()\":{\"details\":\"Can only be called by addresses with TOKEN_MANAGER_ROLE\"},\"transferTo(address,uint256)\":{\"details\":\"Can only be called by addresses with DEFAULT_ADMIN_ROLE\",\"params\":{\"amount\":\"The amount of tokens to transfer\",\"to\":\"The address to transfer tokens to\"}},\"transferToLiquidity(uint256)\":{\"details\":\"Can only be called by addresses with TOKEN_MANAGER_ROLE\",\"params\":{\"amount\":\"The amount of tokens to transfer\"}}},\"title\":\"IMinter\",\"version\":1},\"userdoc\":{\"events\":{\"Minted(uint256)\":{\"notice\":\"Emitted when INTMAX tokens are minted\"},\"TransferredTo(address,uint256)\":{\"notice\":\"Emitted when tokens are transferred to a specific address\"},\"TransferredToLiquidity(uint256)\":{\"notice\":\"Emitted when tokens are transferred to the liquidity address\"}},\"kind\":\"user\",\"methods\":{\"mint()\":{\"notice\":\"Mints new INTMAX tokens to this contract\"},\"transferTo(address,uint256)\":{\"notice\":\"Transfers tokens from this contract to the specified address\"},\"transferToLiquidity(uint256)\":{\"notice\":\"Transfers tokens from this contract to the liquidity address\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/minter/IMinter.sol\":\"IMinter\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":@intmax2contract/contracts/=lib/intmax2-contract/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@prb/math/=lib/prb-math/\",\":@scroll-tech/contracts/=lib/scroll-contracts/src/\",\":ds-test/=lib/scroll-contracts/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/\",\":hardhat/=lib/scroll-contracts/node_modules/hardhat/\",\":intmax2-contract/=lib/intmax2-contract/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":prb-math/=lib/prb-math/src/\",\":scroll-contracts/=lib/scroll-contracts/\",\":solmate/=lib/scroll-contracts/lib/solmate/src/\"]},\"sources\":{\"src/minter/IMinter.sol\":{\"keccak256\":\"0x10f82b59e9d00428b049cc23241990a9603c12481432d94585123662e4e20c1c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d0bcfe4789f7bd67fc6821032c2f8269ed415ed315be3e6c7e17e36c4597cdda\",\"dweb:/ipfs/Qme4ZrSWbyLxpsE51toA2YpLKDcW3u6aqYgsVt3qdejfJs\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": { "version": "0.8.27+commit.40a35a09" },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        { "inputs": [], "type": "error", "name": "AddressZero" },
+        { "inputs": [], "type": "error", "name": "InsufficientBalance" },
+        { "inputs": [], "type": "error", "name": "MintFailed" },
+        { "inputs": [], "type": "error", "name": "NoTokensMinted" },
+        { "inputs": [], "type": "error", "name": "TransferFailed" },
+        { "inputs": [], "type": "error", "name": "ZeroAmount" },
+        { "inputs": [], "type": "error", "name": "ZeroRecipient" },
+        {
+          "inputs": [
+            { "internalType": "uint256", "name": "amount", "type": "uint256", "indexed": false }
+          ],
+          "type": "event",
+          "name": "Minted",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "to", "type": "address", "indexed": false },
+            { "internalType": "uint256", "name": "amount", "type": "uint256", "indexed": false }
+          ],
+          "type": "event",
+          "name": "TransferredTo",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            { "internalType": "uint256", "name": "amount", "type": "uint256", "indexed": false }
+          ],
+          "type": "event",
+          "name": "TransferredToLiquidity",
+          "anonymous": false
+        },
+        { "inputs": [], "stateMutability": "nonpayable", "type": "function", "name": "mint" },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "to", "type": "address" },
+            { "internalType": "uint256", "name": "amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferTo"
+        },
+        {
+          "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferToLiquidity"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "mint()": { "details": "Can only be called by addresses with TOKEN_MANAGER_ROLE" },
+          "transferTo(address,uint256)": {
+            "details": "Can only be called by addresses with DEFAULT_ADMIN_ROLE",
+            "params": {
+              "amount": "The amount of tokens to transfer",
+              "to": "The address to transfer tokens to"
+            }
+          },
+          "transferToLiquidity(uint256)": {
+            "details": "Can only be called by addresses with TOKEN_MANAGER_ROLE",
+            "params": { "amount": "The amount of tokens to transfer" }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "mint()": { "notice": "Mints new INTMAX tokens to this contract" },
+          "transferTo(address,uint256)": {
+            "notice": "Transfers tokens from this contract to the specified address"
+          },
+          "transferToLiquidity(uint256)": {
+            "notice": "Transfers tokens from this contract to the liquidity address"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@intmax2contract/contracts/=lib/intmax2-contract/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@prb/math/=lib/prb-math/",
+        "@scroll-tech/contracts/=lib/scroll-contracts/src/",
+        "ds-test/=lib/scroll-contracts/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/",
+        "hardhat/=lib/scroll-contracts/node_modules/hardhat/",
+        "intmax2-contract/=lib/intmax2-contract/contracts/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "prb-math/=lib/prb-math/src/",
+        "scroll-contracts/=lib/scroll-contracts/",
+        "solmate/=lib/scroll-contracts/lib/solmate/src/"
+      ],
+      "optimizer": { "enabled": false, "runs": 200 },
+      "metadata": { "bytecodeHash": "ipfs" },
+      "compilationTarget": { "src/minter/IMinter.sol": "IMinter" },
+      "evmVersion": "cancun",
+      "libraries": {}
+    },
+    "sources": {
+      "src/minter/IMinter.sol": {
+        "keccak256": "0x10f82b59e9d00428b049cc23241990a9603c12481432d94585123662e4e20c1c",
+        "urls": [
+          "bzz-raw://d0bcfe4789f7bd67fc6821032c2f8269ed415ed315be3e6c7e17e36c4597cdda",
+          "dweb:/ipfs/Qme4ZrSWbyLxpsE51toA2YpLKDcW3u6aqYgsVt3qdejfJs"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "id": 54
+}
