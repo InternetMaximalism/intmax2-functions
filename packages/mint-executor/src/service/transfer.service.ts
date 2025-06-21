@@ -134,7 +134,7 @@ export const submitMintWithRetry = async (
   );
   const contract = Minter__factory.connect(contractCallParams.contractAddress, signer);
   const ethersTxOptions = getEthersTxOptions(contractCallParams, contractCallOptions ?? {});
-  const callArgs = [contractCallParams.args[0], contractCallParams.args[1], ethersTxOptions];
+  const callArgs = [contractCallParams.args[0], ethersTxOptions];
 
   if (pendingNonce > currentNonce) {
     return await replacedEthersTransaction({

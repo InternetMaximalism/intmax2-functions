@@ -6,3 +6,4 @@ export * from "./tokenMap";
 export * from "./transaction";
 export * from "./utils";
 export * from "./txMap";
+export * from "./mintEvent";

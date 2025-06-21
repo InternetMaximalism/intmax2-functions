@@ -17,6 +17,7 @@ export const FIRESTORE_COLLECTIONS = {
   EVENTS: "events",
   TX_MAPS: "txMaps",
   TOKEN_MAPS: "tokenMaps",
+  MINTER_EVENTS: "minterEvents",
 } as const;
 
 export const FIRESTORE_DOCUMENTS = {
@@ -118,5 +119,7 @@ export const MIN_EXPIRES_IN = 300; // 5 minutes
 export const DEFAULT_EXPIRES_IN = 86400 * 5; // 1 day * 5
 
 // mint
-export const MINT_AVAILABLE_FROM = "2025-06-23T00:00:00Z"; // UTC
+export const MINT_AVAILABLE_FROM = config.MINT_AVAILABLE_FROM;
 export const ITX_AMOUNT_TO_LIQUIDITY = "3910156250000000000000000";
+export const MINT_INTERVAL_WEEKS = 4;
+export const TRANSFER_INTERVAL_WEEKS = 1;

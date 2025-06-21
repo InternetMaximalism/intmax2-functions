@@ -3,14 +3,13 @@ import {
   type EventData,
   FIRESTORE_DOCUMENT_EVENTS,
   MINTER_CONTRACT_DEPLOYED_BLOCK,
+  MintEvent,
   createNetworkClient,
   getStartBlockNumber,
   logger,
   validateBlockRange,
 } from "@intmax2-functions/shared";
-import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
-import { mint } from "./mint.service";
-import { transferToLiquidity } from "./transfer.service";
+import { processEvents, executeAutomaticOperations } from "./process.service";
 
 export const performJob = async (): Promise<void> => {
   const ethereumClient = createNetworkClient("ethereum");
@@ -31,17 +30,15 @@ const processMinter = async (
   lastProcessedEvent: EventData | null,
 ) => {
   const startBlockNumber = getStartBlockNumber(lastProcessedEvent, MINTER_CONTRACT_DEPLOYED_BLOCK);
-  const isValid = validateBlockRange("minterEvent", startBlockNumber, currentBlockNumber);
-  if (!isValid) {
-    logger.info("Skipping process process Minter due to invalid block range.");
+  if (!validateBlockRange("mintEvent", startBlockNumber, currentBlockNumber)) {
+    logger.info("Skipping minter process due to invalid block range");
     return;
   }
 
-  await getMintedEvent(ethereumClient, startBlockNumber, currentBlockNumber);
-  await getTransferredToLiquidityEvent(ethereumClient, startBlockNumber, currentBlockNumber);
+  const mintEvent = MintEvent.getInstance();
+  await processEvents(ethereumClient, mintEvent, startBlockNumber, currentBlockNumber);
 
-  await mint(ethereumClient);
-  await transferToLiquidity(ethereumClient, 0n);
+  await executeAutomaticOperations(ethereumClient, mintEvent);
 
   await updateEventState(event, currentBlockNumber);
 };
