@@ -9,7 +9,7 @@ import {
   logger,
   validateBlockRange,
 } from "@intmax2-functions/shared";
-import { processEvents, executeAutomaticOperations } from "./process.service";
+import { executeAutomaticOperations, processEvents } from "./process.service";
 
 export const performJob = async (): Promise<void> => {
   const ethereumClient = createNetworkClient("ethereum");

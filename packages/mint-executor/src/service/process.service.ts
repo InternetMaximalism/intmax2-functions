@@ -1,17 +1,19 @@
 import {
   ITX_AMOUNT_TO_LIQUIDITY,
   MintEvent,
+  MintEventData,
+  MintedEvent,
   createNetworkClient,
   logger,
 } from "@intmax2-functions/shared";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
+import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
 import { mint } from "./mint.service";
 import { transferToLiquidity } from "./transfer.service";
-import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
 
 interface ProcessedEvents {
-  mint: any;
-  transferToLiquidity: any;
+  mint: MintEventData | MintedEvent | null;
+  transferToLiquidity: MintEventData | MintedEvent | null;
 }
 
 export const processEvents = async (
@@ -68,8 +70,8 @@ const saveNewEvents = async (
     savePromises.push(
       mintEvent.addEvent({
         type: "mint",
-        blockNumber: Number(newEvents.mint.blockNumber),
-        transactionHash: newEvents.mint.transactionHash.toLowerCase(),
+        blockNumber: Number(newEvents?.mint?.blockNumber),
+        transactionHash: newEvents?.mint?.transactionHash?.toLowerCase()!,
       }),
     );
   }
@@ -79,8 +81,8 @@ const saveNewEvents = async (
     savePromises.push(
       mintEvent.addEvent({
         type: "transferToLiquidity",
-        blockNumber: Number(newEvents.transferToLiquidity.blockNumber),
-        transactionHash: newEvents.transferToLiquidity.transactionHash.toLowerCase(),
+        blockNumber: Number(newEvents?.transferToLiquidity?.blockNumber),
+        transactionHash: newEvents?.transferToLiquidity?.transactionHash?.toLowerCase()!,
       }),
     );
   }

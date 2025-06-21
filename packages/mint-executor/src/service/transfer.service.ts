@@ -3,6 +3,7 @@ import {
   type ContractCallParameters,
   ETHERS_CONFIRMATIONS,
   ETHERS_WAIT_TRANSACTION_TIMEOUT_MESSAGE,
+  MINTER_CONTRACT_ADDRESS,
   MinterAbi,
   Minter__factory,
   type RetryOptions,
@@ -21,7 +22,6 @@ import {
   getWalletClient,
   logger,
   replacedEthersTransaction,
-  MINTER_CONTRACT_ADDRESS,
 } from "@intmax2-functions/shared";
 import { ethers } from "ethers";
 import { type Abi, type PublicClient, toHex } from "viem";

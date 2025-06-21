@@ -1,7 +1,7 @@
 import type { CollectionReference } from "@google-cloud/firestore";
 import { FIRESTORE_COLLECTIONS } from "../constants";
 import { AppError, ErrorCode, logger } from "../lib";
-import type { MintEventData, MintEventType, MintEventInput } from "../types";
+import type { MintEventData, MintEventInput, MintEventType } from "../types";
 import { db } from "./firestore";
 
 export class MintEvent {
