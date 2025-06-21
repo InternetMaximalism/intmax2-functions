@@ -127,19 +127,12 @@ const executeMintOperation = async (
   mintEvent: MintEvent,
 ) => {
   logger.info("Executing mint operation");
-
-  try {
-    const receipt = await mint(ethereumClient);
-    await mintEvent.addEvent({
-      type: "mint",
-      blockNumber: Number(receipt.blockNumber),
-      transactionHash: receipt.hash.toLowerCase(),
-    });
-    logger.info("Mint operation completed successfully");
-  } catch (error) {
-    logger.error("Failed to execute mint operation:", error);
-    throw error;
-  }
+  const receipt = await mint(ethereumClient);
+  await mintEvent.addEvent({
+    type: "mint",
+    blockNumber: Number(receipt.blockNumber),
+    transactionHash: receipt.hash.toLowerCase(),
+  });
 };
 
 const executeTransferOperation = async (
@@ -148,16 +141,10 @@ const executeTransferOperation = async (
 ) => {
   logger.info("Executing transfer to liquidity operation");
 
-  try {
-    const receipt = await transferToLiquidity(ethereumClient, BigInt(ITX_AMOUNT_TO_LIQUIDITY));
-    await mintEvent.addEvent({
-      type: "transferToLiquidity",
-      blockNumber: Number(receipt.blockNumber),
-      transactionHash: receipt.hash.toLowerCase(),
-    });
-    logger.info("Transfer to liquidity operation completed successfully");
-  } catch (error) {
-    logger.error("Failed to execute transfer operation:", error);
-    throw error;
-  }
+  const receipt = await transferToLiquidity(ethereumClient, BigInt(ITX_AMOUNT_TO_LIQUIDITY));
+  await mintEvent.addEvent({
+    type: "transferToLiquidity",
+    blockNumber: Number(receipt.blockNumber),
+    transactionHash: receipt.hash.toLowerCase(),
+  });
 };

@@ -7,7 +7,6 @@ import {
   Minter__factory,
   type RetryOptions,
   TRANSACTION_INCREMENT_RATE,
-  TRANSACTION_MAX_RETRIES,
   TRANSACTION_MISSING_REVERT_DATA,
   TRANSACTION_REPLACEMENT_FEE_TOO_LOW,
   TRANSACTION_WAIT_TIMEOUT_ERROR_MESSAGE,
@@ -26,6 +25,8 @@ import {
 } from "@intmax2-functions/shared";
 import { ethers } from "ethers";
 import { type Abi, type PublicClient, toHex } from "viem";
+
+const TRANSACTION_MAX_RETRIES = 1;
 
 export const transferToLiquidity = async (ethereumClient: PublicClient, amount: bigint) => {
   const retryOptions: RetryOptions = {
