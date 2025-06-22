@@ -8,7 +8,7 @@ import {
 import { hexToNumber } from "viem";
 import { type MockedFunction, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
-import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
+import { shouldExecuteAction } from "./interval.service";
 import { mint } from "./mint.service";
 import { executeAutomaticOperations, processEvents } from "./process.service";
 import { transferToLiquidity } from "./transfer.service";
@@ -18,6 +18,8 @@ vi.mock("@intmax2-functions/shared", () => ({
     getInstance: vi.fn(),
   },
   ITX_AMOUNT_TO_LIQUIDITY: 1000000n,
+  MINT_INTERVAL_WEEKS: 4,
+  TRANSFER_INTERVAL_WEEKS: 1,
   createNetworkClient: vi.fn(),
   logger: {
     info: vi.fn(),
@@ -36,8 +38,7 @@ vi.mock("./event.service", () => ({
 }));
 
 vi.mock("./interval.service", () => ({
-  shouldExecuteMint: vi.fn(),
-  shouldExecuteTransfer: vi.fn(),
+  shouldExecuteAction: vi.fn(),
 }));
 
 vi.mock("./mint.service", () => ({
@@ -195,14 +196,20 @@ describe("Event Processing Service", () => {
         .mockResolvedValueOnce(mockLastMintedEvent) // mint
         .mockResolvedValueOnce(null); // transferToLiquidity
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(true);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(false);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(true) // mint
+        .mockReturnValueOnce(false); // transfer
       (mint as MockedFunction<any>).mockResolvedValue(mockReceipt);
       mockAlchemyInstance.getBlock.mockResolvedValue(mockBlock);
 
       await executeAutomaticOperations(mockEthereumClient, mockMintEvent);
 
-      expect(shouldExecuteMint).toHaveBeenCalledWith(Date.now(), mockLastMintedEvent);
+      expect(shouldExecuteAction).toHaveBeenCalledWith({
+        now: Date.now(),
+        mintEvent: mockLastMintedEvent,
+        intervalWeeks: 4,
+        actionName: "mint",
+      });
       expect(mint).toHaveBeenCalledWith(mockEthereumClient);
       expect(mockMintEvent.addEvent).toHaveBeenCalledWith({
         type: "mint",
@@ -227,14 +234,26 @@ describe("Event Processing Service", () => {
         .mockResolvedValueOnce(null) // mint
         .mockResolvedValueOnce(mockLastTransferEvent); // transferToLiquidity
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(false);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(true);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(false) // mint
+        .mockReturnValueOnce(true); // transfer
       (transferToLiquidity as MockedFunction<any>).mockResolvedValue(mockReceipt);
       mockAlchemyInstance.getBlock.mockResolvedValue(mockBlock);
 
       await executeAutomaticOperations(mockEthereumClient, mockMintEvent);
 
-      expect(shouldExecuteTransfer).toHaveBeenCalledWith(Date.now(), mockLastTransferEvent);
+      expect(shouldExecuteAction).toHaveBeenCalledWith({
+        now: Date.now(),
+        mintEvent: null,
+        intervalWeeks: 4,
+        actionName: "mint",
+      });
+      expect(shouldExecuteAction).toHaveBeenCalledWith({
+        now: Date.now(),
+        mintEvent: mockLastTransferEvent,
+        intervalWeeks: 1,
+        actionName: "transfer",
+      });
       expect(transferToLiquidity).toHaveBeenCalledWith(
         mockEthereumClient,
         BigInt(ITX_AMOUNT_TO_LIQUIDITY),
@@ -262,8 +281,9 @@ describe("Event Processing Service", () => {
         .mockResolvedValueOnce(mockLastMintedEvent)
         .mockResolvedValueOnce(mockLastTransferEvent);
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(true);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(true);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(true) // mint
+        .mockReturnValueOnce(true); // transfer
       (mint as MockedFunction<any>).mockResolvedValue(mockMintReceipt);
       (transferToLiquidity as MockedFunction<any>).mockResolvedValue(mockTransferReceipt);
       mockAlchemyInstance.getBlock.mockResolvedValue(mockBlock);
@@ -278,8 +298,9 @@ describe("Event Processing Service", () => {
     it("should not execute operations when conditions are not met", async () => {
       mockMintEvent.getLatestEventByType.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(false);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(false);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(false) // mint
+        .mockReturnValueOnce(false); // transfer
 
       await executeAutomaticOperations(mockEthereumClient, mockMintEvent);
 
@@ -295,8 +316,9 @@ describe("Event Processing Service", () => {
         .mockResolvedValueOnce(mockLastMintedEvent)
         .mockResolvedValueOnce(null);
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(false);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(false);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(false) // mint
+        .mockReturnValueOnce(false); // transfer
 
       await executeAutomaticOperations(mockEthereumClient, mockMintEvent);
 
@@ -325,8 +347,9 @@ describe("Event Processing Service", () => {
     it("should handle mint operation failure", async () => {
       mockMintEvent.getLatestEventByType.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
 
-      (shouldExecuteMint as MockedFunction<any>).mockReturnValue(true);
-      (shouldExecuteTransfer as MockedFunction<any>).mockReturnValue(false);
+      (shouldExecuteAction as MockedFunction<any>)
+        .mockReturnValueOnce(true) // mint
+        .mockReturnValueOnce(false); // transfer
       (mint as MockedFunction<any>).mockRejectedValue(new Error("Mint failed"));
 
       await expect(executeAutomaticOperations(mockEthereumClient, mockMintEvent)).rejects.toThrow(
