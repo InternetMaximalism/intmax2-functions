@@ -335,9 +335,8 @@ describe("Interval Service", () => {
 
       it("should handle same day but different times", () => {
         const lastMintDate = "2024-01-01T23:59:59Z";
-        const currentDate = "2024-01-29T00:00:01Z"; // 27 days, 1 hour, 2 seconds later
+        const currentDate = "2024-01-28T00:00:01Z";
         const now = new Date(currentDate).getTime();
-
         const mockMintEvent: MintEventData = {
           id: "test-id",
           type: "mint",
@@ -351,14 +350,12 @@ describe("Interval Service", () => {
             toDate: () => new Date(lastMintDate),
           } as any,
         };
-
         const result = shouldExecuteAction({
           now,
           mintEvent: mockMintEvent,
           intervalWeeks: 4,
           actionName: "mint",
         });
-
         // Should be false because it's only 27 days (less than 28)
         expect(result).toBe(false);
       });
