@@ -1,335 +1,423 @@
-import { Timestamp } from "@google-cloud/firestore";
-import type { MintEventData } from "@intmax2-functions/shared";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
+import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-functions/shared";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { shouldExecuteAction } from "./interval.service";
 
 vi.mock("@intmax2-functions/shared", () => ({
-  MINT_AVAILABLE_FROM: "2025-06-23T00:00:00Z",
-  MINT_INTERVAL_WEEKS: 4,
-  TRANSFER_INTERVAL_WEEKS: 1,
+  MINT_AVAILABLE_FROM: "2024-01-01T00:00:00Z",
   logger: {
     info: vi.fn(),
-    error: vi.fn(),
     warn: vi.fn(),
-    debug: vi.fn(),
+    error: vi.fn(),
   },
 }));
 
 describe("Interval Service", () => {
+  const mockLogger = vi.mocked(logger);
+
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
   });
 
-  describe("shouldExecuteMint", () => {
-    const MINT_AVAILABLE_FROM_MS = new Date("2025-06-23T00:00:00Z").getTime();
-
-    it("should return true when no mint event exists and current time is after MINT_AVAILABLE_FROM", () => {
-      const now = MINT_AVAILABLE_FROM_MS + 1000; // 1 second after available time
-      const result = shouldExecuteMint(now, null);
-      expect(result).toBe(true);
-    });
-
-    it("should return false when no mint event exists and current time is before MINT_AVAILABLE_FROM", () => {
-      const now = MINT_AVAILABLE_FROM_MS - 1000; // 1 second before available time
-      const result = shouldExecuteMint(now, null);
-      expect(result).toBe(false);
-    });
-
-    it("should return true when enough time has passed since last mint (more than 4 weeks)", () => {
-      // Create a date 5 weeks ago at midnight
-      const fiveWeeksAgo = new Date();
-      fiveWeeksAgo.setDate(fiveWeeksAgo.getDate() - 5 * 7); // 5 weeks = 35 days
-      fiveWeeksAgo.setHours(0, 0, 0, 0);
-
-      const now = Date.now();
-
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(fiveWeeksAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(fiveWeeksAgo.getTime()),
-      };
-
-      const result = shouldExecuteMint(now, mockMintEvent);
-      expect(result).toBe(true);
-    });
-
-    it("should return false when not enough time has passed since last mint (less than 4 weeks)", () => {
-      // Create a date 2 weeks ago at midnight
-      const twoWeeksAgo = new Date();
-      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 2 * 7); // 2 weeks = 14 days
-      twoWeeksAgo.setHours(0, 0, 0, 0);
-
-      const now = Date.now();
-
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
-      };
-
-      const result = shouldExecuteMint(now, mockMintEvent);
-      expect(result).toBe(false);
-    });
-
-    it("should return true when exactly 4 weeks have passed since last mint", () => {
-      // Create a date exactly 4 weeks ago at midnight
-      const fourWeeksAgo = new Date();
-      fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 4 * 7); // 4 weeks = 28 days
-      fourWeeksAgo.setHours(0, 0, 0, 0);
-
-      // Set now to be exactly 4 weeks later at midnight
-      const now = new Date();
-      now.setHours(0, 0, 0, 0);
-
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(fourWeeksAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(fourWeeksAgo.getTime()),
-      };
-
-      const result = shouldExecuteMint(now.getTime(), mockMintEvent);
-      expect(result).toBe(true);
-    });
-
-    it("should handle date normalization correctly (same day but different hours)", () => {
-      // Create a mint event from earlier today
-      const today = new Date();
-      const earlierToday = new Date(today);
-      earlierToday.setHours(8, 30, 45, 123); // 8:30:45.123 AM
-
-      // Current time is later the same day
-      const now = new Date(today);
-      now.setHours(15, 45, 30, 789); // 3:45:30.789 PM
-
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(earlierToday.getTime()),
-        updatedAt: Timestamp.fromMillis(earlierToday.getTime()),
-      };
-
-      const result = shouldExecuteMint(now.getTime(), mockMintEvent);
-      expect(result).toBe(false); // Same day, so should not execute
-    });
-
-    it("should handle edge case with very old mint event", () => {
-      // Create a mint event from 1 year ago
-      const oneYearAgo = new Date();
-      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-      oneYearAgo.setHours(0, 0, 0, 0);
-
-      const now = Date.now();
-
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(oneYearAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(oneYearAgo.getTime()),
-      };
-
-      const result = shouldExecuteMint(now, mockMintEvent);
-      expect(result).toBe(true);
-    });
-
-    it("should handle timestamp at exact boundary", () => {
-      const MINT_AVAILABLE_FROM_MS = new Date("2025-06-23T00:00:00Z").getTime();
-      const now = MINT_AVAILABLE_FROM_MS; // Exactly at the boundary
-      const result = shouldExecuteMint(now, null);
-      expect(result).toBe(true);
-    });
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
-  describe("shouldExecuteTransfer", () => {
-    const MINT_AVAILABLE_FROM_MS = new Date("2025-06-23T00:00:00Z").getTime();
+  describe("shouldExecuteAction", () => {
+    describe("when no mintEvent is provided", () => {
+      it("should return true if current time is after MINT_AVAILABLE_FROM", () => {
+        const now = new Date("2024-06-01T12:00:00Z").getTime();
+        vi.setSystemTime(now);
 
-    it("should return true when no transfer event exists and current time is after MINT_AVAILABLE_FROM", () => {
-      const now = MINT_AVAILABLE_FROM_MS + 1000; // 1 second after available time
-      const result = shouldExecuteTransfer(now, null);
-      expect(result).toBe(true);
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: null,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          "No last mint time found, should execute mint check: true",
+        );
+      });
+
+      it("should return false if current time is before MINT_AVAILABLE_FROM", () => {
+        const now = new Date("2023-12-01T12:00:00Z").getTime();
+        vi.setSystemTime(now);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: null,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(false);
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          "No last mint time found, should execute mint check: false",
+        );
+      });
+
+      it("should work for transfer actions", () => {
+        const now = new Date("2024-06-01T12:00:00Z").getTime();
+        vi.setSystemTime(now);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: null,
+          intervalWeeks: 1,
+          actionName: "transfer",
+        });
+
+        expect(result).toBe(true);
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          "No last transfer time found, should execute transfer check: true",
+        );
+      });
     });
 
-    it("should return false when no transfer event exists and current time is before MINT_AVAILABLE_FROM", () => {
-      const now = MINT_AVAILABLE_FROM_MS - 1000; // 1 second before available time
-      const result = shouldExecuteTransfer(now, null);
-      expect(result).toBe(false);
-    });
-
-    it("should return true when enough time has passed since last transfer (more than 1 week)", () => {
-      // Create a date 2 weeks ago at midnight
-      const twoWeeksAgo = new Date();
-      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 2 * 7); // 2 weeks = 14 days
-      twoWeeksAgo.setHours(0, 0, 0, 0);
-
-      const now = Date.now();
-
-      const mockTransferEvent: MintEventData = {
-        id: "test-id",
-        type: "transferToLiquidity",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(twoWeeksAgo.getTime()),
-      };
-
-      const result = shouldExecuteTransfer(now, mockTransferEvent);
-      expect(result).toBe(true);
-    });
-
-    it("should return false when not enough time has passed since last transfer (less than 1 week)", () => {
-      // Create a transfer event from 3 days ago
-      const threeDaysAgo = new Date();
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-      threeDaysAgo.setHours(8, 0, 0, 0);
-
-      const now = Date.now();
-
-      const mockTransferEvent: MintEventData = {
-        id: "test-id",
-        type: "transferToLiquidity",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(threeDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(threeDaysAgo.getTime()),
-      };
-
-      const result = shouldExecuteTransfer(now, mockTransferEvent);
-      expect(result).toBe(false);
-    });
-
-    it("should return true when exactly 1 week has passed since last transfer", () => {
-      // Create a date exactly 1 week ago at midnight
-      const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // 1 week = 7 days
-      oneWeekAgo.setHours(0, 0, 0, 0);
-
-      // Set now to be exactly 1 week later at midnight
-      const now = new Date();
-      now.setHours(0, 0, 0, 0);
-
-      const mockTransferEvent: MintEventData = {
-        id: "test-id",
-        type: "transferToLiquidity",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(oneWeekAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(oneWeekAgo.getTime()),
-      };
-
-      const result = shouldExecuteTransfer(now.getTime(), mockTransferEvent);
-      expect(result).toBe(true);
-    });
-
-    it("should handle date normalization correctly for transfer", () => {
-      // Create a transfer event from 8 days ago at different hour
-      const eightDaysAgo = new Date();
-      eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
-      eightDaysAgo.setHours(23, 59, 59, 999); // Almost midnight
-
-      // Current time is today at early hour
-      const now = new Date();
-      now.setHours(0, 0, 0, 1); // Just after midnight
-
-      const mockTransferEvent: MintEventData = {
-        id: "test-id",
-        type: "transferToLiquidity",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(eightDaysAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(eightDaysAgo.getTime()),
-      };
-
-      const result = shouldExecuteTransfer(now.getTime(), mockTransferEvent);
-      expect(result).toBe(true); // More than 1 week has passed, so should execute
-    });
-
-    it("should handle edge case with very recent transfer event", () => {
-      // Create a transfer event from just 1 hour ago
-      const oneHourAgo = new Date();
-      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
-
-      const now = Date.now();
-
-      const mockTransferEvent: MintEventData = {
-        id: "test-id",
-        type: "transferToLiquidity",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(oneHourAgo.getTime()),
-        updatedAt: Timestamp.fromMillis(oneHourAgo.getTime()),
-      };
-
-      const result = shouldExecuteTransfer(now, mockTransferEvent);
-      expect(result).toBe(false); // Same day, so should not execute
-    });
-
-    it("should handle timestamp at exact boundary for transfer", () => {
-      const MINT_AVAILABLE_FROM_MS = new Date("2025-06-23T00:00:00Z").getTime();
-      const now = MINT_AVAILABLE_FROM_MS; // Exactly at the boundary
-      const result = shouldExecuteTransfer(now, null);
-      expect(result).toBe(true);
-    });
-  });
-
-  describe("Time calculation edge cases", () => {
-    it("should handle daylight saving time transitions for mint", () => {
-      // Test around DST transition (assuming US Eastern Time)
-      const beforeDST = new Date("2025-03-08T12:00:00Z"); // Before DST starts
-      const afterDST = new Date("2025-04-05T12:00:00Z"); // After DST starts (4 weeks later)
-
-      const mockMintEvent: MintEventData = {
+    describe("when mintEvent is provided", () => {
+      const createMockMintEvent = (dateString: string): MintEventData => ({
         id: "test-id",
         type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(beforeDST.getTime()),
-        updatedAt: Timestamp.fromMillis(beforeDST.getTime()),
-      };
+        blockNumber: 1000,
+        blockTimestamp: Date.now(),
+        transactionHash: "0xtest",
+        createdAt: {
+          toDate: () => new Date(dateString),
+        } as any,
+        updatedAt: {
+          toDate: () => new Date(dateString),
+        } as any,
+      });
 
-      const result = shouldExecuteMint(afterDST.getTime(), mockMintEvent);
-      expect(result).toBe(true); // Should work correctly despite DST
+      it("should return true when enough time has passed (4 weeks for mint)", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-02-01T00:00:00Z"; // 31 days later (more than 4 weeks)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should return false when not enough time has passed (4 weeks for mint)", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-15T00:00:00Z"; // 14 days later (less than 4 weeks)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(false);
+      });
+
+      it("should return true when enough time has passed (1 week for transfer)", () => {
+        const lastTransferDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-08T00:00:00Z"; // 7 days later (exactly 1 week)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastTransferDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 1,
+          actionName: "transfer",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should return false when not enough time has passed (1 week for transfer)", () => {
+        const lastTransferDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-05T00:00:00Z"; // 4 days later (less than 1 week)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastTransferDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 1,
+          actionName: "transfer",
+        });
+
+        expect(result).toBe(false);
+      });
+
+      it("should normalize dates to midnight for comparison", () => {
+        const lastMintDate = "2024-01-01T15:30:45Z"; // 3:30:45 PM
+        const currentDate = "2024-01-29T08:15:30Z"; // 8:15:30 AM, 28 days later (exactly 4 weeks)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should handle edge case of exactly at the interval boundary", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-29T00:00:00Z"; // Exactly 28 days later (4 weeks)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should handle leap year calculations correctly", () => {
+        const lastMintDate = "2024-02-01T00:00:00Z"; // 2024 is a leap year
+        const currentDate = "2024-02-29T00:00:00Z"; // 28 days later (exactly 4 weeks)
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should handle different interval weeks correctly", () => {
+        const lastActionDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-15T00:00:00Z"; // 14 days later
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastActionDate);
+
+        // Should return true for 2-week interval (14 days >= 14 days)
+        const result2Weeks = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 2,
+          actionName: "mint",
+        });
+
+        // Should return false for 3-week interval (14 days < 21 days)
+        const result3Weeks = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 3,
+          actionName: "mint",
+        });
+
+        expect(result2Weeks).toBe(true);
+        expect(result3Weeks).toBe(false);
+      });
+
+      it("should handle DST transitions correctly", () => {
+        // Test during DST transition (spring forward)
+        const lastMintDate = "2024-03-01T00:00:00Z";
+        const currentDate = "2024-03-29T00:00:00Z"; // 28 days later, across DST transition
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should handle year boundaries correctly", () => {
+        const lastMintDate = "2023-12-01T00:00:00Z";
+        const currentDate = "2024-01-01T00:00:00Z"; // 31 days later, across year boundary
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent = createMockMintEvent(lastMintDate);
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
     });
 
-    it("should handle leap year dates correctly", () => {
-      // Test with leap year date
-      const leapYearDate = new Date("2024-02-29T12:00:00Z"); // Leap year
-      const fourWeeksLater = new Date("2024-03-28T12:00:00Z"); // 4 weeks later
+    describe("edge cases", () => {
+      it("should handle very large interval weeks", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-06-01T00:00:00Z"; // ~5 months later
+        const now = new Date(currentDate).getTime();
 
-      const mockMintEvent: MintEventData = {
-        id: "test-id",
-        type: "mint",
-        blockNumber: 12345,
-        blockTimestamp: 1640995200,
-        transactionHash: "0x123",
-        createdAt: Timestamp.fromMillis(leapYearDate.getTime()),
-        updatedAt: Timestamp.fromMillis(leapYearDate.getTime()),
-      };
+        const mockMintEvent: MintEventData = {
+          id: "test-id",
+          type: "mint",
+          blockNumber: 1000,
+          blockTimestamp: Date.now(),
+          transactionHash: "0xtest",
+          createdAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+          updatedAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+        };
 
-      const result = shouldExecuteMint(fourWeeksLater.getTime(), mockMintEvent);
-      expect(result).toBe(true);
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 52, // 1 year
+          actionName: "mint",
+        });
+
+        expect(result).toBe(false);
+      });
+
+      it("should handle zero interval weeks", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-01-01T00:00:01Z"; // 1 second later
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent: MintEventData = {
+          id: "test-id",
+          type: "mint",
+          blockNumber: 1000,
+          blockTimestamp: Date.now(),
+          transactionHash: "0xtest",
+          createdAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+          updatedAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+        };
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 0,
+          actionName: "mint",
+        });
+
+        expect(result).toBe(true);
+      });
+
+      it("should handle same day but different times", () => {
+        const lastMintDate = "2024-01-01T23:59:59Z";
+        const currentDate = "2024-01-29T00:00:01Z"; // 27 days, 1 hour, 2 seconds later
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent: MintEventData = {
+          id: "test-id",
+          type: "mint",
+          blockNumber: 1000,
+          blockTimestamp: Date.now(),
+          transactionHash: "0xtest",
+          createdAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+          updatedAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+        };
+
+        const result = shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        // Should be false because it's only 27 days (less than 28)
+        expect(result).toBe(false);
+      });
+    });
+
+    describe("logging behavior", () => {
+      it("should not log when mintEvent is provided", () => {
+        const lastMintDate = "2024-01-01T00:00:00Z";
+        const currentDate = "2024-02-01T00:00:00Z";
+        const now = new Date(currentDate).getTime();
+
+        const mockMintEvent: MintEventData = {
+          id: "test-id",
+          type: "mint",
+          blockNumber: 1000,
+          blockTimestamp: Date.now(),
+          transactionHash: "0xtest",
+          createdAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+          updatedAt: {
+            toDate: () => new Date(lastMintDate),
+          } as any,
+        };
+
+        shouldExecuteAction({
+          now,
+          mintEvent: mockMintEvent,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        expect(mockLogger.info).not.toHaveBeenCalled();
+      });
+
+      it("should log with correct action name for different actions", () => {
+        const now = new Date("2024-06-01T12:00:00Z").getTime();
+
+        shouldExecuteAction({
+          now,
+          mintEvent: null,
+          intervalWeeks: 4,
+          actionName: "mint",
+        });
+
+        shouldExecuteAction({
+          now,
+          mintEvent: null,
+          intervalWeeks: 1,
+          actionName: "transfer",
+        });
+
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          "No last mint time found, should execute mint check: true",
+        );
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          "No last transfer time found, should execute transfer check: true",
+        );
+      });
     });
   });
 });
