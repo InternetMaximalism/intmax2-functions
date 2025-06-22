@@ -79,6 +79,7 @@ export const config = cleanEnv(process.env, {
   // indexer
   BLOCK_BUILDER_ALLOWLIST: json({ default: ["0x"] }),
   BLOCK_BUILDER_MIN_ETH_BALANCE: str({ default: "0.01" }),
+  BLOCK_BUILDER_REQUIRED_VERSION: str({ default: "0.1.0" }),
   ALLOWLIST_BLOCK_BUILDER_POSSIBILITIES: num({ default: 0.5 }),
   // validity prover
   API_VALIDITY_PROVER_BASE_URL: str({ default: "http://localhost:3003" }),

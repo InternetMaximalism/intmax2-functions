@@ -7,5 +7,6 @@ export const performJob = async (): Promise<void> => {
   const indexers = await fetchRecentSyncIndexerBuilders(indexer);
   const activeIndexers = await processMonitor(indexers);
   await indexer.syncIndexerActiveStates(activeIndexers.map((indexer) => indexer.address));
+
   logger.info(`Active indexers updated: ${activeIndexers.length}`);
 };
