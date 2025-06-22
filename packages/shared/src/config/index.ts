@@ -81,6 +81,8 @@ export const config = cleanEnv(process.env, {
   BLOCK_BUILDER_MIN_ETH_BALANCE: str({ default: "0.01" }),
   BLOCK_BUILDER_REQUIRED_VERSION: str({ default: "0.1.0" }),
   ALLOWLIST_BLOCK_BUILDER_POSSIBILITIES: num({ default: 0.5 }),
+  BLOCK_BUILDER_ALLOWED_TOKEN_INDICES: str({ default: "0,1,2" }),
+  BLOCK_BUILDER_MAX_FEE_AMOUNT: str({ default: "2500000000000" }),
   // validity prover
   API_VALIDITY_PROVER_BASE_URL: str({ default: "http://localhost:3003" }),
   // wallet observer
