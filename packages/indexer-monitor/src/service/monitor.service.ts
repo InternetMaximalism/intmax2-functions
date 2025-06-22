@@ -1,9 +1,9 @@
 import { IndexerInfo, config, createNetworkClient, logger } from "@intmax2-functions/shared";
+import semver from "semver";
 import { type PublicClient, parseEther } from "viem";
 import { BLOCK_BUILDER_ALLOWLIST, INDEXER_BATCH_SIZE } from "../constants";
 import { fetchEthBalances } from "../lib/balance-check";
 import { requestHealthCheck } from "../lib/health-check";
-import semver from "semver";
 
 export const processMonitor = async (indexers: IndexerInfo[]) => {
   const ethereumClient = createNetworkClient("scroll");
