@@ -25,7 +25,7 @@ export const requestHealthCheck = async (url: string, maxRetries = 3, retryDelay
         `Health check successful for ${url}: ${response.data.name} (v${response.data.version})`,
       );
 
-      return response.data.name;
+      return response.data;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
       logger.warn(`Health check failed for ${url}: ${lastError.message}`);

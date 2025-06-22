@@ -3,6 +3,7 @@ import { type PublicClient, parseEther } from "viem";
 import { BLOCK_BUILDER_ALLOWLIST, INDEXER_BATCH_SIZE } from "../constants";
 import { fetchEthBalances } from "../lib/balance-check";
 import { requestHealthCheck } from "../lib/health-check";
+import semver from "semver";
 
 export const processMonitor = async (indexers: IndexerInfo[]) => {
   const ethereumClient = createNetworkClient("scroll");
@@ -29,11 +30,25 @@ const checkIndexerAvailability = async (ethereumClient: PublicClient, indexers: 
           return { ...indexer, status: "available" };
         }
 
-        await requestHealthCheck(indexer.url);
+        const { version } = await requestHealthCheck(indexer.url);
+        if (!semver.gte(version, config.BLOCK_BUILDER_REQUIRED_VERSION)) {
+          return {
+            ...indexer,
+            status: "unavailable",
+            message: `Version ${version} is below required ${config.BLOCK_BUILDER_REQUIRED_VERSION}`,
+          };
+        }
+
         return { ...indexer, status: "available" };
       } catch (error) {
-        logger.warn(`Error checking indexer availability: ${error}`);
-        return { ...indexer, status: "error" };
+        const message = error instanceof Error ? error.message : "Unknown error";
+        logger.warn(`Error checking indexer availability: ${message}`);
+
+        return {
+          ...indexer,
+          status: "error",
+          message,
+        };
       }
     }),
   );
