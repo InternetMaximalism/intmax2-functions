@@ -1,28 +1,21 @@
 import { logger } from "@intmax2-functions/shared";
 import axios from "axios";
 import { API_TIMEOUT } from "../constants";
-import type { BuilderHealthCheckResponse } from "../types";
+import type { BuilderFeeInfoResponse } from "../types";
 
-export const requestHealthCheck = async (url: string, maxRetries = 3, retryDelay = 1000) => {
+export const requestFeeInfoCheck = async (url: string, maxRetries = 3, retryDelay = 1000) => {
   let lastError: Error | null = null;
 
-  // TODO: fee info(2500000000000wei)
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const response = await axios.get<BuilderHealthCheckResponse>(`${url}/health-check`, {
+      const response = await axios.get<BuilderFeeInfoResponse>(`${url}/fee-info`, {
         timeout: API_TIMEOUT,
         headers: {
           Accept: "application/json",
         },
       });
 
-      if (response.data?.name === undefined) {
-        throw new Error("Name is missing in the health check response");
-      }
-
-      logger.debug(
-        `Health check successful for ${url}: ${response.data.name} (v${response.data.version})`,
-      );
+      logger.debug(`Health check successful for ${url}: (v${response.data.version})`);
 
       return response.data;
     } catch (error) {
