@@ -1,15 +1,17 @@
 import {
   Alchemy,
   ITX_AMOUNT_TO_LIQUIDITY,
+  MINT_INTERVAL_WEEKS,
   type MintEvent,
   type MintEventData,
   type MintedEvent,
+  TRANSFER_INTERVAL_WEEKS,
   createNetworkClient,
   logger,
 } from "@intmax2-functions/shared";
 import { hexToNumber } from "viem";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
-import { shouldExecuteMint, shouldExecuteTransfer } from "./interval.service";
+import { shouldExecuteAction } from "./interval.service";
 import { mint } from "./mint.service";
 import { transferToLiquidity } from "./transfer.service";
 
@@ -112,7 +114,12 @@ export const executeAutomaticOperations = async (
 
   const now = Date.now();
 
-  const shouldMint = shouldExecuteMint(now, lastMintedEvent);
+  const shouldMint = shouldExecuteAction({
+    now,
+    mintEvent: lastMintedEvent,
+    intervalWeeks: MINT_INTERVAL_WEEKS,
+    actionName: "mint",
+  });
   logger.info(
     `Should mint: ${shouldMint} - Last Minted Event: ${lastMintedEvent?.createdAt?.toDate()}`,
   );
@@ -120,7 +127,12 @@ export const executeAutomaticOperations = async (
     await executeMintOperation(ethereumClient, mintEvent);
   }
 
-  const shouldTransfer = shouldExecuteTransfer(now, lastTransferredEvent);
+  const shouldTransfer = shouldExecuteAction({
+    now,
+    mintEvent: lastTransferredEvent,
+    intervalWeeks: TRANSFER_INTERVAL_WEEKS,
+    actionName: "transfer",
+  });
   logger.info(
     `Should transfer: ${shouldTransfer} - Last Transferred Event: ${lastTransferredEvent?.createdAt?.toDate()}`,
   );

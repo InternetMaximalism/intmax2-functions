@@ -1,47 +1,32 @@
-import {
-  MINT_AVAILABLE_FROM,
-  MINT_INTERVAL_WEEKS,
-  type MintEventData,
-  TRANSFER_INTERVAL_WEEKS,
-  logger,
-} from "@intmax2-functions/shared";
+import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-functions/shared";
 
-export const shouldExecuteMint = (now: number, mintEvent: MintEventData | null) => {
-  const INTERVAL_WEEKS_MS = MINT_INTERVAL_WEEKS * 7 * 24 * 60 * 60 * 1000;
+interface ShouldExecuteActionParams {
+  now: number;
+  mintEvent: MintEventData | null;
+  intervalWeeks: number;
+  actionName: "mint" | "transfer";
+}
+
+export const shouldExecuteAction = (params: ShouldExecuteActionParams) => {
+  const { now, mintEvent, intervalWeeks, actionName } = params;
+
+  const INTERVAL_WEEKS_MS = intervalWeeks * 7 * 24 * 60 * 60 * 1000;
 
   if (!mintEvent) {
     const shouldExecute = now >= new Date(MINT_AVAILABLE_FROM).getTime();
-    logger.info(`No last mint time found, should execute mint check: ${shouldExecute}`);
+    logger.info(
+      `No last ${actionName} time found, should execute ${actionName} check: ${shouldExecute}`,
+    );
     return shouldExecute;
   }
 
   const nowDate = new Date(now);
-  const lastMintDate = new Date(mintEvent.createdAt.toDate());
+  const lastActionDate = new Date(mintEvent.createdAt.toDate());
 
   nowDate.setHours(0, 0, 0, 0);
-  lastMintDate.setHours(0, 0, 0, 0);
+  lastActionDate.setHours(0, 0, 0, 0);
 
-  const targetDate = new Date(lastMintDate.getTime() + INTERVAL_WEEKS_MS);
-
-  return nowDate.getTime() >= targetDate.getTime();
-};
-
-export const shouldExecuteTransfer = (now: number, mintEvent: MintEventData | null) => {
-  const INTERVAL_WEEKS_MS = TRANSFER_INTERVAL_WEEKS * 7 * 24 * 60 * 60 * 1000;
-
-  if (!mintEvent) {
-    const shouldExecute = now >= new Date(MINT_AVAILABLE_FROM).getTime();
-    logger.info(`No last transfer time found, should execute transfer check: ${shouldExecute}`);
-    return shouldExecute;
-  }
-
-  const nowDate = new Date(now);
-  const lastTransferDate = new Date(mintEvent.createdAt.toDate());
-
-  nowDate.setHours(0, 0, 0, 0);
-  lastTransferDate.setHours(0, 0, 0, 0);
-
-  const targetDate = new Date(lastTransferDate.getTime() + INTERVAL_WEEKS_MS);
+  const targetDate = new Date(lastActionDate.getTime() + INTERVAL_WEEKS_MS);
 
   return nowDate.getTime() >= targetDate.getTime();
 };
