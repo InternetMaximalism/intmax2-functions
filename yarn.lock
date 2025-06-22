@@ -1532,6 +1532,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7":
+  version: 7.7.0
+  resolution: "@types/semver@npm:7.7.0"
+  checksum: 10c0/6b5f65f647474338abbd6ee91a6bbab434662ddb8fe39464edcbcfc96484d388baad9eb506dff217b6fc1727a88894930eb1f308617161ac0f376fe06be4e1ee
+  languageName: node
+  linkType: hard
+
 "@types/tough-cookie@npm:*":
   version: 4.0.5
   resolution: "@types/tough-cookie@npm:4.0.5"
@@ -3207,7 +3214,9 @@ __metadata:
   resolution: "indexer-monitor@workspace:packages/indexer-monitor"
   dependencies:
     "@intmax2-functions/shared": "workspace:*"
+    "@types/semver": "npm:^7"
     axios: "npm:^1.10.0"
+    semver: "npm:^7.7.2"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.3"
@@ -4315,7 +4324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.5.3":
+"semver@npm:^7.5.3, semver@npm:^7.7.2":
   version: 7.7.2
   resolution: "semver@npm:7.7.2"
   bin:
