@@ -5,5 +5,7 @@ export const getProxyMeta = async () => {
     version: config.BLOCK_BUILDER_VERSION,
     domain: config.PROXY_DOMAIN,
     token: config.PROXY_FRP_TOKEN,
+    minVersion: config.BLOCK_BUILDER_REQUIRED_VERSION,
+    maxFee: config.BLOCK_BUILDER_MAX_FEE_AMOUNT,
   };
 };
