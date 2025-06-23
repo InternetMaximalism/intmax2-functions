@@ -8,9 +8,9 @@ export class BaseIndexer {
   protected db: FirebaseFirestore.Firestore;
   protected key: FirestoreDocumentKey;
   protected indexerDocRef: DocumentReference;
-  private cache: Map<string, string>;
-  private lastFetchTime: number;
-  private readonly CACHE_EXPIRY = 1000 * 5; // 5 seconds
+  // private cache: Map<string, string>;
+  // private lastFetchTime: number;
+  // private readonly CACHE_EXPIRY = 1000 * 5; // 5 seconds
   protected readonly defaultOrderField = "__name__";
   protected readonly defaultOrderDirection = "asc";
 
@@ -18,8 +18,8 @@ export class BaseIndexer {
     this.db = db;
     this.key = doc;
     this.indexerDocRef = db.collection(FIRESTORE_COLLECTIONS.INDEXERS).doc(doc);
-    this.cache = new Map();
-    this.lastFetchTime = 0;
+    // this.cache = new Map();
+    // this.lastFetchTime = 0;
   }
 
   async upsertIndexersBatch(indexerInfos: IndexerInfo[]) {
@@ -40,7 +40,7 @@ export class BaseIndexer {
     }
     try {
       await batch.commit();
-      this.invalidateCache();
+      // this.invalidateCache();
     } catch (error) {
       logger.error(error);
       throw new AppError(500, ErrorCode.INTERNAL_SERVER_ERROR, "Failed to add or update indexers");
@@ -73,7 +73,7 @@ export class BaseIndexer {
         );
       });
 
-      this.invalidateCache();
+      // this.invalidateCache();
     } catch (error) {
       logger.error(`Failed to update indexer active status: ${error}`);
       throw new AppError(
@@ -86,8 +86,8 @@ export class BaseIndexer {
 
   async listIndexers(): Promise<IndexerInfo[]> {
     try {
-      const cachedBuilders = this.getCache<IndexerInfo[]>(this.key);
-      if (cachedBuilders) return cachedBuilders;
+      // const cachedBuilders = this.getCache<IndexerInfo[]>(this.key);
+      // if (cachedBuilders) return cachedBuilders;
 
       const query = this.indexerDocRef.collection("addresses").where("active", "==", true);
       const snapshot = await query.get();
@@ -98,7 +98,7 @@ export class BaseIndexer {
       });
       if (indexers.length === 0) return [];
 
-      this.setCache(this.key, indexers);
+      // this.setCache(this.key, indexers);
 
       return indexers;
     } catch (error) {
@@ -161,6 +161,7 @@ export class BaseIndexer {
     });
   }
 
+  /*
   private getCache<T>(key: string): T | null {
     const cache = this.cache.get(key);
     if (cache && Date.now() - this.lastFetchTime < this.CACHE_EXPIRY) {
@@ -178,4 +179,5 @@ export class BaseIndexer {
     this.cache.clear();
     this.lastFetchTime = 0;
   }
+  */
 }

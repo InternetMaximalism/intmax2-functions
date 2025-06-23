@@ -27,4 +27,5 @@ curl http://localhost:3000/v1/health | jq
 curl -X GET 'http://localhost:3000/v1/indexer/builders' | jq
 curl -X GET 'http://localhost:3000/v1/indexer/builders/meta' | jq
 curl -X GET 'http://localhost:3000/v1/indexer/builders/registration/0x...' | jq
+curl -X GET 'http://localhost:3000/v1/proxy/meta' | jq
 ```

@@ -1,11 +1,11 @@
 import { FIRESTORE_DOCUMENTS, getIndexer } from "@intmax2-functions/shared";
-import { getRandomBuilders } from "../lib/builder";
+import { getRandomBuildersWithGuaranteedAllowlist } from "../lib/builder";
 
 export const listBlockBuilderNodes = async () => {
   const indexerInstance = getIndexer(FIRESTORE_DOCUMENTS.BUILDERS);
   const activeBuilders = await indexerInstance.listIndexers();
 
-  return getRandomBuilders(activeBuilders);
+  return getRandomBuildersWithGuaranteedAllowlist(activeBuilders);
 };
 
 export const getBlockBuilderMeta = async () => {
