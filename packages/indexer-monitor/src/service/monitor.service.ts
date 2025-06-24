@@ -30,6 +30,10 @@ const checkIndexerAvailability = async (ethereumClient: PublicClient, indexers: 
           return { ...indexer, status: "available" };
         }
 
+        if (!indexer.url.startsWith("https://")) {
+          throw new Error("Indexer URL must use HTTPS protocol");
+        }
+
         const feeInfo = await requestFeeInfoCheck(indexer.url);
         validateIndexerInfo(feeInfo);
 
