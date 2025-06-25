@@ -5,8 +5,30 @@ import {
   BLOCK_BUILDER_ALLOWLIST,
   BLOCK_BUILDER_INDEXER_COUNT,
   BLOCK_BUILDER_MIN_ALLOWLIST_COUNT,
+  BUILDER_SELECTION_MODE,
+  BuilderSelectionMode,
 } from "../constants";
 import { shuffleArray } from "./array";
+
+export const getBuildersByMode = async (
+  activeBuilders: IndexerInfo[],
+  mode?: BuilderSelectionMode,
+): Promise<IndexerInfo[]> => {
+  const selectionMode = mode || BUILDER_SELECTION_MODE;
+
+  switch (selectionMode) {
+    case BuilderSelectionMode.ALLOWLIST_ONLY:
+      return getRandomBuildersWithOnlyAllowlist(activeBuilders);
+    case BuilderSelectionMode.ALLOWLIST_PRIORITY:
+      return getRandomBuilderWithAllowlistPriority(activeBuilders);
+    case BuilderSelectionMode.GUARANTEED_ALLOWLIST:
+      return getRandomBuildersWithGuaranteedAllowlist(activeBuilders);
+    case BuilderSelectionMode.RANDOM:
+      return getRandomBuilders(activeBuilders);
+    default:
+      return getRandomBuildersWithGuaranteedAllowlist(activeBuilders);
+  }
+};
 
 export const getRandomBuildersWithOnlyAllowlist = async (
   activeBuilders: IndexerInfo[],
