@@ -90,5 +90,6 @@ export const config = cleanEnv(process.env, {
   API_VALIDITY_PROVER_BASE_URL: str({ default: "http://localhost:3003" }),
   // wallet observer
   WALLET_REQUIRED_ETH_BALANCE: str({ default: "0.5" }),
+  WALLET_REQUIRED_ETH_MIN_BALANCE: str({ default: "0.1" }),
   USE_MOCK_WALLET_OBSERVER: bool({ default: false }),
 });

@@ -15,6 +15,7 @@ export const performJob = async () => {
         type: type.name,
         ethereumClient: createNetworkClient(networkType),
         walletClientData: getWalletClient(type.name, networkType),
+        min: type.min,
       }));
     })
     .flat();
@@ -26,6 +27,7 @@ export const performJob = async () => {
             type: type.name,
             ethereumClient: createNetworkClient(networkType),
             walletClientData: getMockWalletClient(type.name, networkType),
+            min: type.min,
           }));
         })
         .flat()
