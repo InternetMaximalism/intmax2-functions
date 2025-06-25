@@ -14,6 +14,14 @@ export const walletTypes: WalletType[] = [
     name: "withdrawal",
     types: ["scroll"],
   },
+  {
+    name: "blockBuilderReward",
+    types: ["scroll"],
+  },
+  {
+    name: "tokenManager",
+    types: ["ethereum"],
+  },
 ];
 
 export const mockWalletTypes = [
@@ -24,7 +32,7 @@ export const mockWalletTypes = [
 ];
 
 export type WalletType = {
-  name: "builder" | "depositAnalyzer" | "withdrawal";
+  name: "builder" | "depositAnalyzer" | "withdrawal" | "blockBuilderReward" | "tokenManager";
   types: ("ethereum" | "scroll")[];
 };
 
