@@ -23,7 +23,7 @@ import {
   getWalletClient,
   logger,
   replacedEthersTransaction,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { ethers } from "ethers";
 import { type Abi, type PublicClient, toHex } from "viem";
 

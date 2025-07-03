@@ -10,7 +10,7 @@ import {
   logger,
   requestMiddleware,
   shutdown,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
 import { secureHeaders } from "hono/secure-headers";

@@ -1,4 +1,4 @@
-import { createNetworkClient, logger } from "@intmax2-functions/shared";
+import { createNetworkClient, logger } from "@intmax2-function/shared";
 import { getMessengerType } from "../lib/utils";
 import { generateCalldata } from "./decode.service";
 import { fetchAllClaimableScrollMessengerResults } from "./messenger.service";

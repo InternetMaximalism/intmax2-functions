@@ -2,7 +2,7 @@
   "name": "indexer-monitor",
   "version": "1.0.0",
   "dependencies": {
-    "@intmax2-functions/shared": "workspace:*",
+    "@intmax2-function/shared": "workspace:*",
     "axios": "^1.10.0",
     "semver": "^7.7.2",
     "viem": "^2.31.4"

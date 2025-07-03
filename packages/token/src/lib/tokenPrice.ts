@@ -1,4 +1,4 @@
-import { type Token, fetchTokenList, logger, sleep } from "@intmax2-functions/shared";
+import { type Token, fetchTokenList, logger, sleep } from "@intmax2-function/shared";
 
 export class TokenPrice {
   private static instance: TokenPrice | null = null;

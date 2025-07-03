@@ -5,7 +5,7 @@ import {
   config,
   createNetworkClient,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 import { fetchUnprocessedDepositTokenEntries } from "./event.service";
 import { saveTokenIndexMaps } from "./map.service";

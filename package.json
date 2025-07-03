@@ -1,20 +1,20 @@
 {
-  "name": "intmax2-functions",
+  "name": "intmax2-function",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "A collection of functions for INTMAX",
+  "description": "A collection of function for INTMAX",
   "repository": {
     "type": "git",
-    "url": "https://github.com/InternetMaximalism/intmax2-functions.git"
+    "url": "https://github.com/InternetMaximalism/intmax2-function.git"
   },
   "bugs": {
-    "url": "https://github.com/InternetMaximalism/intmax2-functions/issues"
+    "url": "https://github.com/InternetMaximalism/intmax2-function/issues"
   },
-  "homepage": "https://github.com/InternetMaximalism/intmax2-funcitons#readme",
+  "homepage": "https://github.com/InternetMaximalism/intmax2-funciton#readme",
   "keywords": [
     "intmax2",
     "blockchain",
-    "functions",
+    "function",
     "api"
   ],
   "engines": {
@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "build": "yarn workspaces foreach --all --topological run build",
-    "build:shared": "yarn workspace @intmax2-functions/shared run build",
+    "build:shared": "yarn workspace @intmax2-function/shared run build",
     "build:parallel": "yarn workspaces foreach --all -pt run build",
     "lint": "biome lint .",
     "format": "biome check --write --unsafe .",

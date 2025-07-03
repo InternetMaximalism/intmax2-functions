@@ -1,4 +1,4 @@
-import { getTxMapValidation, saveTxMapValidation } from "@intmax2-functions/shared";
+import { getTxMapValidation, saveTxMapValidation } from "@intmax2-function/shared";
 import type { Context } from "hono";
 import * as txMapService from "../services/txMap.service";
 

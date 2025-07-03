@@ -1,4 +1,4 @@
-import { TokenMap, TokenMapData, TokenType } from "@intmax2-functions/shared";
+import { TokenMap, TokenMapData, TokenType } from "@intmax2-function/shared";
 import { type PublicClient, erc20Abi } from "viem";
 import { MULTICALL_SIZE } from "../constants";
 import type { TokenInfo } from "../types";

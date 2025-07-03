@@ -1,4 +1,4 @@
-# @intmax2-functions/shared
+# @intmax2-function/shared
 
 To install dependencies:
 

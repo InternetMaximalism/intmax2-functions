@@ -1,4 +1,4 @@
-import { BadRequestError, config } from "@intmax2-functions/shared";
+import { BadRequestError, config } from "@intmax2-function/shared";
 import type {
   IPredicateClient,
   PredicateConfig,

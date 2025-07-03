@@ -2,7 +2,7 @@
   "name": "indexer-event-watcher",
   "version": "1.0.0",
   "dependencies": {
-    "@intmax2-functions/shared": "workspace:*",
+    "@intmax2-function/shared": "workspace:*",
     "viem": "^2.31.4"
   },
   "scripts": {

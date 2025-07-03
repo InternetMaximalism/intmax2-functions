@@ -1,4 +1,4 @@
-import { logger } from "@intmax2-functions/shared";
+import { logger } from "@intmax2-function/shared";
 import axios from "axios";
 import { API_TIMEOUT } from "../constants";
 import type { BuilderFeeInfoResponse } from "../types";

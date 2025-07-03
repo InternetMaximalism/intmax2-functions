@@ -1,4 +1,4 @@
-import { BaseIndexer } from "@intmax2-functions/shared";
+import { BaseIndexer } from "@intmax2-function/shared";
 
 export const fetchRecentSyncIndexerBuilders = async (indexer: BaseIndexer) => {
   const dayAgoTimestamp = getTimeStampFromLast24Hours();

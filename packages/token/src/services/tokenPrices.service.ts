@@ -1,4 +1,4 @@
-import type { Token, TokenPaginationValidationType } from "@intmax2-functions/shared";
+import type { Token, TokenPaginationValidationType } from "@intmax2-function/shared";
 import { DEFAULT_PAGE_SIZE } from "../constants";
 import { TokenPrice } from "../lib/tokenPrice";
 import { calculatePaginationIndices, getNextCursor } from "../lib/utils";

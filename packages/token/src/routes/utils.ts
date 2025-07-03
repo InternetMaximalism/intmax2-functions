@@ -1,4 +1,4 @@
-import { CACHE_TIMEOUTS, cacheMiddleware } from "@intmax2-functions/shared";
+import { CACHE_TIMEOUTS, cacheMiddleware } from "@intmax2-function/shared";
 import { type Context, Hono } from "hono";
 import { etag } from "hono/etag";
 

@@ -7,7 +7,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { generateCalldata } from "./decode.service";
 import { getL2SentMessage } from "./event.service";
 import { relayMessageWithProof } from "./submit.service";

@@ -7,7 +7,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { getDepositedEvent, getDepositsRelayedEvent } from "./event.service";
 import { submitRelayDeposits } from "./submit.service";
 import { splitDepositSummary } from "./summarize.service";

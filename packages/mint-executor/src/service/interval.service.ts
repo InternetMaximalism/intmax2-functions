@@ -1,4 +1,4 @@
-import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-functions/shared";
+import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-function/shared";
 
 interface ShouldExecuteActionParams {
   now: number;

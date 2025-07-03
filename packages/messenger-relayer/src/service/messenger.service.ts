@@ -1,4 +1,4 @@
-import { config, logger, sleep } from "@intmax2-functions/shared";
+import { config, logger, sleep } from "@intmax2-function/shared";
 import axios from "axios";
 import {
   DEFAULT_PAGE,

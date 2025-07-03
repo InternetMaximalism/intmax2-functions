@@ -7,7 +7,7 @@ import {
   config,
   depositsRelayedEvent,
   fetchEvents,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import {
   type PublicClient,
   decodeFunctionData,

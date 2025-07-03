@@ -1,8 +1,8 @@
-import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-functions/shared";
+import { MINT_AVAILABLE_FROM, type MintEventData, logger } from "@intmax2-function/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shouldExecuteAction } from "./interval.service";
 
-vi.mock("@intmax2-functions/shared", () => ({
+vi.mock("@intmax2-function/shared", () => ({
   MINT_AVAILABLE_FROM: "2024-01-01T00:00:00Z",
   logger: {
     info: vi.fn(),

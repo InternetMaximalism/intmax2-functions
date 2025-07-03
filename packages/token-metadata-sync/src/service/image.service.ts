@@ -7,7 +7,7 @@ import {
   downloadData,
   logger,
   uploadData,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import axios from "axios";
 import type { MarketDataWithDecimals } from "../types";
 

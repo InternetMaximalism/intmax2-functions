@@ -1,4 +1,4 @@
-import { addressSchema } from "@intmax2-functions/shared";
+import { addressSchema } from "@intmax2-function/shared";
 import type { Context } from "hono";
 import * as indexerService from "../services/indexer.service";
 

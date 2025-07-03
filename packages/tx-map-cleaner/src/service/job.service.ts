@@ -1,4 +1,4 @@
-import { TxMap, logger } from "@intmax2-functions/shared";
+import { TxMap, logger } from "@intmax2-function/shared";
 
 export const performJob = async () => {
   const deletedCount = await TxMap.getInstance().deleteExpiredTxMaps();

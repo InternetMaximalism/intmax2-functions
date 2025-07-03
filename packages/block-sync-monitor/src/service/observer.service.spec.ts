@@ -1,8 +1,8 @@
-import { logger } from "@intmax2-functions/shared";
+import { logger } from "@intmax2-function/shared";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { compareBlockNumbers } from "./observer.service";
 
-vi.mock("@intmax2-functions/shared", () => ({
+vi.mock("@intmax2-function/shared", () => ({
   logger: {
     info: vi.fn(),
   },

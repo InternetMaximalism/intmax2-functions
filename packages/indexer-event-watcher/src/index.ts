@@ -1,4 +1,4 @@
-import { logger, timeOperation } from "@intmax2-functions/shared";
+import { logger, timeOperation } from "@intmax2-function/shared";
 import { name } from "../package.json";
 import { performJob } from "./service/job.service";
 

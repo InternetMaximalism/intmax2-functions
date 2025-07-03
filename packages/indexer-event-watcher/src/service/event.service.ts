@@ -4,7 +4,7 @@ import {
   type BlockBuilderHeartbeatEvent,
   blockBuilderHeartbeatEvent,
   fetchEvents,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 
 export const getHeartBeatEvents = async (

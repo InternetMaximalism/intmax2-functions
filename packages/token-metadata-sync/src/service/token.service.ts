@@ -6,7 +6,7 @@ import {
   fetchTokenList,
   logger,
   uploadData,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { CoinGeckoClient, CoinListResponseItem } from "coingecko-api-v3";
 import { erc20Abi } from "viem";
 import { DEFAULT_DECIMALS, ETHEREUM_TOKEN, MULTICALL_SIZE } from "../constants";

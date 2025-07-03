@@ -6,7 +6,7 @@ import {
   getEthersMaxGasMultiplier,
   getNonce,
   networkConfig,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { http, createWalletClient as createWalletViemClient } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 

@@ -3,7 +3,7 @@ import {
   TokenMap,
   type TokenMapData,
   type TokenPaginationValidationType,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { DEFAULT_PAGE_SIZE } from "../constants";
 import { TokenPrice } from "../lib/tokenPrice";
 import { calculatePaginationIndices, getNextCursor } from "../lib/utils";

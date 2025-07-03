@@ -7,7 +7,7 @@ import {
   fetchEvents,
   l2MockSentMessageEvent,
   withdrawalClaimableEvent,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 
 export const getL2SentMessage = async (

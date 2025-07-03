@@ -1,4 +1,4 @@
-import { FIRESTORE_DOCUMENTS, getIndexer, logger } from "@intmax2-functions/shared";
+import { FIRESTORE_DOCUMENTS, getIndexer, logger } from "@intmax2-function/shared";
 import { fetchRecentSyncIndexerBuilders } from "./indexer.service";
 import { processMonitor } from "./monitor.service";
 

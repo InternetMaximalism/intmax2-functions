@@ -1,4 +1,4 @@
-import { tokenIndexesValidation, tokenPaginationValidation } from "@intmax2-functions/shared";
+import { tokenIndexesValidation, tokenPaginationValidation } from "@intmax2-function/shared";
 import type { Context } from "hono";
 import { extractQueriesParams, extractQueryParams } from "../lib/query";
 import * as tokenMapsService from "../services/tokenMaps.service";

@@ -6,7 +6,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 import { encodeFunctionData, prepareEncodeFunctionData } from "viem";
 import { MAX_RELAYER_BATCH_SIZE } from "../constants";

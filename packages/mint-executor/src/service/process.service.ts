@@ -8,7 +8,7 @@ import {
   TRANSFER_INTERVAL_WEEKS,
   createNetworkClient,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { hexToNumber } from "viem";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
 import { shouldExecuteAction } from "./interval.service";

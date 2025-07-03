@@ -9,7 +9,7 @@ import {
   depositsRelayedEvent,
   fetchEvents,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { Abi, PublicClient } from "viem";
 
 export const getDepositedEvent = async (

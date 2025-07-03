@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import { type IndexerInfo } from "@intmax2-functions/shared";
+import { type IndexerInfo } from "@intmax2-function/shared";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getRandomBuilderWithAllowlistPriority,
@@ -261,7 +261,7 @@ describe("Builder Service", () => {
         createMockIndexer("0xother2"),
       ];
 
-      // Test multiple functions with same input
+      // Test multiple function with same input
       const onlyAllowlistResult = await getRandomBuildersWithOnlyAllowlist(activeBuilders);
       const guaranteedResult = await getRandomBuildersWithGuaranteedAllowlist(activeBuilders);
       const randomResult = await getRandomBuilders(activeBuilders);

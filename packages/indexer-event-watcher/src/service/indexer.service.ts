@@ -3,7 +3,7 @@ import {
   FIRESTORE_DOCUMENTS,
   createNetworkClient,
   getIndexer,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { BATCH_SIZE } from "../constants";
 
 export const processIndexer = async (

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@hono/node-server": "^1.14.4",
-    "@intmax2-functions/shared": "workspace:*",
+    "@intmax2-function/shared": "workspace:*",
     "axios": "^1.10.0",
     "hono": "^4.8.3",
     "predicate-sdk": "^0.1.3"

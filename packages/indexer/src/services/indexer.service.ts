@@ -1,4 +1,4 @@
-import { FIRESTORE_DOCUMENTS, getIndexer } from "@intmax2-functions/shared";
+import { FIRESTORE_DOCUMENTS, getIndexer } from "@intmax2-function/shared";
 import { BUILDER_SELECTION_MODE } from "../constants";
 import { getBuildersByMode } from "./../lib/builder";
 

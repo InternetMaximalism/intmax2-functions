@@ -4,7 +4,7 @@ import {
   config,
   createNetworkClient,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import axios, { AxiosError } from "axios";
 import { getContract } from "viem";
 import { ACCEPTABLE_BLOCK_DIFFERENCE } from "../constants";
