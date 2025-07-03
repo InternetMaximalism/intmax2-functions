@@ -811,16 +811,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/firestore@npm:^7.11.1":
-  version: 7.11.1
-  resolution: "@google-cloud/firestore@npm:7.11.1"
+"@google-cloud/firestore@npm:^7.11.2":
+  version: 7.11.2
+  resolution: "@google-cloud/firestore@npm:7.11.2"
   dependencies:
     "@opentelemetry/api": "npm:^1.3.0"
     fast-deep-equal: "npm:^3.1.1"
     functional-red-black-tree: "npm:^1.0.1"
     google-gax: "npm:^4.3.3"
     protobufjs: "npm:^7.2.6"
-  checksum: 10c0/7c5591fd08bbe82bdc939c015be7fea99f516f16567e144d03e0d78071e689e0d1231f3e62ce36fb233078fdf5193a38defc65c00500fb687a5e8444c28170ea
+  checksum: 10c0/8685c841b9014cb8905816a8f5bd39fac3e796cc8f7d2ddce24629e317b992f3a2d2a455bd9deee54b7323305f7198e3ac979b659250dc7e0aaf8085218c81e2
   languageName: node
   linkType: hard
 
@@ -895,12 +895,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hono/node-server@npm:^1.14.4":
-  version: 1.14.4
-  resolution: "@hono/node-server@npm:1.14.4"
+"@hono/node-server@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "@hono/node-server@npm:1.15.0"
   peerDependencies:
     hono: ^4
-  checksum: 10c0/1dc6296ddda0b9708cbafb406e22fb3d937505b80ec991483a5066ffa162da2cb2331b4591e7b4bbc07c62e2bea7b3a751cb0fcff33f9fba870ff95a694261ef
+  checksum: 10c0/e7a93c02a50cff228e049a51f538e9c9182f534b7efcd151a66454fb3ac182e7f61437ba163e17b52954f0e6dde41c53c56efea43c700658979abfa5405cc566
   languageName: node
   linkType: hard
 
@@ -908,15 +908,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@intmax2-function/shared@workspace:packages/shared"
   dependencies:
-    "@google-cloud/firestore": "npm:^7.11.1"
+    "@google-cloud/firestore": "npm:^7.11.2"
     "@google-cloud/storage": "npm:^7.16.0"
-    "@hono/node-server": "npm:^1.14.4"
+    "@hono/node-server": "npm:^1.15.0"
     abitype: "npm:^1.0.8"
     alchemy-sdk: "npm:^3.6.1"
     axios: "npm:^1.10.0"
-    discord.js: "npm:^14.20.0"
+    discord.js: "npm:^14.21.0"
     envalid: "npm:^8.0.0"
-    ethers: "npm:^6.14.4"
+    ethers: "npm:^6.15.0"
     hono: "npm:^4.8.3"
     hono-rate-limiter: "npm:^0.4.2"
     http-status: "npm:2.1.0"
@@ -924,8 +924,8 @@ __metadata:
     pino-pretty: "npm:^13.0.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
-    zod: "npm:^3.25.67"
+    viem: "npm:^2.31.6"
+    zod: "npm:^3.25.71"
   languageName: unknown
   linkType: soft
 
@@ -1935,7 +1935,7 @@ __metadata:
     axios: "npm:^1.10.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
     vitest: "npm:^3.2.4"
   languageName: unknown
   linkType: soft
@@ -2248,10 +2248,10 @@ __metadata:
   resolution: "deposit-analyzer@workspace:packages/deposit-analyzer"
   dependencies:
     "@intmax2-function/shared": "workspace:*"
-    ethers: "npm:^6.14.4"
+    ethers: "npm:^6.15.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
     vitest: "npm:^3.2.4"
   languageName: unknown
   linkType: soft
@@ -2263,9 +2263,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:^14.20.0":
-  version: 14.20.0
-  resolution: "discord.js@npm:14.20.0"
+"discord.js@npm:^14.21.0":
+  version: 14.21.0
+  resolution: "discord.js@npm:14.21.0"
   dependencies:
     "@discordjs/builders": "npm:^1.11.2"
     "@discordjs/collection": "npm:1.5.3"
@@ -2280,7 +2280,7 @@ __metadata:
     magic-bytes.js: "npm:^1.10.0"
     tslib: "npm:^2.6.3"
     undici: "npm:6.21.3"
-  checksum: 10c0/78c847f5cc86579a881be73d9d7642aee0ece6c17157dbc13efbd89c5e42ed82fabb4468a55afb723a7e269104929dd57da2d40846fb0d8159ceff986f7baffe
+  checksum: 10c0/35d89b66ec427ecc972f9141540774af6c6a5bf177bdbb5c948efbf838ec074204fb4610227f0f8405336d66706ba17f7280aedf00cccd858ef5c1048d861b34
   languageName: node
   linkType: hard
 
@@ -2620,9 +2620,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.14.4":
-  version: 6.14.4
-  resolution: "ethers@npm:6.14.4"
+"ethers@npm:^6.15.0":
+  version: 6.15.0
+  resolution: "ethers@npm:6.15.0"
   dependencies:
     "@adraffy/ens-normalize": "npm:1.10.1"
     "@noble/curves": "npm:1.2.0"
@@ -2631,7 +2631,7 @@ __metadata:
     aes-js: "npm:4.0.0-beta.5"
     tslib: "npm:2.7.0"
     ws: "npm:8.17.1"
-  checksum: 10c0/abcb3c765ccbef19ef9f8ea05847407969e5ca295ea0e0383b7c3e0380a7d43195eb068f336b84c6b76d88aa0b38afb8a636c5b18573e5c33468384306c32631
+  checksum: 10c0/0a4581b662fe46a889a524d3aba43dc6f0ac59b3ae08dce678ee4b5799aab4906109ab24684c9644deedfc9d6e79b59faccecbeda9b6b7ceb085724d596a49e9
   languageName: node
   linkType: hard
 
@@ -3205,7 +3205,7 @@ __metadata:
     "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -3219,7 +3219,7 @@ __metadata:
     semver: "npm:^7.7.2"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -3227,7 +3227,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "indexer@workspace:packages/indexer"
   dependencies:
-    "@hono/node-server": "npm:^1.14.4"
+    "@hono/node-server": "npm:^1.15.0"
     "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
@@ -3572,10 +3572,10 @@ __metadata:
   dependencies:
     "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
-    ethers: "npm:^6.14.4"
+    ethers: "npm:^6.15.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -3717,7 +3717,7 @@ __metadata:
     "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -3735,10 +3735,10 @@ __metadata:
   resolution: "mock-l1-to-l2-relayer@workspace:packages/mock-l1-to-l2-relayer"
   dependencies:
     "@intmax2-function/shared": "workspace:*"
-    ethers: "npm:^6.14.4"
+    ethers: "npm:^6.15.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
     vitest: "npm:^3.2.4"
   languageName: unknown
   linkType: soft
@@ -3748,10 +3748,10 @@ __metadata:
   resolution: "mock-l2-to-l1-relayer@workspace:packages/mock-l2-to-l1-relayer"
   dependencies:
     "@intmax2-function/shared": "workspace:*"
-    ethers: "npm:^6.14.4"
+    ethers: "npm:^6.15.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -4046,7 +4046,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "predicate@workspace:packages/predicate"
   dependencies:
-    "@hono/node-server": "npm:^1.14.4"
+    "@hono/node-server": "npm:^1.15.0"
     "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
     hono: "npm:^4.8.3"
@@ -4701,7 +4701,7 @@ __metadata:
     "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -4714,7 +4714,7 @@ __metadata:
     coingecko-api-v3: "npm:^0.0.31"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -4722,7 +4722,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "token@workspace:packages/token"
   dependencies:
-    "@hono/node-server": "npm:^1.14.4"
+    "@hono/node-server": "npm:^1.15.0"
     "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
@@ -4795,7 +4795,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tx-map@workspace:packages/tx-map"
   dependencies:
-    "@hono/node-server": "npm:^1.14.4"
+    "@hono/node-server": "npm:^1.15.0"
     "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
@@ -4913,9 +4913,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.31.4":
-  version: 2.31.4
-  resolution: "viem@npm:2.31.4"
+"viem@npm:^2.31.6":
+  version: 2.31.6
+  resolution: "viem@npm:2.31.6"
   dependencies:
     "@noble/curves": "npm:1.9.2"
     "@noble/hashes": "npm:1.8.0"
@@ -4930,7 +4930,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/cffc1c91b322a683758877c8a39916e984809847082343a297d3d637474b711c30e69fad2547f8e4617e6961797811a628d0fd6c3b4d105a7669d89e205edebc
+  checksum: 10c0/0b01fa25cac1c857f846e57178cfc77d45df5b0c44125686d685fc6cbe45055f5c73143d475a4d7e1bf9d214529f5051778366e2103fe8473466f805ae69a359
   languageName: node
   linkType: hard
 
@@ -5067,7 +5067,7 @@ __metadata:
     "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    viem: "npm:^2.31.4"
+    viem: "npm:^2.31.6"
   languageName: unknown
   linkType: soft
 
@@ -5297,9 +5297,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.67":
-  version: 3.25.67
-  resolution: "zod@npm:3.25.67"
-  checksum: 10c0/80a0cab3033272c4ab9312198081f0c4ea88e9673c059aa36dc32024906363729db54bdb78f3dc9d5529bd1601f74974d5a56c0a23e40c6f04a9270c9ff22336
+"zod@npm:^3.25.71":
+  version: 3.25.71
+  resolution: "zod@npm:3.25.71"
+  checksum: 10c0/ccb251859609e6eed04b83f96ad7b2b7a189ca78b47176cde2c368102a5416b9c472e91b3fd96ceaa5043b2e513b3aec39fd99c36686ad2ad84f6c440afca53a
   languageName: node
   linkType: hard
