@@ -8,7 +8,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { executeAutomaticOperations, processEvents } from "./process.service";
 
 export const performJob = async (): Promise<void> => {

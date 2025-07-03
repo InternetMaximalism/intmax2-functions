@@ -12,7 +12,7 @@ import {
   fetchEvents,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { Abi, PublicClient } from "viem";
 import { DEPOSIT_EVENT_MAX_ATTEMPTS, MULTICALL_SIZE } from "../constants";
 import type { TokenInfo } from "../types";

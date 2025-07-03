@@ -1,4 +1,4 @@
-import { getMockWalletClient, getWalletClient } from "@intmax2-functions/shared";
+import { getMockWalletClient, getWalletClient } from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 
 export const walletTypes: WalletType[] = [

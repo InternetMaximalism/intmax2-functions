@@ -1,4 +1,4 @@
-import { type BatchedCalldata, LiquidityAbi } from "@intmax2-functions/shared";
+import { type BatchedCalldata, LiquidityAbi } from "@intmax2-function/shared";
 import { decodeFunctionData, encodeFunctionData, prepareEncodeFunctionData } from "viem";
 import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 import type { ScrollMessengerResult } from "../types";

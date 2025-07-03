@@ -1,4 +1,4 @@
-import { type DepositEvent } from "@intmax2-functions/shared";
+import { type DepositEvent } from "@intmax2-function/shared";
 import { GAS_CONFIG, MAX_DEPOSIT_BATCH_SIZE } from "../constants";
 import type { BatchParams } from "../types";
 

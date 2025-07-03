@@ -1,4 +1,4 @@
-import { fetchPredicateSignaturesValidation } from "@intmax2-functions/shared";
+import { fetchPredicateSignaturesValidation } from "@intmax2-function/shared";
 import type { Context } from "hono";
 import * as predicateService from "../services/predicate.service";
 

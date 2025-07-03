@@ -16,7 +16,7 @@ import {
   getWalletClient,
   l1SentMessageEvent,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { ethers, parseEther } from "ethers";
 import { type Abi, type PublicClient, toHex } from "viem";
 

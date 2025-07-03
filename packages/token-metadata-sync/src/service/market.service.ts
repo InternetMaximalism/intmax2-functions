@@ -1,4 +1,4 @@
-import { logger } from "@intmax2-functions/shared";
+import { logger } from "@intmax2-function/shared";
 import { CoinGeckoClient, type CoinMarket } from "coingecko-api-v3";
 import { DEFAULT_DECIMALS, VS_CURRENCY } from "../constants";
 import type { TokenData } from "../types";

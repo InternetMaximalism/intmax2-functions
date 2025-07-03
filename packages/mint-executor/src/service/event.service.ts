@@ -7,7 +7,7 @@ import {
   logger,
   mintedEvent,
   transferredToLiquidityEvent,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import type { PublicClient } from "viem";
 
 export const getMintedEvent = async (

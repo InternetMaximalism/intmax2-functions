@@ -7,7 +7,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { generateDepositsCalldata } from "./decode.service";
 import { fetchSentMessages } from "./event.service";
 import { submitRelayMessagesToL2MockMessenger } from "./submit.service";

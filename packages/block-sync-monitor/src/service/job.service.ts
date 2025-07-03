@@ -1,4 +1,4 @@
-import { Discord } from "@intmax2-functions/shared";
+import { Discord } from "@intmax2-function/shared";
 import {
   compareBlockNumbers,
   fetchLatestRollupBlockNumber,

@@ -4,7 +4,7 @@ import {
   MintedEvent,
   TransferredToLiquidityEvent,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { hexToNumber } from "viem";
 import { type MockedFunction, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getMintedEvent, getTransferredToLiquidityEvent } from "./event.service";
@@ -13,7 +13,7 @@ import { mint } from "./mint.service";
 import { executeAutomaticOperations, processEvents } from "./process.service";
 import { transferToLiquidity } from "./transfer.service";
 
-vi.mock("@intmax2-functions/shared", () => ({
+vi.mock("@intmax2-function/shared", () => ({
   Alchemy: {
     getInstance: vi.fn(),
   },

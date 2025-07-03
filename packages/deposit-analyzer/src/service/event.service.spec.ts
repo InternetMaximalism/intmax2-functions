@@ -2,7 +2,7 @@ import type { PublicClient } from "viem";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDepositedEvent, getDepositsRelayedEvent } from "./event.service";
 
-vi.mock("@intmax2-functions/shared", () => ({
+vi.mock("@intmax2-function/shared", () => ({
   BLOCK_RANGE_MINIMUM: 1000n,
   LIQUIDITY_CONTRACT_ADDRESS: "0x1234567890123456789012345678901234567890",
   LiquidityAbi: [
@@ -32,9 +32,9 @@ import {
   LiquidityAbi,
   fetchEvents,
   logger,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 
-describe("Event Functions", () => {
+describe("Event Function", () => {
   let mockEthereumClient: PublicClient;
 
   beforeEach(() => {

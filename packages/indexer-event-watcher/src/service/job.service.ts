@@ -7,7 +7,7 @@ import {
   getStartBlockNumber,
   logger,
   validateBlockRange,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { getHeartBeatEvents } from "./event.service";
 import { processIndexer } from "./indexer.service";
 

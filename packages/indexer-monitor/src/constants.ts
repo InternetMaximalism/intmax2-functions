@@ -1,4 +1,4 @@
-import { config } from "@intmax2-functions/shared";
+import { config } from "@intmax2-function/shared";
 
 // batch
 export const BATCH_SIZE = 50;

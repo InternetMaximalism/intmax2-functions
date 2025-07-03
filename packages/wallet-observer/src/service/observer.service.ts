@@ -1,4 +1,4 @@
-import { config } from "@intmax2-functions/shared";
+import { config } from "@intmax2-function/shared";
 import { formatEther, parseEther } from "viem";
 import { REQUIRED_ETH, REQUIRED_ETH_MIN } from "../constants";
 import type { WalletClient } from "../type";

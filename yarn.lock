@@ -904,9 +904,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intmax2-functions/shared@workspace:*, @intmax2-functions/shared@workspace:packages/shared":
+"@intmax2-function/shared@workspace:*, @intmax2-function/shared@workspace:packages/shared":
   version: 0.0.0-use.local
-  resolution: "@intmax2-functions/shared@workspace:packages/shared"
+  resolution: "@intmax2-function/shared@workspace:packages/shared"
   dependencies:
     "@google-cloud/firestore": "npm:^7.11.1"
     "@google-cloud/storage": "npm:^7.16.0"
@@ -1931,7 +1931,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "block-sync-monitor@workspace:packages/block-sync-monitor"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -2247,7 +2247,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "deposit-analyzer@workspace:packages/deposit-analyzer"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     ethers: "npm:^6.14.4"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -3202,7 +3202,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "indexer-event-watcher@workspace:packages/indexer-event-watcher"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.4"
@@ -3213,7 +3213,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "indexer-monitor@workspace:packages/indexer-monitor"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     "@types/semver": "npm:^7"
     axios: "npm:^1.10.0"
     semver: "npm:^7.7.2"
@@ -3228,7 +3228,7 @@ __metadata:
   resolution: "indexer@workspace:packages/indexer"
   dependencies:
     "@hono/node-server": "npm:^1.14.4"
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -3242,9 +3242,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intmax2-functions@workspace:.":
+"intmax2-function@workspace:.":
   version: 0.0.0-use.local
-  resolution: "intmax2-functions@workspace:."
+  resolution: "intmax2-function@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.9.4"
     "@vitest/coverage-v8": "npm:^3.2.4"
@@ -3570,7 +3570,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "messenger-relayer@workspace:packages/messenger-relayer"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
     ethers: "npm:^6.14.4"
     tsx: "npm:^4.20.3"
@@ -3714,7 +3714,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mint-executor@workspace:packages/mint-executor"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.4"
@@ -3734,7 +3734,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mock-l1-to-l2-relayer@workspace:packages/mock-l1-to-l2-relayer"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     ethers: "npm:^6.14.4"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -3747,7 +3747,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mock-l2-to-l1-relayer@workspace:packages/mock-l2-to-l1-relayer"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     ethers: "npm:^6.14.4"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -4047,7 +4047,7 @@ __metadata:
   resolution: "predicate@workspace:packages/predicate"
   dependencies:
     "@hono/node-server": "npm:^1.14.4"
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
     hono: "npm:^4.8.3"
     predicate-sdk: "npm:^0.1.3"
@@ -4698,7 +4698,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "token-map-register@workspace:packages/token-map-register"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.4"
@@ -4709,7 +4709,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "token-metadata-sync@workspace:packages/token-metadata-sync"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     axios: "npm:^1.10.0"
     coingecko-api-v3: "npm:^0.0.31"
     tsx: "npm:^4.20.3"
@@ -4723,7 +4723,7 @@ __metadata:
   resolution: "token@workspace:packages/token"
   dependencies:
     "@hono/node-server": "npm:^1.14.4"
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -4785,7 +4785,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tx-map-cleaner@workspace:packages/tx-map-cleaner"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
   languageName: unknown
@@ -4796,7 +4796,7 @@ __metadata:
   resolution: "tx-map@workspace:packages/tx-map"
   dependencies:
     "@hono/node-server": "npm:^1.14.4"
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     hono: "npm:^4.8.3"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -5064,7 +5064,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "wallet-observer@workspace:packages/wallet-observer"
   dependencies:
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     viem: "npm:^2.31.4"

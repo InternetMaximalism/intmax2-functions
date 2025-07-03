@@ -1,5 +1,5 @@
 import path from "path";
-import { DEFAULT_IMAGE_NAME, FILE_PATHS, config, uploadData } from "@intmax2-functions/shared";
+import { DEFAULT_IMAGE_NAME, FILE_PATHS, config, uploadData } from "@intmax2-function/shared";
 import fs from "fs/promises";
 
 const bootstrap = async () => {

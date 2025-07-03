@@ -1,4 +1,4 @@
-import { BASE_PATH, healthRoute } from "@intmax2-functions/shared";
+import { BASE_PATH, healthRoute } from "@intmax2-function/shared";
 import { route as predicateRoute } from "./predicate.route";
 
 export const routes = [

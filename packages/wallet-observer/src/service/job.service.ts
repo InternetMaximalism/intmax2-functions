@@ -4,7 +4,7 @@ import {
   createNetworkClient,
   getMockWalletClient,
   getWalletClient,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { type WalletClient, mockWalletTypes, walletTypes } from "../type";
 import { getBalance } from "./observer.service";
 

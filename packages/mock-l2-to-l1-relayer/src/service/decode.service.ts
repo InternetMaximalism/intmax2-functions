@@ -2,7 +2,7 @@ import {
   type BatchedCalldata,
   LiquidityAbi,
   type SentMessageEventLog,
-} from "@intmax2-functions/shared";
+} from "@intmax2-function/shared";
 import { decodeFunctionData, encodeFunctionData, prepareEncodeFunctionData } from "viem";
 import { MAX_RELAYER_BATCH_SIZE } from "../constants";
 

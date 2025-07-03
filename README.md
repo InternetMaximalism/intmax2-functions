@@ -1,6 +1,6 @@
-# intmax2-functions
+# intmax2-function
 
-This document provides instructions for setting up, running, building with Docker, and deploying the `intmax2-functions` project.
+This document provides instructions for setting up, running, building with Docker, and deploying the `intmax2-function` project.
 
 ## Installing Dependencies
 
@@ -82,8 +82,8 @@ export FIRESTORE_EMULATOR_HOST="HOST:PORT" # We will use what is displayed in th
 Build and run the project in a Docker container:
 
 ```sh
-docker build -f docker/Dockerfile -t intmax2-functions .
-docker run --rm -p 3000:3000 --env-file .env intmax2-functions workspace token start
+docker build -f docker/Dockerfile -t intmax2-function .
+docker run --rm -p 3000:3000 --env-file .env intmax2-function workspace token start
 ```
 
 ## Bootstrap Tasks

@@ -1,4 +1,4 @@
-import { config } from "@intmax2-functions/shared";
+import { config } from "@intmax2-function/shared";
 
 export const BLOCK_BUILDER_ALLOWLIST = ((config.BLOCK_BUILDER_ALLOWLIST as string[]) ?? []).map(
   (address) => address.toLowerCase(),

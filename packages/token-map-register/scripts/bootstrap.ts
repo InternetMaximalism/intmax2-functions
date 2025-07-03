@@ -1,4 +1,4 @@
-import { TokenMap, type TokenMapData, logger } from "@intmax2-functions/shared";
+import { TokenMap, type TokenMapData, logger } from "@intmax2-function/shared";
 
 const data: TokenMapData[] = [
   {

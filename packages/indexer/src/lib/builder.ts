@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import { IndexerInfo } from "@intmax2-functions/shared";
+import { IndexerInfo } from "@intmax2-function/shared";
 import {
   ALLOWLIST_BLOCK_BUILDER_POSSIBILITIES,
   BLOCK_BUILDER_ALLOWLIST,

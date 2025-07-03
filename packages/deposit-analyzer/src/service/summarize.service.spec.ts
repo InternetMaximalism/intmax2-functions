@@ -1,4 +1,4 @@
-import type { DepositEvent } from "@intmax2-functions/shared";
+import type { DepositEvent } from "@intmax2-function/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { splitDepositSummary } from "./summarize.service";
 

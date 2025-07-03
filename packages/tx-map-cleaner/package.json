@@ -2,7 +2,7 @@
   "name": "tx-map-cleaner",
   "version": "1.0.0",
   "dependencies": {
-    "@intmax2-functions/shared": "workspace:*"
+    "@intmax2-function/shared": "workspace:*"
   },
   "scripts": {
     "start": "node dist/index.js",
